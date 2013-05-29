@@ -1,0 +1,113 @@
+* {
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;         /* Opera/IE 8+ */
+
+	font-family: 'Roboto', sans-serif;
+}
+
+header {
+	overflow: hidden;
+	padding: 20px;
+	line-height: 30px;
+	h1 {
+		a {
+			text-decoration: none;
+			color: inherit;
+		}
+		float: left;
+		padding: 0px;
+		margin: 0px;		
+	}
+	nav {
+		float: right;
+		vertical-align: baseline;
+		padding: 0px;
+		margin: 0px;
+		a {
+			display: block;
+			line-height: 30px;
+			border: 1px solid #ccc;
+			padding: 0 15px;
+			margin-left: 15px;
+			float: left;
+			text-decoration: none;
+			color: inherit;
+			&:hover {
+				background-color: #ddd;
+			}
+		}
+	}
+}
+
+table.month-calendar {
+	width: 100%;
+	table-layout: fixed;
+	/*border-collapse: collapse;*/
+	tr {
+		td {
+			width: 100%;
+			height: 100px;
+			vertical-align: top;
+			border: 1px solid #aaa;
+			padding: 0;
+			background-color: #eee;
+			&.empty {
+				border: none;
+				background-color: transparent;
+			}
+			&.today {
+				border: 2px solid black;
+			}
+			div.date {
+				background-color: #ccc;
+				span.day-number {
+					font-size: 20px;
+					font-weight: bold;
+				}
+				span.weekday {
+					font-size: 12px;
+				}
+			}
+			div.issue {
+				font-size: 10px;
+				min-height: 30px;
+				&:nth-child(odd) {
+					background-color: #ddd;
+				}
+				&:nth-child(even) {
+					background-color: #eee;
+				}
+			}
+		}
+	}
+}
+
+div.calendar-navigation {
+	border: 1px solid #bbb;
+	background-color: #eee;
+	overflow: hidden;
+	div {
+		line-height: 30px;
+	}
+	div.prev, div.next {
+		float: left;
+		width: 25%;
+		text-align: center;
+		a {
+			text-decoration: none;
+			display: block;
+			color: inherit;
+			&:hover {
+				background-color: #ccc;
+			}
+		}
+	}
+	div.current {
+		float: left;
+		width: 50%;
+		text-align: center;
+		border-left: 1px solid #bbb;
+		border-right: 1px solid #bbb;
+	}
+}

@@ -1,0 +1,3 @@
+[submodule "application/plugins/propel"]
+	path = application/plugins/propel
+	url = https://github.com/propelorm/Propel.git

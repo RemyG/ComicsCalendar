@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="comicslist" defaultIdMethod="native" tablePrefix="comics_">
+  <!-- table definitions go here -->
+  <table name="serie" phpName="Serie">
+    <!-- column and foreign key definitions go here -->
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+    <column name="title" type="varchar" size="255" required="true" />
+  </table>
+  <table name="issue" phpName="Issue">
+    <!-- column and foreign key definitions go here -->
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+   	<column name="title" type="varchar" size="255" required="true" />
+   	<column name="serie_id" type="integer" required="true" />
+   	<column name="pub_date" type="date" required="true" phpName="PubDate"/>
+   	<foreign-key foreignTable="serie" phpName="Serie" refPhpName="Issue">
+      <reference local="serie_id" foreign="id"/>
+    </foreign-key>
+  </table>
+  <!--<table name="user" phpName="User"> -->
+    <!-- column and foreign key definitions go here -->
+  <!-- </table> -->
+</database>
