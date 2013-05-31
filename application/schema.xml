@@ -1,22 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database name="comicslist" defaultIdMethod="native" tablePrefix="comics_">
-  <!-- table definitions go here -->
-  <table name="serie" phpName="Serie">
-    <!-- column and foreign key definitions go here -->
-    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
-    <column name="title" type="varchar" size="255" required="true" />
-  </table>
-  <table name="issue" phpName="Issue">
-    <!-- column and foreign key definitions go here -->
-    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-   	<column name="title" type="varchar" size="255" required="true" />
-   	<column name="serie_id" type="integer" required="true" />
-   	<column name="pub_date" type="date" required="true" phpName="PubDate"/>
-   	<foreign-key foreignTable="serie" phpName="Serie" refPhpName="Issue">
-      <reference local="serie_id" foreign="id"/>
-    </foreign-key>
-  </table>
-  <!--<table name="user" phpName="User"> -->
-    <!-- column and foreign key definitions go here -->
-  <!-- </table> -->
+	<!-- table definitions go here -->
+	<table name="serie" phpName="Serie">
+		<!-- column and foreign key definitions go here -->
+		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+		<column name="title" type="varchar" size="255" required="true" />
+		<column name="cv_id" type="varchar" size="10" phpName="CvId" />
+		<column name="cv_url" type="varchar" size="255" phpName="CvUrl" />
+		<vendor type="mysql">
+			<parameter name="Engine" value="InnoDB"/>
+			<parameter name="Charset" value="utf8"/>
+		</vendor>
+	</table>
+	<table name="issue" phpName="Issue">
+		<!-- column and foreign key definitions go here -->
+		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+		<column name="title" type="varchar" size="255" required="true" />
+		<column name="issue_number" type="varchar" size="10" phpName="IssueNumber" />
+		<column name="serie_id" type="integer" required="true" />
+		<column name="pub_date" type="date" required="true" phpName="PubDate" />
+		<column name="cv_id" type="varchar" size="10" phpName="CvId" />
+		<column name="cv_url" type="varchar" size="255" phpName="CvUrl" />
+		<foreign-key foreignTable="serie" phpName="Serie" refPhpName="Issue">
+			<reference local="serie_id" foreign="id" />
+		</foreign-key>
+		<vendor type="mysql">
+			<parameter name="Engine" value="InnoDB"/>
+			<parameter name="Charset" value="utf8"/>
+		</vendor>
+	</table>
+	<table name="user" phpName="User">
+		<!-- column and foreign key definitions go here -->
+		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+		<column name="login" type="varchar" size="255" required="true" />
+		<column name="password" type="varchar" size="255" required="true" />
+		<column name="email" type="varchar" size="255" required="true" />
+		<vendor type="mysql">
+			<parameter name="Engine" value="InnoDB"/>
+			<parameter name="Charset" value="utf8"/>
+		</vendor>
+	</table>
+	<table name="user_serie" isCrossRef="true">
+		<column name="user_id" type="integer" primaryKey="true" />
+		<column name="serie_id" type="integer" primaryKey="true" />
+		<foreign-key foreignTable="user">
+			<reference local="user_id" foreign="id" />
+		</foreign-key>
+		<foreign-key foreignTable="serie">
+			<reference local="serie_id" foreign="id" />
+		</foreign-key>
+		<vendor type="mysql">
+			<parameter name="Engine" value="InnoDB"/>
+			<parameter name="Charset" value="utf8"/>
+		</vendor>
+	</table>
 </database>

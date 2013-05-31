@@ -2,50 +2,46 @@
 
 
 /**
- * Base class that represents a query for the 'comics_serie' table.
+ * Base class that represents a query for the 'comics_user' table.
  *
  *
  *
- * @method SerieQuery orderById($order = Criteria::ASC) Order by the id column
- * @method SerieQuery orderByTitle($order = Criteria::ASC) Order by the title column
- * @method SerieQuery orderByCvId($order = Criteria::ASC) Order by the cv_id column
- * @method SerieQuery orderByCvUrl($order = Criteria::ASC) Order by the cv_url column
+ * @method UserQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method UserQuery orderByLogin($order = Criteria::ASC) Order by the login column
+ * @method UserQuery orderByPassword($order = Criteria::ASC) Order by the password column
+ * @method UserQuery orderByEmail($order = Criteria::ASC) Order by the email column
  *
- * @method SerieQuery groupById() Group by the id column
- * @method SerieQuery groupByTitle() Group by the title column
- * @method SerieQuery groupByCvId() Group by the cv_id column
- * @method SerieQuery groupByCvUrl() Group by the cv_url column
+ * @method UserQuery groupById() Group by the id column
+ * @method UserQuery groupByLogin() Group by the login column
+ * @method UserQuery groupByPassword() Group by the password column
+ * @method UserQuery groupByEmail() Group by the email column
  *
- * @method SerieQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method SerieQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method SerieQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method UserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method UserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method UserQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method SerieQuery leftJoinIssue($relationAlias = null) Adds a LEFT JOIN clause to the query using the Issue relation
- * @method SerieQuery rightJoinIssue($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Issue relation
- * @method SerieQuery innerJoinIssue($relationAlias = null) Adds a INNER JOIN clause to the query using the Issue relation
+ * @method UserQuery leftJoinUserSerie($relationAlias = null) Adds a LEFT JOIN clause to the query using the UserSerie relation
+ * @method UserQuery rightJoinUserSerie($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserSerie relation
+ * @method UserQuery innerJoinUserSerie($relationAlias = null) Adds a INNER JOIN clause to the query using the UserSerie relation
  *
- * @method SerieQuery leftJoinUserSerie($relationAlias = null) Adds a LEFT JOIN clause to the query using the UserSerie relation
- * @method SerieQuery rightJoinUserSerie($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserSerie relation
- * @method SerieQuery innerJoinUserSerie($relationAlias = null) Adds a INNER JOIN clause to the query using the UserSerie relation
+ * @method User findOne(PropelPDO $con = null) Return the first User matching the query
+ * @method User findOneOrCreate(PropelPDO $con = null) Return the first User matching the query, or a new User object populated from the query conditions when no match is found
  *
- * @method Serie findOne(PropelPDO $con = null) Return the first Serie matching the query
- * @method Serie findOneOrCreate(PropelPDO $con = null) Return the first Serie matching the query, or a new Serie object populated from the query conditions when no match is found
+ * @method User findOneByLogin(string $login) Return the first User filtered by the login column
+ * @method User findOneByPassword(string $password) Return the first User filtered by the password column
+ * @method User findOneByEmail(string $email) Return the first User filtered by the email column
  *
- * @method Serie findOneByTitle(string $title) Return the first Serie filtered by the title column
- * @method Serie findOneByCvId(string $cv_id) Return the first Serie filtered by the cv_id column
- * @method Serie findOneByCvUrl(string $cv_url) Return the first Serie filtered by the cv_url column
- *
- * @method array findById(int $id) Return Serie objects filtered by the id column
- * @method array findByTitle(string $title) Return Serie objects filtered by the title column
- * @method array findByCvId(string $cv_id) Return Serie objects filtered by the cv_id column
- * @method array findByCvUrl(string $cv_url) Return Serie objects filtered by the cv_url column
+ * @method array findById(int $id) Return User objects filtered by the id column
+ * @method array findByLogin(string $login) Return User objects filtered by the login column
+ * @method array findByPassword(string $password) Return User objects filtered by the password column
+ * @method array findByEmail(string $email) Return User objects filtered by the email column
  *
  * @package    propel.generator.comicslist.om
  */
-abstract class BaseSerieQuery extends ModelCriteria
+abstract class BaseUserQuery extends ModelCriteria
 {
     /**
-     * Initializes internal state of BaseSerieQuery object.
+     * Initializes internal state of BaseUserQuery object.
      *
      * @param     string $dbName The dabase name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
@@ -57,25 +53,25 @@ abstract class BaseSerieQuery extends ModelCriteria
             $dbName = 'comicslist';
         }
         if (null === $modelName) {
-            $modelName = 'Serie';
+            $modelName = 'User';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new SerieQuery object.
+     * Returns a new UserQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param   SerieQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   UserQuery|Criteria $criteria Optional Criteria to build the query from
      *
-     * @return SerieQuery
+     * @return UserQuery
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof SerieQuery) {
+        if ($criteria instanceof UserQuery) {
             return $criteria;
         }
-        $query = new SerieQuery(null, null, $modelAlias);
+        $query = new UserQuery(null, null, $modelAlias);
 
         if ($criteria instanceof Criteria) {
             $query->mergeWith($criteria);
@@ -96,19 +92,19 @@ abstract class BaseSerieQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return   Serie|Serie[]|mixed the result, formatted by the current formatter
+     * @return   User|User[]|mixed the result, formatted by the current formatter
      */
     public function findPk($key, $con = null)
     {
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = SeriePeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
+        if ((null !== ($obj = UserPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
             // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
-            $con = Propel::getConnection(SeriePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         $this->basePreSelect($con);
         if ($this->formatter || $this->modelAlias || $this->with || $this->select
@@ -126,7 +122,7 @@ abstract class BaseSerieQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 Serie A model object, or null if the key is not found
+     * @return                 User A model object, or null if the key is not found
      * @throws PropelException
      */
      public function findOneById($key, $con = null)
@@ -141,12 +137,12 @@ abstract class BaseSerieQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 Serie A model object, or null if the key is not found
+     * @return                 User A model object, or null if the key is not found
      * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `cv_id`, `cv_url` FROM `comics_serie` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `login`, `password`, `email` FROM `comics_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -157,9 +153,9 @@ abstract class BaseSerieQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $obj = new Serie();
+            $obj = new User();
             $obj->hydrate($row);
-            SeriePeer::addInstanceToPool($obj, (string) $key);
+            UserPeer::addInstanceToPool($obj, (string) $key);
         }
         $stmt->closeCursor();
 
@@ -172,7 +168,7 @@ abstract class BaseSerieQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return Serie|Serie[]|mixed the result, formatted by the current formatter
+     * @return User|User[]|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, $con)
     {
@@ -193,7 +189,7 @@ abstract class BaseSerieQuery extends ModelCriteria
      * @param     array $keys Primary keys to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return PropelObjectCollection|Serie[]|mixed the list of results, formatted by the current formatter
+     * @return PropelObjectCollection|User[]|mixed the list of results, formatted by the current formatter
      */
     public function findPks($keys, $con = null)
     {
@@ -214,12 +210,12 @@ abstract class BaseSerieQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return SerieQuery The current query, for fluid interface
+     * @return UserQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(SeriePeer::ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(UserPeer::ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -227,12 +223,12 @@ abstract class BaseSerieQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return SerieQuery The current query, for fluid interface
+     * @return UserQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(SeriePeer::ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(UserPeer::ID, $keys, Criteria::IN);
     }
 
     /**
@@ -252,18 +248,18 @@ abstract class BaseSerieQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return SerieQuery The current query, for fluid interface
+     * @return UserQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
             if (isset($id['min'])) {
-                $this->addUsingAlias(SeriePeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(UserPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($id['max'])) {
-                $this->addUsingAlias(SeriePeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(UserPeer::ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -274,168 +270,94 @@ abstract class BaseSerieQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(SeriePeer::ID, $id, $comparison);
+        return $this->addUsingAlias(UserPeer::ID, $id, $comparison);
     }
 
     /**
-     * Filter the query on the title column
+     * Filter the query on the login column
      *
      * Example usage:
      * <code>
-     * $query->filterByTitle('fooValue');   // WHERE title = 'fooValue'
-     * $query->filterByTitle('%fooValue%'); // WHERE title LIKE '%fooValue%'
+     * $query->filterByLogin('fooValue');   // WHERE login = 'fooValue'
+     * $query->filterByLogin('%fooValue%'); // WHERE login LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $title The value to use as filter.
+     * @param     string $login The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return SerieQuery The current query, for fluid interface
+     * @return UserQuery The current query, for fluid interface
      */
-    public function filterByTitle($title = null, $comparison = null)
+    public function filterByLogin($login = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($title)) {
+            if (is_array($login)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $title)) {
-                $title = str_replace('*', '%', $title);
+            } elseif (preg_match('/[\%\*]/', $login)) {
+                $login = str_replace('*', '%', $login);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(SeriePeer::TITLE, $title, $comparison);
+        return $this->addUsingAlias(UserPeer::LOGIN, $login, $comparison);
     }
 
     /**
-     * Filter the query on the cv_id column
+     * Filter the query on the password column
      *
      * Example usage:
      * <code>
-     * $query->filterByCvId('fooValue');   // WHERE cv_id = 'fooValue'
-     * $query->filterByCvId('%fooValue%'); // WHERE cv_id LIKE '%fooValue%'
+     * $query->filterByPassword('fooValue');   // WHERE password = 'fooValue'
+     * $query->filterByPassword('%fooValue%'); // WHERE password LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $cvId The value to use as filter.
+     * @param     string $password The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return SerieQuery The current query, for fluid interface
+     * @return UserQuery The current query, for fluid interface
      */
-    public function filterByCvId($cvId = null, $comparison = null)
+    public function filterByPassword($password = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($cvId)) {
+            if (is_array($password)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $cvId)) {
-                $cvId = str_replace('*', '%', $cvId);
+            } elseif (preg_match('/[\%\*]/', $password)) {
+                $password = str_replace('*', '%', $password);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(SeriePeer::CV_ID, $cvId, $comparison);
+        return $this->addUsingAlias(UserPeer::PASSWORD, $password, $comparison);
     }
 
     /**
-     * Filter the query on the cv_url column
+     * Filter the query on the email column
      *
      * Example usage:
      * <code>
-     * $query->filterByCvUrl('fooValue');   // WHERE cv_url = 'fooValue'
-     * $query->filterByCvUrl('%fooValue%'); // WHERE cv_url LIKE '%fooValue%'
+     * $query->filterByEmail('fooValue');   // WHERE email = 'fooValue'
+     * $query->filterByEmail('%fooValue%'); // WHERE email LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $cvUrl The value to use as filter.
+     * @param     string $email The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return SerieQuery The current query, for fluid interface
+     * @return UserQuery The current query, for fluid interface
      */
-    public function filterByCvUrl($cvUrl = null, $comparison = null)
+    public function filterByEmail($email = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($cvUrl)) {
+            if (is_array($email)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $cvUrl)) {
-                $cvUrl = str_replace('*', '%', $cvUrl);
+            } elseif (preg_match('/[\%\*]/', $email)) {
+                $email = str_replace('*', '%', $email);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(SeriePeer::CV_URL, $cvUrl, $comparison);
-    }
-
-    /**
-     * Filter the query by a related Issue object
-     *
-     * @param   Issue|PropelObjectCollection $issue  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 SerieQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByIssue($issue, $comparison = null)
-    {
-        if ($issue instanceof Issue) {
-            return $this
-                ->addUsingAlias(SeriePeer::ID, $issue->getSerieId(), $comparison);
-        } elseif ($issue instanceof PropelObjectCollection) {
-            return $this
-                ->useIssueQuery()
-                ->filterByPrimaryKeys($issue->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByIssue() only accepts arguments of type Issue or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Issue relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return SerieQuery The current query, for fluid interface
-     */
-    public function joinIssue($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Issue');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Issue');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Issue relation Issue object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   IssueQuery A secondary query class using the current class as primary query
-     */
-    public function useIssueQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinIssue($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Issue', 'IssueQuery');
+        return $this->addUsingAlias(UserPeer::EMAIL, $email, $comparison);
     }
 
     /**
@@ -444,14 +366,14 @@ abstract class BaseSerieQuery extends ModelCriteria
      * @param   UserSerie|PropelObjectCollection $userSerie  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return                 SerieQuery The current query, for fluid interface
+     * @return                 UserQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByUserSerie($userSerie, $comparison = null)
     {
         if ($userSerie instanceof UserSerie) {
             return $this
-                ->addUsingAlias(SeriePeer::ID, $userSerie->getSerieId(), $comparison);
+                ->addUsingAlias(UserPeer::ID, $userSerie->getUserId(), $comparison);
         } elseif ($userSerie instanceof PropelObjectCollection) {
             return $this
                 ->useUserSerieQuery()
@@ -468,7 +390,7 @@ abstract class BaseSerieQuery extends ModelCriteria
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return SerieQuery The current query, for fluid interface
+     * @return UserQuery The current query, for fluid interface
      */
     public function joinUserSerie($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
@@ -513,33 +435,33 @@ abstract class BaseSerieQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related User object
+     * Filter the query by a related Serie object
      * using the comics_user_serie table as cross reference
      *
-     * @param   User $user the related object to use as filter
+     * @param   Serie $serie the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   SerieQuery The current query, for fluid interface
+     * @return   UserQuery The current query, for fluid interface
      */
-    public function filterByUser($user, $comparison = Criteria::EQUAL)
+    public function filterBySerie($serie, $comparison = Criteria::EQUAL)
     {
         return $this
             ->useUserSerieQuery()
-            ->filterByUser($user, $comparison)
+            ->filterBySerie($serie, $comparison)
             ->endUse();
     }
 
     /**
      * Exclude object from result
      *
-     * @param   Serie $serie Object to remove from the list of results
+     * @param   User $user Object to remove from the list of results
      *
-     * @return SerieQuery The current query, for fluid interface
+     * @return UserQuery The current query, for fluid interface
      */
-    public function prune($serie = null)
+    public function prune($user = null)
     {
-        if ($serie) {
-            $this->addUsingAlias(SeriePeer::ID, $serie->getId(), Criteria::NOT_EQUAL);
+        if ($user) {
+            $this->addUsingAlias(UserPeer::ID, $user->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;

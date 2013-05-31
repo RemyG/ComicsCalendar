@@ -8,13 +8,19 @@
  *
  * @method IssueQuery orderById($order = Criteria::ASC) Order by the id column
  * @method IssueQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method IssueQuery orderByIssueNumber($order = Criteria::ASC) Order by the issue_number column
  * @method IssueQuery orderBySerieId($order = Criteria::ASC) Order by the serie_id column
  * @method IssueQuery orderByPubDate($order = Criteria::ASC) Order by the pub_date column
+ * @method IssueQuery orderByCvId($order = Criteria::ASC) Order by the cv_id column
+ * @method IssueQuery orderByCvUrl($order = Criteria::ASC) Order by the cv_url column
  *
  * @method IssueQuery groupById() Group by the id column
  * @method IssueQuery groupByTitle() Group by the title column
+ * @method IssueQuery groupByIssueNumber() Group by the issue_number column
  * @method IssueQuery groupBySerieId() Group by the serie_id column
  * @method IssueQuery groupByPubDate() Group by the pub_date column
+ * @method IssueQuery groupByCvId() Group by the cv_id column
+ * @method IssueQuery groupByCvUrl() Group by the cv_url column
  *
  * @method IssueQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method IssueQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -28,13 +34,19 @@
  * @method Issue findOneOrCreate(PropelPDO $con = null) Return the first Issue matching the query, or a new Issue object populated from the query conditions when no match is found
  *
  * @method Issue findOneByTitle(string $title) Return the first Issue filtered by the title column
+ * @method Issue findOneByIssueNumber(string $issue_number) Return the first Issue filtered by the issue_number column
  * @method Issue findOneBySerieId(int $serie_id) Return the first Issue filtered by the serie_id column
  * @method Issue findOneByPubDate(string $pub_date) Return the first Issue filtered by the pub_date column
+ * @method Issue findOneByCvId(string $cv_id) Return the first Issue filtered by the cv_id column
+ * @method Issue findOneByCvUrl(string $cv_url) Return the first Issue filtered by the cv_url column
  *
  * @method array findById(int $id) Return Issue objects filtered by the id column
  * @method array findByTitle(string $title) Return Issue objects filtered by the title column
+ * @method array findByIssueNumber(string $issue_number) Return Issue objects filtered by the issue_number column
  * @method array findBySerieId(int $serie_id) Return Issue objects filtered by the serie_id column
  * @method array findByPubDate(string $pub_date) Return Issue objects filtered by the pub_date column
+ * @method array findByCvId(string $cv_id) Return Issue objects filtered by the cv_id column
+ * @method array findByCvUrl(string $cv_url) Return Issue objects filtered by the cv_url column
  *
  * @package    propel.generator.comicslist.om
  */
@@ -142,7 +154,7 @@ abstract class BaseIssueQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `serie_id`, `pub_date` FROM `comics_issue` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `issue_number`, `serie_id`, `pub_date`, `cv_id`, `cv_url` FROM `comics_issue` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -303,6 +315,35 @@ abstract class BaseIssueQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the issue_number column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIssueNumber('fooValue');   // WHERE issue_number = 'fooValue'
+     * $query->filterByIssueNumber('%fooValue%'); // WHERE issue_number LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $issueNumber The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return IssueQuery The current query, for fluid interface
+     */
+    public function filterByIssueNumber($issueNumber = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($issueNumber)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $issueNumber)) {
+                $issueNumber = str_replace('*', '%', $issueNumber);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(IssuePeer::ISSUE_NUMBER, $issueNumber, $comparison);
+    }
+
+    /**
      * Filter the query on the serie_id column
      *
      * Example usage:
@@ -387,6 +428,64 @@ abstract class BaseIssueQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(IssuePeer::PUB_DATE, $pubDate, $comparison);
+    }
+
+    /**
+     * Filter the query on the cv_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCvId('fooValue');   // WHERE cv_id = 'fooValue'
+     * $query->filterByCvId('%fooValue%'); // WHERE cv_id LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $cvId The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return IssueQuery The current query, for fluid interface
+     */
+    public function filterByCvId($cvId = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($cvId)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $cvId)) {
+                $cvId = str_replace('*', '%', $cvId);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(IssuePeer::CV_ID, $cvId, $comparison);
+    }
+
+    /**
+     * Filter the query on the cv_url column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCvUrl('fooValue');   // WHERE cv_url = 'fooValue'
+     * $query->filterByCvUrl('%fooValue%'); // WHERE cv_url LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $cvUrl The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return IssueQuery The current query, for fluid interface
+     */
+    public function filterByCvUrl($cvUrl = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($cvUrl)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $cvUrl)) {
+                $cvUrl = str_replace('*', '%', $cvUrl);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(IssuePeer::CV_URL, $cvUrl, $comparison);
     }
 
     /**

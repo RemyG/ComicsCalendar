@@ -24,13 +24,13 @@ abstract class BaseIssuePeer
     const TM_CLASS = 'IssueTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 7;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /** the column name for the id field */
     const ID = 'comics_issue.id';
@@ -38,11 +38,20 @@ abstract class BaseIssuePeer
     /** the column name for the title field */
     const TITLE = 'comics_issue.title';
 
+    /** the column name for the issue_number field */
+    const ISSUE_NUMBER = 'comics_issue.issue_number';
+
     /** the column name for the serie_id field */
     const SERIE_ID = 'comics_issue.serie_id';
 
     /** the column name for the pub_date field */
     const PUB_DATE = 'comics_issue.pub_date';
+
+    /** the column name for the cv_id field */
+    const CV_ID = 'comics_issue.cv_id';
+
+    /** the column name for the cv_url field */
+    const CV_URL = 'comics_issue.cv_url';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -63,12 +72,12 @@ abstract class BaseIssuePeer
      * e.g. IssuePeer::$fieldNames[IssuePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'SerieId', 'PubDate', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'serieId', 'pubDate', ),
-        BasePeer::TYPE_COLNAME => array (IssuePeer::ID, IssuePeer::TITLE, IssuePeer::SERIE_ID, IssuePeer::PUB_DATE, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'SERIE_ID', 'PUB_DATE', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'serie_id', 'pub_date', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'IssueNumber', 'SerieId', 'PubDate', 'CvId', 'CvUrl', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'issueNumber', 'serieId', 'pubDate', 'cvId', 'cvUrl', ),
+        BasePeer::TYPE_COLNAME => array (IssuePeer::ID, IssuePeer::TITLE, IssuePeer::ISSUE_NUMBER, IssuePeer::SERIE_ID, IssuePeer::PUB_DATE, IssuePeer::CV_ID, IssuePeer::CV_URL, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'ISSUE_NUMBER', 'SERIE_ID', 'PUB_DATE', 'CV_ID', 'CV_URL', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'issue_number', 'serie_id', 'pub_date', 'cv_id', 'cv_url', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -78,12 +87,12 @@ abstract class BaseIssuePeer
      * e.g. IssuePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'SerieId' => 2, 'PubDate' => 3, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'serieId' => 2, 'pubDate' => 3, ),
-        BasePeer::TYPE_COLNAME => array (IssuePeer::ID => 0, IssuePeer::TITLE => 1, IssuePeer::SERIE_ID => 2, IssuePeer::PUB_DATE => 3, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'SERIE_ID' => 2, 'PUB_DATE' => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'serie_id' => 2, 'pub_date' => 3, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'IssueNumber' => 2, 'SerieId' => 3, 'PubDate' => 4, 'CvId' => 5, 'CvUrl' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'issueNumber' => 2, 'serieId' => 3, 'pubDate' => 4, 'cvId' => 5, 'cvUrl' => 6, ),
+        BasePeer::TYPE_COLNAME => array (IssuePeer::ID => 0, IssuePeer::TITLE => 1, IssuePeer::ISSUE_NUMBER => 2, IssuePeer::SERIE_ID => 3, IssuePeer::PUB_DATE => 4, IssuePeer::CV_ID => 5, IssuePeer::CV_URL => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'ISSUE_NUMBER' => 2, 'SERIE_ID' => 3, 'PUB_DATE' => 4, 'CV_ID' => 5, 'CV_URL' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'issue_number' => 2, 'serie_id' => 3, 'pub_date' => 4, 'cv_id' => 5, 'cv_url' => 6, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -159,13 +168,19 @@ abstract class BaseIssuePeer
         if (null === $alias) {
             $criteria->addSelectColumn(IssuePeer::ID);
             $criteria->addSelectColumn(IssuePeer::TITLE);
+            $criteria->addSelectColumn(IssuePeer::ISSUE_NUMBER);
             $criteria->addSelectColumn(IssuePeer::SERIE_ID);
             $criteria->addSelectColumn(IssuePeer::PUB_DATE);
+            $criteria->addSelectColumn(IssuePeer::CV_ID);
+            $criteria->addSelectColumn(IssuePeer::CV_URL);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.title');
+            $criteria->addSelectColumn($alias . '.issue_number');
             $criteria->addSelectColumn($alias . '.serie_id');
             $criteria->addSelectColumn($alias . '.pub_date');
+            $criteria->addSelectColumn($alias . '.cv_id');
+            $criteria->addSelectColumn($alias . '.cv_url');
         }
     }
 

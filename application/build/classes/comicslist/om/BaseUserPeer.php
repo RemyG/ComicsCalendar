@@ -2,26 +2,26 @@
 
 
 /**
- * Base static class for performing query and update operations on the 'comics_serie' table.
+ * Base static class for performing query and update operations on the 'comics_user' table.
  *
  *
  *
  * @package propel.generator.comicslist.om
  */
-abstract class BaseSeriePeer
+abstract class BaseUserPeer
 {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'comicslist';
 
     /** the table name for this class */
-    const TABLE_NAME = 'comics_serie';
+    const TABLE_NAME = 'comics_user';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Serie';
+    const OM_CLASS = 'User';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'SerieTableMap';
+    const TM_CLASS = 'UserTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 4;
@@ -33,25 +33,25 @@ abstract class BaseSeriePeer
     const NUM_HYDRATE_COLUMNS = 4;
 
     /** the column name for the id field */
-    const ID = 'comics_serie.id';
+    const ID = 'comics_user.id';
 
-    /** the column name for the title field */
-    const TITLE = 'comics_serie.title';
+    /** the column name for the login field */
+    const LOGIN = 'comics_user.login';
 
-    /** the column name for the cv_id field */
-    const CV_ID = 'comics_serie.cv_id';
+    /** the column name for the password field */
+    const PASSWORD = 'comics_user.password';
 
-    /** the column name for the cv_url field */
-    const CV_URL = 'comics_serie.cv_url';
+    /** the column name for the email field */
+    const EMAIL = 'comics_user.email';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identity map to hold any loaded instances of Serie objects.
+     * An identity map to hold any loaded instances of User objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array Serie[]
+     * @var        array User[]
      */
     public static $instances = array();
 
@@ -60,14 +60,14 @@ abstract class BaseSeriePeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. SeriePeer::$fieldNames[SeriePeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. UserPeer::$fieldNames[UserPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'CvId', 'CvUrl', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'cvId', 'cvUrl', ),
-        BasePeer::TYPE_COLNAME => array (SeriePeer::ID, SeriePeer::TITLE, SeriePeer::CV_ID, SeriePeer::CV_URL, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'CV_ID', 'CV_URL', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'cv_id', 'cv_url', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Login', 'Password', 'Email', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'login', 'password', 'email', ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID, UserPeer::LOGIN, UserPeer::PASSWORD, UserPeer::EMAIL, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'LOGIN', 'PASSWORD', 'EMAIL', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'login', 'password', 'email', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
@@ -75,14 +75,14 @@ abstract class BaseSeriePeer
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. SeriePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. UserPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'CvId' => 2, 'CvUrl' => 3, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'cvId' => 2, 'cvUrl' => 3, ),
-        BasePeer::TYPE_COLNAME => array (SeriePeer::ID => 0, SeriePeer::TITLE => 1, SeriePeer::CV_ID => 2, SeriePeer::CV_URL => 3, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'CV_ID' => 2, 'CV_URL' => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'cv_id' => 2, 'cv_url' => 3, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Login' => 1, 'Password' => 2, 'Email' => 3, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'login' => 1, 'password' => 2, 'email' => 3, ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID => 0, UserPeer::LOGIN => 1, UserPeer::PASSWORD => 2, UserPeer::EMAIL => 3, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'LOGIN' => 1, 'PASSWORD' => 2, 'EMAIL' => 3, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'login' => 1, 'password' => 2, 'email' => 3, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
@@ -98,10 +98,10 @@ abstract class BaseSeriePeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = SeriePeer::getFieldNames($toType);
-        $key = isset(SeriePeer::$fieldKeys[$fromType][$name]) ? SeriePeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = UserPeer::getFieldNames($toType);
+        $key = isset(UserPeer::$fieldKeys[$fromType][$name]) ? UserPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(SeriePeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(UserPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -118,11 +118,11 @@ abstract class BaseSeriePeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, SeriePeer::$fieldNames)) {
+        if (!array_key_exists($type, UserPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return SeriePeer::$fieldNames[$type];
+        return UserPeer::$fieldNames[$type];
     }
 
     /**
@@ -134,12 +134,12 @@ abstract class BaseSeriePeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. SeriePeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. UserPeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(SeriePeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(UserPeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -157,15 +157,15 @@ abstract class BaseSeriePeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(SeriePeer::ID);
-            $criteria->addSelectColumn(SeriePeer::TITLE);
-            $criteria->addSelectColumn(SeriePeer::CV_ID);
-            $criteria->addSelectColumn(SeriePeer::CV_URL);
+            $criteria->addSelectColumn(UserPeer::ID);
+            $criteria->addSelectColumn(UserPeer::LOGIN);
+            $criteria->addSelectColumn(UserPeer::PASSWORD);
+            $criteria->addSelectColumn(UserPeer::EMAIL);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.title');
-            $criteria->addSelectColumn($alias . '.cv_id');
-            $criteria->addSelectColumn($alias . '.cv_url');
+            $criteria->addSelectColumn($alias . '.login');
+            $criteria->addSelectColumn($alias . '.password');
+            $criteria->addSelectColumn($alias . '.email');
         }
     }
 
@@ -185,21 +185,21 @@ abstract class BaseSeriePeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(SeriePeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(UserPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            SeriePeer::addSelectColumns($criteria);
+            UserPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(SeriePeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(UserPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(SeriePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -218,7 +218,7 @@ abstract class BaseSeriePeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return Serie
+     * @return User
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -226,7 +226,7 @@ abstract class BaseSeriePeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = SeriePeer::doSelect($critcopy, $con);
+        $objects = UserPeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -244,7 +244,7 @@ abstract class BaseSeriePeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return SeriePeer::populateObjects(SeriePeer::doSelectStmt($criteria, $con));
+        return UserPeer::populateObjects(UserPeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -262,16 +262,16 @@ abstract class BaseSeriePeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(SeriePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            SeriePeer::addSelectColumns($criteria);
+            UserPeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(SeriePeer::DATABASE_NAME);
+        $criteria->setDbName(UserPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -285,7 +285,7 @@ abstract class BaseSeriePeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param Serie $obj A Serie object.
+     * @param User $obj A User object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -294,7 +294,7 @@ abstract class BaseSeriePeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            SeriePeer::$instances[$key] = $obj;
+            UserPeer::$instances[$key] = $obj;
         }
     }
 
@@ -306,7 +306,7 @@ abstract class BaseSeriePeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A Serie object or a primary key value.
+     * @param      mixed $value A User object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -314,17 +314,17 @@ abstract class BaseSeriePeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof Serie) {
+            if (is_object($value) && $value instanceof User) {
                 $key = (string) $value->getId();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Serie object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or User object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(SeriePeer::$instances[$key]);
+            unset(UserPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -335,14 +335,14 @@ abstract class BaseSeriePeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return Serie Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return User Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(SeriePeer::$instances[$key])) {
-                return SeriePeer::$instances[$key];
+            if (isset(UserPeer::$instances[$key])) {
+                return UserPeer::$instances[$key];
             }
         }
 
@@ -357,15 +357,15 @@ abstract class BaseSeriePeer
     public static function clearInstancePool($and_clear_all_references = false)
     {
       if ($and_clear_all_references) {
-        foreach (SeriePeer::$instances as $instance) {
+        foreach (UserPeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
-        SeriePeer::$instances = array();
+        UserPeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to comics_serie
+     * Method to invalidate the instance pool of all tables related to comics_user
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
@@ -419,11 +419,11 @@ abstract class BaseSeriePeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = SeriePeer::getOMClass();
+        $cls = UserPeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = SeriePeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = SeriePeer::getInstanceFromPool($key))) {
+            $key = UserPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = UserPeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -432,7 +432,7 @@ abstract class BaseSeriePeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                SeriePeer::addInstanceToPool($obj, $key);
+                UserPeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -446,21 +446,21 @@ abstract class BaseSeriePeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (Serie object, last column rank)
+     * @return array (User object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = SeriePeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = SeriePeer::getInstanceFromPool($key))) {
+        $key = UserPeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = UserPeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + SeriePeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + UserPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = SeriePeer::OM_CLASS;
+            $cls = UserPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            SeriePeer::addInstanceToPool($obj, $key);
+            UserPeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -475,7 +475,7 @@ abstract class BaseSeriePeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(SeriePeer::DATABASE_NAME)->getTable(SeriePeer::TABLE_NAME);
+        return Propel::getDatabaseMap(UserPeer::DATABASE_NAME)->getTable(UserPeer::TABLE_NAME);
     }
 
     /**
@@ -483,9 +483,9 @@ abstract class BaseSeriePeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BaseSeriePeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BaseSeriePeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new SerieTableMap());
+      $dbMap = Propel::getDatabaseMap(BaseUserPeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BaseUserPeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new UserTableMap());
       }
     }
 
@@ -497,13 +497,13 @@ abstract class BaseSeriePeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-        return SeriePeer::OM_CLASS;
+        return UserPeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a Serie or Criteria object.
+     * Performs an INSERT on the database, given a User or Criteria object.
      *
-     * @param      mixed $values Criteria or Serie object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or User object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -512,22 +512,22 @@ abstract class BaseSeriePeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(SeriePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from Serie object
+            $criteria = $values->buildCriteria(); // build Criteria from User object
         }
 
-        if ($criteria->containsKey(SeriePeer::ID) && $criteria->keyContainsValue(SeriePeer::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.SeriePeer::ID.')');
+        if ($criteria->containsKey(UserPeer::ID) && $criteria->keyContainsValue(UserPeer::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.UserPeer::ID.')');
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(SeriePeer::DATABASE_NAME);
+        $criteria->setDbName(UserPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -544,9 +544,9 @@ abstract class BaseSeriePeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a Serie or Criteria object.
+     * Performs an UPDATE on the database, given a User or Criteria object.
      *
-     * @param      mixed $values Criteria or Serie object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or User object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -555,35 +555,35 @@ abstract class BaseSeriePeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(SeriePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(SeriePeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(UserPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(SeriePeer::ID);
-            $value = $criteria->remove(SeriePeer::ID);
+            $comparison = $criteria->getComparison(UserPeer::ID);
+            $value = $criteria->remove(UserPeer::ID);
             if ($value) {
-                $selectCriteria->add(SeriePeer::ID, $value, $comparison);
+                $selectCriteria->add(UserPeer::ID, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(SeriePeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(UserPeer::TABLE_NAME);
             }
 
-        } else { // $values is Serie object
+        } else { // $values is User object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(SeriePeer::DATABASE_NAME);
+        $criteria->setDbName(UserPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the comics_serie table.
+     * Deletes all rows from the comics_user table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -592,19 +592,19 @@ abstract class BaseSeriePeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(SeriePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += BasePeer::doDeleteAll(SeriePeer::TABLE_NAME, $con, SeriePeer::DATABASE_NAME);
+            $affectedRows += BasePeer::doDeleteAll(UserPeer::TABLE_NAME, $con, UserPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            SeriePeer::clearInstancePool();
-            SeriePeer::clearRelatedInstancePool();
+            UserPeer::clearInstancePool();
+            UserPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -615,9 +615,9 @@ abstract class BaseSeriePeer
     }
 
     /**
-     * Performs a DELETE on the database, given a Serie or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a User or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or Serie object or primary key or array of primary keys
+     * @param      mixed $values Criteria or User object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -628,32 +628,32 @@ abstract class BaseSeriePeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(SeriePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             // invalidate the cache for all objects of this type, since we have no
             // way of knowing (without running a query) what objects should be invalidated
             // from the cache based on this Criteria.
-            SeriePeer::clearInstancePool();
+            UserPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof Serie) { // it's a model object
+        } elseif ($values instanceof User) { // it's a model object
             // invalidate the cache for this single object
-            SeriePeer::removeInstanceFromPool($values);
+            UserPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(SeriePeer::DATABASE_NAME);
-            $criteria->add(SeriePeer::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(UserPeer::DATABASE_NAME);
+            $criteria->add(UserPeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
-                SeriePeer::removeInstanceFromPool($singleval);
+                UserPeer::removeInstanceFromPool($singleval);
             }
         }
 
         // Set the correct dbName
-        $criteria->setDbName(SeriePeer::DATABASE_NAME);
+        $criteria->setDbName(UserPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -663,7 +663,7 @@ abstract class BaseSeriePeer
             $con->beginTransaction();
 
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            SeriePeer::clearRelatedInstancePool();
+            UserPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -674,13 +674,13 @@ abstract class BaseSeriePeer
     }
 
     /**
-     * Validates all modified columns of given Serie object.
+     * Validates all modified columns of given User object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param Serie $obj The object to validate.
+     * @param User $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -690,8 +690,8 @@ abstract class BaseSeriePeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(SeriePeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(SeriePeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(UserPeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(UserPeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -707,7 +707,7 @@ abstract class BaseSeriePeer
 
         }
 
-        return BasePeer::doValidate(SeriePeer::DATABASE_NAME, SeriePeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(UserPeer::DATABASE_NAME, UserPeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -715,23 +715,23 @@ abstract class BaseSeriePeer
      *
      * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return Serie
+     * @return User
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = SeriePeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = UserPeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(SeriePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(SeriePeer::DATABASE_NAME);
-        $criteria->add(SeriePeer::ID, $pk);
+        $criteria = new Criteria(UserPeer::DATABASE_NAME);
+        $criteria->add(UserPeer::ID, $pk);
 
-        $v = SeriePeer::doSelect($criteria, $con);
+        $v = UserPeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -741,31 +741,31 @@ abstract class BaseSeriePeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return Serie[]
+     * @return User[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(SeriePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(SeriePeer::DATABASE_NAME);
-            $criteria->add(SeriePeer::ID, $pks, Criteria::IN);
-            $objs = SeriePeer::doSelect($criteria, $con);
+            $criteria = new Criteria(UserPeer::DATABASE_NAME);
+            $criteria->add(UserPeer::ID, $pks, Criteria::IN);
+            $objs = UserPeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-} // BaseSeriePeer
+} // BaseUserPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BaseSeriePeer::buildTableMap();
+BaseUserPeer::buildTableMap();
 

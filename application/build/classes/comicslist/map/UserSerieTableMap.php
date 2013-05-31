@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'comics_issue' table.
+ * This class defines the structure of the 'comics_user_serie' table.
  *
  *
  *
@@ -14,13 +14,13 @@
  *
  * @package    propel.generator.comicslist.map
  */
-class IssueTableMap extends TableMap
+class UserSerieTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'comicslist.map.IssueTableMap';
+    const CLASS_NAME = 'comicslist.map.UserSerieTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -32,19 +32,15 @@ class IssueTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('comics_issue');
-        $this->setPhpName('Issue');
-        $this->setClassname('Issue');
+        $this->setName('comics_user_serie');
+        $this->setPhpName('UserSerie');
+        $this->setClassname('UserSerie');
         $this->setPackage('comicslist');
-        $this->setUseIdGenerator(true);
+        $this->setUseIdGenerator(false);
+        $this->setIsCrossRef(true);
         // columns
-        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('title', 'Title', 'VARCHAR', true, 255, null);
-        $this->addColumn('issue_number', 'IssueNumber', 'VARCHAR', false, 10, null);
-        $this->addForeignKey('serie_id', 'SerieId', 'INTEGER', 'comics_serie', 'id', true, null, null);
-        $this->addColumn('pub_date', 'PubDate', 'DATE', true, null, null);
-        $this->addColumn('cv_id', 'CvId', 'VARCHAR', false, 10, null);
-        $this->addColumn('cv_url', 'CvUrl', 'VARCHAR', false, 255, null);
+        $this->addForeignPrimaryKey('user_id', 'UserId', 'INTEGER' , 'comics_user', 'id', true, null, null);
+        $this->addForeignPrimaryKey('serie_id', 'SerieId', 'INTEGER' , 'comics_serie', 'id', true, null, null);
         // validators
     } // initialize()
 
@@ -53,7 +49,8 @@ class IssueTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), null, null);
         $this->addRelation('Serie', 'Serie', RelationMap::MANY_TO_ONE, array('serie_id' => 'id', ), null, null);
     } // buildRelations()
 
-} // IssueTableMap
+} // UserSerieTableMap

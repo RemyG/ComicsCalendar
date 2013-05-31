@@ -2,24 +2,24 @@
 
 
 /**
- * Base class that represents a row from the 'comics_serie' table.
+ * Base class that represents a row from the 'comics_user' table.
  *
  *
  *
  * @package    propel.generator.comicslist.om
  */
-abstract class BaseSerie extends BaseObject implements Persistent
+abstract class BaseUser extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'SeriePeer';
+    const PEER = 'UserPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        SeriePeer
+     * @var        UserPeer
      */
     protected static $peer;
 
@@ -36,28 +36,22 @@ abstract class BaseSerie extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the title field.
+     * The value for the login field.
      * @var        string
      */
-    protected $title;
+    protected $login;
 
     /**
-     * The value for the cv_id field.
+     * The value for the password field.
      * @var        string
      */
-    protected $cv_id;
+    protected $password;
 
     /**
-     * The value for the cv_url field.
+     * The value for the email field.
      * @var        string
      */
-    protected $cv_url;
-
-    /**
-     * @var        PropelObjectCollection|Issue[] Collection to store aggregation of Issue objects.
-     */
-    protected $collIssues;
-    protected $collIssuesPartial;
+    protected $email;
 
     /**
      * @var        PropelObjectCollection|UserSerie[] Collection to store aggregation of UserSerie objects.
@@ -66,9 +60,9 @@ abstract class BaseSerie extends BaseObject implements Persistent
     protected $collUserSeriesPartial;
 
     /**
-     * @var        PropelObjectCollection|User[] Collection to store aggregation of User objects.
+     * @var        PropelObjectCollection|Serie[] Collection to store aggregation of Serie objects.
      */
-    protected $collUsers;
+    protected $collSeries;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -94,13 +88,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $usersScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $issuesScheduledForDeletion = null;
+    protected $seriesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -120,43 +108,43 @@ abstract class BaseSerie extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [title] column value.
+     * Get the [login] column value.
      *
      * @return string
      */
-    public function getTitle()
+    public function getLogin()
     {
 
-        return $this->title;
+        return $this->login;
     }
 
     /**
-     * Get the [cv_id] column value.
+     * Get the [password] column value.
      *
      * @return string
      */
-    public function getCvId()
+    public function getPassword()
     {
 
-        return $this->cv_id;
+        return $this->password;
     }
 
     /**
-     * Get the [cv_url] column value.
+     * Get the [email] column value.
      *
      * @return string
      */
-    public function getCvUrl()
+    public function getEmail()
     {
 
-        return $this->cv_url;
+        return $this->email;
     }
 
     /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
-     * @return Serie The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -166,7 +154,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = SeriePeer::ID;
+            $this->modifiedColumns[] = UserPeer::ID;
         }
 
 
@@ -174,67 +162,67 @@ abstract class BaseSerie extends BaseObject implements Persistent
     } // setId()
 
     /**
-     * Set the value of [title] column.
+     * Set the value of [login] column.
      *
      * @param  string $v new value
-     * @return Serie The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
-    public function setTitle($v)
+    public function setLogin($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
-        if ($this->title !== $v) {
-            $this->title = $v;
-            $this->modifiedColumns[] = SeriePeer::TITLE;
+        if ($this->login !== $v) {
+            $this->login = $v;
+            $this->modifiedColumns[] = UserPeer::LOGIN;
         }
 
 
         return $this;
-    } // setTitle()
+    } // setLogin()
 
     /**
-     * Set the value of [cv_id] column.
+     * Set the value of [password] column.
      *
      * @param  string $v new value
-     * @return Serie The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
-    public function setCvId($v)
+    public function setPassword($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
-        if ($this->cv_id !== $v) {
-            $this->cv_id = $v;
-            $this->modifiedColumns[] = SeriePeer::CV_ID;
+        if ($this->password !== $v) {
+            $this->password = $v;
+            $this->modifiedColumns[] = UserPeer::PASSWORD;
         }
 
 
         return $this;
-    } // setCvId()
+    } // setPassword()
 
     /**
-     * Set the value of [cv_url] column.
+     * Set the value of [email] column.
      *
      * @param  string $v new value
-     * @return Serie The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
-    public function setCvUrl($v)
+    public function setEmail($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
-        if ($this->cv_url !== $v) {
-            $this->cv_url = $v;
-            $this->modifiedColumns[] = SeriePeer::CV_URL;
+        if ($this->email !== $v) {
+            $this->email = $v;
+            $this->modifiedColumns[] = UserPeer::EMAIL;
         }
 
 
         return $this;
-    } // setCvUrl()
+    } // setEmail()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -269,9 +257,9 @@ abstract class BaseSerie extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->title = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->cv_id = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->cv_url = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->login = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->password = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->email = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -281,10 +269,10 @@ abstract class BaseSerie extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 4; // 4 = SeriePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = UserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating Serie object", $e);
+            throw new PropelException("Error populating User object", $e);
         }
     }
 
@@ -327,13 +315,13 @@ abstract class BaseSerie extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(SeriePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = SeriePeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = UserPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -343,11 +331,9 @@ abstract class BaseSerie extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->collIssues = null;
-
             $this->collUserSeries = null;
 
-            $this->collUsers = null;
+            $this->collSeries = null;
         } // if (deep)
     }
 
@@ -368,12 +354,12 @@ abstract class BaseSerie extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(SeriePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = SerieQuery::create()
+            $deleteQuery = UserQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -411,7 +397,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(SeriePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -431,7 +417,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                SeriePeer::addInstanceToPool($this);
+                UserPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -472,45 +458,28 @@ abstract class BaseSerie extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
-            if ($this->usersScheduledForDeletion !== null) {
-                if (!$this->usersScheduledForDeletion->isEmpty()) {
+            if ($this->seriesScheduledForDeletion !== null) {
+                if (!$this->seriesScheduledForDeletion->isEmpty()) {
                     $pks = array();
                     $pk = $this->getPrimaryKey();
-                    foreach ($this->usersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
-                        $pks[] = array($remotePk, $pk);
+                    foreach ($this->seriesScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($pk, $remotePk);
                     }
                     UserSerieQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
-                    $this->usersScheduledForDeletion = null;
+                    $this->seriesScheduledForDeletion = null;
                 }
 
-                foreach ($this->getUsers() as $user) {
-                    if ($user->isModified()) {
-                        $user->save($con);
+                foreach ($this->getSeries() as $serie) {
+                    if ($serie->isModified()) {
+                        $serie->save($con);
                     }
                 }
-            } elseif ($this->collUsers) {
-                foreach ($this->collUsers as $user) {
-                    if ($user->isModified()) {
-                        $user->save($con);
-                    }
-                }
-            }
-
-            if ($this->issuesScheduledForDeletion !== null) {
-                if (!$this->issuesScheduledForDeletion->isEmpty()) {
-                    IssueQuery::create()
-                        ->filterByPrimaryKeys($this->issuesScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->issuesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collIssues !== null) {
-                foreach ($this->collIssues as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
+            } elseif ($this->collSeries) {
+                foreach ($this->collSeries as $serie) {
+                    if ($serie->isModified()) {
+                        $serie->save($con);
                     }
                 }
             }
@@ -552,27 +521,27 @@ abstract class BaseSerie extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = SeriePeer::ID;
+        $this->modifiedColumns[] = UserPeer::ID;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . SeriePeer::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . UserPeer::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(SeriePeer::ID)) {
+        if ($this->isColumnModified(UserPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(SeriePeer::TITLE)) {
-            $modifiedColumns[':p' . $index++]  = '`title`';
+        if ($this->isColumnModified(UserPeer::LOGIN)) {
+            $modifiedColumns[':p' . $index++]  = '`login`';
         }
-        if ($this->isColumnModified(SeriePeer::CV_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`cv_id`';
+        if ($this->isColumnModified(UserPeer::PASSWORD)) {
+            $modifiedColumns[':p' . $index++]  = '`password`';
         }
-        if ($this->isColumnModified(SeriePeer::CV_URL)) {
-            $modifiedColumns[':p' . $index++]  = '`cv_url`';
+        if ($this->isColumnModified(UserPeer::EMAIL)) {
+            $modifiedColumns[':p' . $index++]  = '`email`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `comics_serie` (%s) VALUES (%s)',
+            'INSERT INTO `comics_user` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -584,14 +553,14 @@ abstract class BaseSerie extends BaseObject implements Persistent
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`title`':
-                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
+                    case '`login`':
+                        $stmt->bindValue($identifier, $this->login, PDO::PARAM_STR);
                         break;
-                    case '`cv_id`':
-                        $stmt->bindValue($identifier, $this->cv_id, PDO::PARAM_STR);
+                    case '`password`':
+                        $stmt->bindValue($identifier, $this->password, PDO::PARAM_STR);
                         break;
-                    case '`cv_url`':
-                        $stmt->bindValue($identifier, $this->cv_url, PDO::PARAM_STR);
+                    case '`email`':
+                        $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -687,18 +656,10 @@ abstract class BaseSerie extends BaseObject implements Persistent
             $failureMap = array();
 
 
-            if (($retval = SeriePeer::doValidate($this, $columns)) !== true) {
+            if (($retval = UserPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
-
-                if ($this->collIssues !== null) {
-                    foreach ($this->collIssues as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
 
                 if ($this->collUserSeries !== null) {
                     foreach ($this->collUserSeries as $referrerFK) {
@@ -727,7 +688,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = SeriePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = UserPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -747,13 +708,13 @@ abstract class BaseSerie extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getTitle();
+                return $this->getLogin();
                 break;
             case 2:
-                return $this->getCvId();
+                return $this->getPassword();
                 break;
             case 3:
-                return $this->getCvUrl();
+                return $this->getEmail();
                 break;
             default:
                 return null;
@@ -778,16 +739,16 @@ abstract class BaseSerie extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['Serie'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['User'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Serie'][$this->getPrimaryKey()] = true;
-        $keys = SeriePeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['User'][$this->getPrimaryKey()] = true;
+        $keys = UserPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getTitle(),
-            $keys[2] => $this->getCvId(),
-            $keys[3] => $this->getCvUrl(),
+            $keys[1] => $this->getLogin(),
+            $keys[2] => $this->getPassword(),
+            $keys[3] => $this->getEmail(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach($virtualColumns as $key => $virtualColumn)
@@ -796,9 +757,6 @@ abstract class BaseSerie extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->collIssues) {
-                $result['Issues'] = $this->collIssues->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
             if (null !== $this->collUserSeries) {
                 $result['UserSeries'] = $this->collUserSeries->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -820,7 +778,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = SeriePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = UserPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -840,13 +798,13 @@ abstract class BaseSerie extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setTitle($value);
+                $this->setLogin($value);
                 break;
             case 2:
-                $this->setCvId($value);
+                $this->setPassword($value);
                 break;
             case 3:
-                $this->setCvUrl($value);
+                $this->setEmail($value);
                 break;
         } // switch()
     }
@@ -870,12 +828,12 @@ abstract class BaseSerie extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = SeriePeer::getFieldNames($keyType);
+        $keys = UserPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setCvId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setCvUrl($arr[$keys[3]]);
+        if (array_key_exists($keys[1], $arr)) $this->setLogin($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPassword($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setEmail($arr[$keys[3]]);
     }
 
     /**
@@ -885,12 +843,12 @@ abstract class BaseSerie extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(SeriePeer::DATABASE_NAME);
+        $criteria = new Criteria(UserPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(SeriePeer::ID)) $criteria->add(SeriePeer::ID, $this->id);
-        if ($this->isColumnModified(SeriePeer::TITLE)) $criteria->add(SeriePeer::TITLE, $this->title);
-        if ($this->isColumnModified(SeriePeer::CV_ID)) $criteria->add(SeriePeer::CV_ID, $this->cv_id);
-        if ($this->isColumnModified(SeriePeer::CV_URL)) $criteria->add(SeriePeer::CV_URL, $this->cv_url);
+        if ($this->isColumnModified(UserPeer::ID)) $criteria->add(UserPeer::ID, $this->id);
+        if ($this->isColumnModified(UserPeer::LOGIN)) $criteria->add(UserPeer::LOGIN, $this->login);
+        if ($this->isColumnModified(UserPeer::PASSWORD)) $criteria->add(UserPeer::PASSWORD, $this->password);
+        if ($this->isColumnModified(UserPeer::EMAIL)) $criteria->add(UserPeer::EMAIL, $this->email);
 
         return $criteria;
     }
@@ -905,8 +863,8 @@ abstract class BaseSerie extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(SeriePeer::DATABASE_NAME);
-        $criteria->add(SeriePeer::ID, $this->id);
+        $criteria = new Criteria(UserPeer::DATABASE_NAME);
+        $criteria->add(UserPeer::ID, $this->id);
 
         return $criteria;
     }
@@ -947,16 +905,16 @@ abstract class BaseSerie extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of Serie (or compatible) type.
+     * @param object $copyObj An object of User (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setTitle($this->getTitle());
-        $copyObj->setCvId($this->getCvId());
-        $copyObj->setCvUrl($this->getCvUrl());
+        $copyObj->setLogin($this->getLogin());
+        $copyObj->setPassword($this->getPassword());
+        $copyObj->setEmail($this->getEmail());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -964,12 +922,6 @@ abstract class BaseSerie extends BaseObject implements Persistent
             $copyObj->setNew(false);
             // store object hash to prevent cycle
             $this->startCopy = true;
-
-            foreach ($this->getIssues() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addIssue($relObj->copy($deepCopy));
-                }
-            }
 
             foreach ($this->getUserSeries() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
@@ -996,7 +948,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return Serie Clone of current object.
+     * @return User Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1016,12 +968,12 @@ abstract class BaseSerie extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return SeriePeer
+     * @return UserPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new SeriePeer();
+            self::$peer = new UserPeer();
         }
 
         return self::$peer;
@@ -1038,232 +990,9 @@ abstract class BaseSerie extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
-        if ('Issue' == $relationName) {
-            $this->initIssues();
-        }
         if ('UserSerie' == $relationName) {
             $this->initUserSeries();
         }
-    }
-
-    /**
-     * Clears out the collIssues collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Serie The current object (for fluent API support)
-     * @see        addIssues()
-     */
-    public function clearIssues()
-    {
-        $this->collIssues = null; // important to set this to null since that means it is uninitialized
-        $this->collIssuesPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collIssues collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialIssues($v = true)
-    {
-        $this->collIssuesPartial = $v;
-    }
-
-    /**
-     * Initializes the collIssues collection.
-     *
-     * By default this just sets the collIssues collection to an empty array (like clearcollIssues());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initIssues($overrideExisting = true)
-    {
-        if (null !== $this->collIssues && !$overrideExisting) {
-            return;
-        }
-        $this->collIssues = new PropelObjectCollection();
-        $this->collIssues->setModel('Issue');
-    }
-
-    /**
-     * Gets an array of Issue objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Serie is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Issue[] List of Issue objects
-     * @throws PropelException
-     */
-    public function getIssues($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collIssuesPartial && !$this->isNew();
-        if (null === $this->collIssues || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collIssues) {
-                // return empty collection
-                $this->initIssues();
-            } else {
-                $collIssues = IssueQuery::create(null, $criteria)
-                    ->filterBySerie($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collIssuesPartial && count($collIssues)) {
-                      $this->initIssues(false);
-
-                      foreach ($collIssues as $obj) {
-                        if (false == $this->collIssues->contains($obj)) {
-                          $this->collIssues->append($obj);
-                        }
-                      }
-
-                      $this->collIssuesPartial = true;
-                    }
-
-                    $collIssues->getInternalIterator()->rewind();
-
-                    return $collIssues;
-                }
-
-                if ($partial && $this->collIssues) {
-                    foreach ($this->collIssues as $obj) {
-                        if ($obj->isNew()) {
-                            $collIssues[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collIssues = $collIssues;
-                $this->collIssuesPartial = false;
-            }
-        }
-
-        return $this->collIssues;
-    }
-
-    /**
-     * Sets a collection of Issue objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $issues A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Serie The current object (for fluent API support)
-     */
-    public function setIssues(PropelCollection $issues, PropelPDO $con = null)
-    {
-        $issuesToDelete = $this->getIssues(new Criteria(), $con)->diff($issues);
-
-
-        $this->issuesScheduledForDeletion = $issuesToDelete;
-
-        foreach ($issuesToDelete as $issueRemoved) {
-            $issueRemoved->setSerie(null);
-        }
-
-        $this->collIssues = null;
-        foreach ($issues as $issue) {
-            $this->addIssue($issue);
-        }
-
-        $this->collIssues = $issues;
-        $this->collIssuesPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Issue objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Issue objects.
-     * @throws PropelException
-     */
-    public function countIssues(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collIssuesPartial && !$this->isNew();
-        if (null === $this->collIssues || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collIssues) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getIssues());
-            }
-            $query = IssueQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterBySerie($this)
-                ->count($con);
-        }
-
-        return count($this->collIssues);
-    }
-
-    /**
-     * Method called to associate a Issue object to this object
-     * through the Issue foreign key attribute.
-     *
-     * @param    Issue $l Issue
-     * @return Serie The current object (for fluent API support)
-     */
-    public function addIssue(Issue $l)
-    {
-        if ($this->collIssues === null) {
-            $this->initIssues();
-            $this->collIssuesPartial = true;
-        }
-        if (!in_array($l, $this->collIssues->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddIssue($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	Issue $issue The issue object to add.
-     */
-    protected function doAddIssue($issue)
-    {
-        $this->collIssues[]= $issue;
-        $issue->setSerie($this);
-    }
-
-    /**
-     * @param	Issue $issue The issue object to remove.
-     * @return Serie The current object (for fluent API support)
-     */
-    public function removeIssue($issue)
-    {
-        if ($this->getIssues()->contains($issue)) {
-            $this->collIssues->remove($this->collIssues->search($issue));
-            if (null === $this->issuesScheduledForDeletion) {
-                $this->issuesScheduledForDeletion = clone $this->collIssues;
-                $this->issuesScheduledForDeletion->clear();
-            }
-            $this->issuesScheduledForDeletion[]= clone $issue;
-            $issue->setSerie(null);
-        }
-
-        return $this;
     }
 
     /**
@@ -1272,7 +1001,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return Serie The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      * @see        addUserSeries()
      */
     public function clearUserSeries()
@@ -1320,7 +1049,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
      * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Serie is new, it will return
+     * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
@@ -1337,7 +1066,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
                 $this->initUserSeries();
             } else {
                 $collUserSeries = UserSerieQuery::create(null, $criteria)
-                    ->filterBySerie($this)
+                    ->filterByUser($this)
                     ->find($con);
                 if (null !== $criteria) {
                     if (false !== $this->collUserSeriesPartial && count($collUserSeries)) {
@@ -1381,7 +1110,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
      *
      * @param PropelCollection $userSeries A Propel collection.
      * @param PropelPDO $con Optional connection object
-     * @return Serie The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function setUserSeries(PropelCollection $userSeries, PropelPDO $con = null)
     {
@@ -1394,7 +1123,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
         $this->userSeriesScheduledForDeletion = clone $userSeriesToDelete;
 
         foreach ($userSeriesToDelete as $userSerieRemoved) {
-            $userSerieRemoved->setSerie(null);
+            $userSerieRemoved->setUser(null);
         }
 
         $this->collUserSeries = null;
@@ -1434,7 +1163,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
             }
 
             return $query
-                ->filterBySerie($this)
+                ->filterByUser($this)
                 ->count($con);
         }
 
@@ -1446,7 +1175,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
      * through the UserSerie foreign key attribute.
      *
      * @param    UserSerie $l UserSerie
-     * @return Serie The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function addUserSerie(UserSerie $l)
     {
@@ -1467,12 +1196,12 @@ abstract class BaseSerie extends BaseObject implements Persistent
     protected function doAddUserSerie($userSerie)
     {
         $this->collUserSeries[]= $userSerie;
-        $userSerie->setSerie($this);
+        $userSerie->setUser($this);
     }
 
     /**
      * @param	UserSerie $userSerie The userSerie object to remove.
-     * @return Serie The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function removeUserSerie($userSerie)
     {
@@ -1483,7 +1212,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
                 $this->userSeriesScheduledForDeletion->clear();
             }
             $this->userSeriesScheduledForDeletion[]= clone $userSerie;
-            $userSerie->setSerie(null);
+            $userSerie->setUser(null);
         }
 
         return $this;
@@ -1493,204 +1222,204 @@ abstract class BaseSerie extends BaseObject implements Persistent
     /**
      * If this collection has already been initialized with
      * an identical criteria, it returns the collection.
-     * Otherwise if this Serie is new, it will return
-     * an empty collection; or if this Serie has previously
+     * Otherwise if this User is new, it will return
+     * an empty collection; or if this User has previously
      * been saved, it will retrieve related UserSeries from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
-     * actually need in Serie.
+     * actually need in User.
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|UserSerie[] List of UserSerie objects
      */
-    public function getUserSeriesJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getUserSeriesJoinSerie($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = UserSerieQuery::create(null, $criteria);
-        $query->joinWith('User', $join_behavior);
+        $query->joinWith('Serie', $join_behavior);
 
         return $this->getUserSeries($query, $con);
     }
 
     /**
-     * Clears out the collUsers collection
+     * Clears out the collSeries collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return Serie The current object (for fluent API support)
-     * @see        addUsers()
+     * @return User The current object (for fluent API support)
+     * @see        addSeries()
      */
-    public function clearUsers()
+    public function clearSeries()
     {
-        $this->collUsers = null; // important to set this to null since that means it is uninitialized
-        $this->collUsersPartial = null;
+        $this->collSeries = null; // important to set this to null since that means it is uninitialized
+        $this->collSeriesPartial = null;
 
         return $this;
     }
 
     /**
-     * Initializes the collUsers collection.
+     * Initializes the collSeries collection.
      *
-     * By default this just sets the collUsers collection to an empty collection (like clearUsers());
+     * By default this just sets the collSeries collection to an empty collection (like clearSeries());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
      * @return void
      */
-    public function initUsers()
+    public function initSeries()
     {
-        $this->collUsers = new PropelObjectCollection();
-        $this->collUsers->setModel('User');
+        $this->collSeries = new PropelObjectCollection();
+        $this->collSeries->setModel('Serie');
     }
 
     /**
-     * Gets a collection of User objects related by a many-to-many relationship
+     * Gets a collection of Serie objects related by a many-to-many relationship
      * to the current object by way of the comics_user_serie cross-reference table.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
      * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Serie is new, it will return
+     * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
      * @param Criteria $criteria Optional query object to filter the query
      * @param PropelPDO $con Optional connection object
      *
-     * @return PropelObjectCollection|User[] List of User objects
+     * @return PropelObjectCollection|Serie[] List of Serie objects
      */
-    public function getUsers($criteria = null, PropelPDO $con = null)
+    public function getSeries($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collUsers || null !== $criteria) {
-            if ($this->isNew() && null === $this->collUsers) {
+        if (null === $this->collSeries || null !== $criteria) {
+            if ($this->isNew() && null === $this->collSeries) {
                 // return empty collection
-                $this->initUsers();
+                $this->initSeries();
             } else {
-                $collUsers = UserQuery::create(null, $criteria)
-                    ->filterBySerie($this)
+                $collSeries = SerieQuery::create(null, $criteria)
+                    ->filterByUser($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    return $collUsers;
+                    return $collSeries;
                 }
-                $this->collUsers = $collUsers;
+                $this->collSeries = $collSeries;
             }
         }
 
-        return $this->collUsers;
+        return $this->collSeries;
     }
 
     /**
-     * Sets a collection of User objects related by a many-to-many relationship
+     * Sets a collection of Serie objects related by a many-to-many relationship
      * to the current object by way of the comics_user_serie cross-reference table.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $users A Propel collection.
+     * @param PropelCollection $series A Propel collection.
      * @param PropelPDO $con Optional connection object
-     * @return Serie The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
-    public function setUsers(PropelCollection $users, PropelPDO $con = null)
+    public function setSeries(PropelCollection $series, PropelPDO $con = null)
     {
-        $this->clearUsers();
-        $currentUsers = $this->getUsers();
+        $this->clearSeries();
+        $currentSeries = $this->getSeries();
 
-        $this->usersScheduledForDeletion = $currentUsers->diff($users);
+        $this->seriesScheduledForDeletion = $currentSeries->diff($series);
 
-        foreach ($users as $user) {
-            if (!$currentUsers->contains($user)) {
-                $this->doAddUser($user);
+        foreach ($series as $serie) {
+            if (!$currentSeries->contains($serie)) {
+                $this->doAddSerie($serie);
             }
         }
 
-        $this->collUsers = $users;
+        $this->collSeries = $series;
 
         return $this;
     }
 
     /**
-     * Gets the number of User objects related by a many-to-many relationship
+     * Gets the number of Serie objects related by a many-to-many relationship
      * to the current object by way of the comics_user_serie cross-reference table.
      *
      * @param Criteria $criteria Optional query object to filter the query
      * @param boolean $distinct Set to true to force count distinct
      * @param PropelPDO $con Optional connection object
      *
-     * @return int the number of related User objects
+     * @return int the number of related Serie objects
      */
-    public function countUsers($criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countSeries($criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collUsers || null !== $criteria) {
-            if ($this->isNew() && null === $this->collUsers) {
+        if (null === $this->collSeries || null !== $criteria) {
+            if ($this->isNew() && null === $this->collSeries) {
                 return 0;
             } else {
-                $query = UserQuery::create(null, $criteria);
+                $query = SerieQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
                 }
 
                 return $query
-                    ->filterBySerie($this)
+                    ->filterByUser($this)
                     ->count($con);
             }
         } else {
-            return count($this->collUsers);
+            return count($this->collSeries);
         }
     }
 
     /**
-     * Associate a User object to this object
+     * Associate a Serie object to this object
      * through the comics_user_serie cross reference table.
      *
-     * @param  User $user The UserSerie object to relate
-     * @return Serie The current object (for fluent API support)
+     * @param  Serie $serie The UserSerie object to relate
+     * @return User The current object (for fluent API support)
      */
-    public function addUser(User $user)
+    public function addSerie(Serie $serie)
     {
-        if ($this->collUsers === null) {
-            $this->initUsers();
+        if ($this->collSeries === null) {
+            $this->initSeries();
         }
-        if (!$this->collUsers->contains($user)) { // only add it if the **same** object is not already associated
-            $this->doAddUser($user);
-            $this->collUsers[] = $user;
+        if (!$this->collSeries->contains($serie)) { // only add it if the **same** object is not already associated
+            $this->doAddSerie($serie);
+            $this->collSeries[] = $serie;
         }
 
         return $this;
     }
 
     /**
-     * @param	User $user The user object to add.
+     * @param	Serie $serie The serie object to add.
      */
-    protected function doAddUser($user)
+    protected function doAddSerie($serie)
     {
         $userSerie = new UserSerie();
-        $userSerie->setUser($user);
+        $userSerie->setSerie($serie);
         $this->addUserSerie($userSerie);
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
-        if (!$user->getSeries()->contains($this)) {
-            $foreignCollection = $user->getSeries();
+        if (!$serie->getUsers()->contains($this)) {
+            $foreignCollection = $serie->getUsers();
             $foreignCollection[] = $this;
         }
     }
 
     /**
-     * Remove a User object to this object
+     * Remove a Serie object to this object
      * through the comics_user_serie cross reference table.
      *
-     * @param User $user The UserSerie object to relate
-     * @return Serie The current object (for fluent API support)
+     * @param Serie $serie The UserSerie object to relate
+     * @return User The current object (for fluent API support)
      */
-    public function removeUser(User $user)
+    public function removeSerie(Serie $serie)
     {
-        if ($this->getUsers()->contains($user)) {
-            $this->collUsers->remove($this->collUsers->search($user));
-            if (null === $this->usersScheduledForDeletion) {
-                $this->usersScheduledForDeletion = clone $this->collUsers;
-                $this->usersScheduledForDeletion->clear();
+        if ($this->getSeries()->contains($serie)) {
+            $this->collSeries->remove($this->collSeries->search($serie));
+            if (null === $this->seriesScheduledForDeletion) {
+                $this->seriesScheduledForDeletion = clone $this->collSeries;
+                $this->seriesScheduledForDeletion->clear();
             }
-            $this->usersScheduledForDeletion[]= $user;
+            $this->seriesScheduledForDeletion[]= $serie;
         }
 
         return $this;
@@ -1702,9 +1431,9 @@ abstract class BaseSerie extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
-        $this->title = null;
-        $this->cv_id = null;
-        $this->cv_url = null;
+        $this->login = null;
+        $this->password = null;
+        $this->email = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1727,18 +1456,13 @@ abstract class BaseSerie extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collIssues) {
-                foreach ($this->collIssues as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collUserSeries) {
                 foreach ($this->collUserSeries as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collUsers) {
-                foreach ($this->collUsers as $o) {
+            if ($this->collSeries) {
+                foreach ($this->collSeries as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -1746,18 +1470,14 @@ abstract class BaseSerie extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collIssues instanceof PropelCollection) {
-            $this->collIssues->clearIterator();
-        }
-        $this->collIssues = null;
         if ($this->collUserSeries instanceof PropelCollection) {
             $this->collUserSeries->clearIterator();
         }
         $this->collUserSeries = null;
-        if ($this->collUsers instanceof PropelCollection) {
-            $this->collUsers->clearIterator();
+        if ($this->collSeries instanceof PropelCollection) {
+            $this->collSeries->clearIterator();
         }
-        $this->collUsers = null;
+        $this->collSeries = null;
     }
 
     /**
@@ -1767,7 +1487,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(SeriePeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(UserPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**

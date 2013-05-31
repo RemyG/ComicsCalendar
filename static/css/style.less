@@ -6,7 +6,68 @@
 	font-family: 'Roboto', sans-serif;
 }
 
-header {
+html {
+	/*background-color: #2c3e50;*/
+}
+
+a {
+	text-decoration: none;
+	color: #2980b9;
+	&:hover {
+		color: #3498db;
+	}
+}
+
+form.user-form {
+	width: 50%;
+	float: left;
+}
+
+#recaptcha_area {
+	margin: 0 auto;
+}
+
+form {
+	legend {
+		text-align: center;
+	}
+	div.input-group {
+		text-align: center;
+		overflow: hidden;
+		margin-bottom: 5px;
+		label {
+			display: inline-block;
+			line-height: 30px;
+			width: 250px;
+			text-align: left;
+			/*width: 30%;*/
+		}
+		input {
+			display: inline-block;			
+			width: 250px;
+			/*width: 69%;*/
+			height: 30px;
+		}
+		input[type=submit] {
+			height: auto;
+			margin-left: 254px;
+			width: 246px;
+			margin-top: 15px;
+		    font-weight: bold;
+		    padding: 4px 5px;
+		    cursor: pointer;		 
+		    text-align: center;
+		    border: none;
+		    background-color: #3498db; 
+		    color: #fff;
+		    &:hover, &:active {
+		    	background-color: #2980b9; 		    	
+		    }
+		}
+	}
+}
+
+header.header-bar {
 	overflow: hidden;
 	padding: 20px;
 	line-height: 30px;
@@ -61,6 +122,7 @@ table.month-calendar {
 			}
 			div.date {
 				background-color: #ccc;
+				padding-left: 5px;
 				span.day-number {
 					font-size: 20px;
 					font-weight: bold;
@@ -109,5 +171,80 @@ div.calendar-navigation {
 		text-align: center;
 		border-left: 1px solid #bbb;
 		border-right: 1px solid #bbb;
+	}
+}
+
+section.manage-series,
+section.show-series,
+section.show-serie,
+section.about {
+	padding: 20px;
+}
+
+section.manage-series,
+section.show-series {	
+	div.section-header {
+		border: 1px solid #ccc;
+		text-align: center;
+		height: 40px;
+		line-height: 40px;
+		margin: 2px;
+		margin-top: 15px;
+		margin-bottom: 5px;
+		font-weight: bold;
+		background-color: #ddd;
+	}
+	div.section {
+		overflow: hidden;
+		div.serie-container {			
+			width: 25%;
+			float: left;
+			div.serie {
+				&.selected {
+					background-color: #2980b9;
+					a {
+						color: #fff;
+					}
+				}
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: clip ellipsis;
+				input[type=checkbox] {
+					margin: 0;
+					display: inline-block;
+					position: relative;
+					top: 2px;
+					margin: 0 3px;
+				}
+				vertical-align: middle;
+				font-size: 12px;
+				margin: 2px;
+				border: 1px solid #ccc;
+				height: 40px;
+				line-height: 40px;
+				padding: 0 5px;
+			}
+		}
+		
+	}
+	
+}
+
+section.show-serie {
+	> header {
+		h1.title {
+
+		}
+	}
+	div.cv-url {
+
+	}
+	section.issues {
+		> header {
+			font-weight: bold;
+		}
+		div.issue {
+
+		}
 	}
 }

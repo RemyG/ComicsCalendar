@@ -14,15 +14,28 @@
 	<link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
 
 	<script type="text/javascript" src="<?php echo BASE_URL; ?>static/js/less-1.3.3.min.js"></script>
+	<script type="text/javascript" src="<?php echo BASE_URL; ?>static/js/jquery-2.0.0.min.js"></script>
 </head>
 <body>
 
-<header>
+<header class="header-bar">
 	<h1><a href="<?php echo BASE_URL; ?>">ComicsCalendar</a></h1>
 	<nav>
 		<a href="<?php echo BASE_URL; ?>">Home</a>
-		<a href="<?php echo BASE_URL; ?>series/show">Show all series</a>
+		<a href="<?php echo BASE_URL; ?>series/showall">Show all series</a>
 		<a href="<?php echo BASE_URL; ?>about">About</a>
+		<?php
+			if (isset($_SESSION['user-login']))
+			{
+				echo '<a href="'.BASE_URL.'series/manage">Manage my series</a>';
+				echo '<a href="'.BASE_URL.'users/logout">Logout</a>';
+			}
+			else
+			{
+				echo '<a href="'.BASE_URL.'users/login">Log in / Sign up</a>';
+			}
+		?>
+		
 	</nav>
 </header>
 

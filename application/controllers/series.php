@@ -4,18 +4,68 @@ class SeriesController extends Controller {
 	
 	function index()
 	{
-		$template = $this->loadView('main_view');
-		$template->set('pageTitle', 'PFP');
-		$template->set('pageDescription', 'Welcome to PFP - Main page');
+		$this->showAll();
+	}
+
+	function show($id)
+	{
+		$serie = SerieQuery::create()->findPK($id);
+		$query = IssueQuery::create()->orderByPubDate('desc');
+		$issues = $serie->getIssues($query);
+		$template = $this->loadView('series_show_view');
+		$template->set('serie', $serie);
+		$template->set('issues', $issues);
 		$template->render();
 	}
 
-	function show()
+	function showAll()
 	{
 		$series = SerieQuery::create()->orderByTitle()->find();
-		$template = $this->loadView('series_show_view');
+		$template = $this->loadView('series_showall_view');
 		$template->set('series', $series);
 		$template->render();
+	}
+
+	function manage()
+	{
+		$sessionHelper = $this->loadHelper('Session_helper');
+		$userLogin = $sessionHelper->get('user-login');
+		$user = UserQuery::create()->findOneByLogin($userLogin);
+		if (isset($_POST['updateseries']))
+		{
+			$sanitizer = $this->loadHelper('Sanitize_helper');
+			$post = $sanitizer->sanitize($_POST);
+			foreach($post['serie'] as $serieId)
+			{
+				echo $serieId;
+			}
+		}		
+		$user = UserQuery::create()->findOneByLogin($userLogin);
+		$series = SerieQuery::create()->orderByTitle()->find();
+		$template = $this->loadView('series_manage_view');
+		$template->set('user', $user);
+		$template->set('series', $series);
+		$template->render();
+	}
+
+	function updateSerie($serieId, $add)
+	{
+		$sessionHelper = $this->loadHelper('Session_helper');
+		$userLogin = $sessionHelper->get('user-login');
+		$user = UserQuery::create()->findOneByLogin($userLogin);
+		$serie = SerieQuery::create()->findPK($serieId);
+		if ($add == "true")
+		{
+			echo 'add';
+			$user->addSerie($serie);
+			$user->save();
+		}
+		else
+		{
+			echo 'remove';
+			$user->removeSerie($serie);
+			$user->save();
+		}
 	}
 
 }

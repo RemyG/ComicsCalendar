@@ -46,7 +46,27 @@
 				</div>';
 			foreach ($day['issues'] as $issue)
 			{
-				echo '<div class="issue">'.$issue.'</div>';
+				echo '<div class="issue">';
+				/*if ($issue->getSerie()->getCvUrl() != null && $issue->getSerie()->getCvUrl() != '')
+				{
+					echo '<a href="'.$issue->getSerie()->getCvUrl().'" target="_blank">';
+					echo $issue->getSerie()->getTitle();
+					echo '</a>';
+				}
+				else
+				{
+					echo $issue->getSerie()->getTitle();
+				}*/
+				echo '<a href="'.BASE_URL.'series/show/'.$issue->getSerie()->getId().'">'.$issue->getSerie()->getTitle().'</a>';
+				if ($issue->getIssueNumber() != null && $issue->getIssueNumber() != '')
+				{
+					echo ' #'.$issue->getIssueNumber();
+				}
+				if ($issue->getTitle() != null && $issue->getTitle() != '')
+				{
+					echo ' - '.$issue->getTitle();
+				}
+				echo '</div>';
 			}
 			echo '</td>';
 			if ($day['day']['wday'] == 0)

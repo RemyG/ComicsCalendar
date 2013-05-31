@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'comics_serie' table.
+ * This class defines the structure of the 'comics_user' table.
  *
  *
  *
@@ -14,13 +14,13 @@
  *
  * @package    propel.generator.comicslist.map
  */
-class SerieTableMap extends TableMap
+class UserTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'comicslist.map.SerieTableMap';
+    const CLASS_NAME = 'comicslist.map.UserTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -32,16 +32,16 @@ class SerieTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('comics_serie');
-        $this->setPhpName('Serie');
-        $this->setClassname('Serie');
+        $this->setName('comics_user');
+        $this->setPhpName('User');
+        $this->setClassname('User');
         $this->setPackage('comicslist');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('title', 'Title', 'VARCHAR', true, 255, null);
-        $this->addColumn('cv_id', 'CvId', 'VARCHAR', false, 10, null);
-        $this->addColumn('cv_url', 'CvUrl', 'VARCHAR', false, 255, null);
+        $this->addColumn('login', 'Login', 'VARCHAR', true, 255, null);
+        $this->addColumn('password', 'Password', 'VARCHAR', true, 255, null);
+        $this->addColumn('email', 'Email', 'VARCHAR', true, 255, null);
         // validators
     } // initialize()
 
@@ -50,9 +50,8 @@ class SerieTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Issue', 'Issue', RelationMap::ONE_TO_MANY, array('id' => 'serie_id', ), null, null, 'Issues');
-        $this->addRelation('UserSerie', 'UserSerie', RelationMap::ONE_TO_MANY, array('id' => 'serie_id', ), null, null, 'UserSeries');
-        $this->addRelation('User', 'User', RelationMap::MANY_TO_MANY, array(), null, null, 'Users');
+        $this->addRelation('UserSerie', 'UserSerie', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null, 'UserSeries');
+        $this->addRelation('Serie', 'Serie', RelationMap::MANY_TO_MANY, array(), null, null, 'Series');
     } // buildRelations()
 
-} // SerieTableMap
+} // UserTableMap

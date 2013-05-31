@@ -2,24 +2,24 @@
 
 
 /**
- * Base class that represents a row from the 'comics_issue' table.
+ * Base class that represents a row from the 'comics_user_serie' table.
  *
  *
  *
  * @package    propel.generator.comicslist.om
  */
-abstract class BaseIssue extends BaseObject implements Persistent
+abstract class BaseUserSerie extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'IssuePeer';
+    const PEER = 'UserSeriePeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        IssuePeer
+     * @var        UserSeriePeer
      */
     protected static $peer;
 
@@ -30,22 +30,10 @@ abstract class BaseIssue extends BaseObject implements Persistent
     protected $startCopy = false;
 
     /**
-     * The value for the id field.
+     * The value for the user_id field.
      * @var        int
      */
-    protected $id;
-
-    /**
-     * The value for the title field.
-     * @var        string
-     */
-    protected $title;
-
-    /**
-     * The value for the issue_number field.
-     * @var        string
-     */
-    protected $issue_number;
+    protected $user_id;
 
     /**
      * The value for the serie_id field.
@@ -54,22 +42,9 @@ abstract class BaseIssue extends BaseObject implements Persistent
     protected $serie_id;
 
     /**
-     * The value for the pub_date field.
-     * @var        string
+     * @var        User
      */
-    protected $pub_date;
-
-    /**
-     * The value for the cv_id field.
-     * @var        string
-     */
-    protected $cv_id;
-
-    /**
-     * The value for the cv_url field.
-     * @var        string
-     */
-    protected $cv_url;
+    protected $aUser;
 
     /**
      * @var        Serie
@@ -97,36 +72,14 @@ abstract class BaseIssue extends BaseObject implements Persistent
     protected $alreadyInClearAllReferencesDeep = false;
 
     /**
-     * Get the [id] column value.
+     * Get the [user_id] column value.
      *
      * @return int
      */
-    public function getId()
+    public function getUserId()
     {
 
-        return $this->id;
-    }
-
-    /**
-     * Get the [title] column value.
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-
-        return $this->title;
-    }
-
-    /**
-     * Get the [issue_number] column value.
-     *
-     * @return string
-     */
-    public function getIssueNumber()
-    {
-
-        return $this->issue_number;
+        return $this->user_id;
     }
 
     /**
@@ -141,135 +94,35 @@ abstract class BaseIssue extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [optionally formatted] temporal [pub_date] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getPubDate($format = '%x')
-    {
-        if ($this->pub_date === null) {
-            return null;
-        }
-
-        if ($this->pub_date === '0000-00-00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        }
-
-        try {
-            $dt = new DateTime($this->pub_date);
-        } catch (Exception $x) {
-            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->pub_date, true), $x);
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        }
-
-        return $dt->format($format);
-
-    }
-
-    /**
-     * Get the [cv_id] column value.
-     *
-     * @return string
-     */
-    public function getCvId()
-    {
-
-        return $this->cv_id;
-    }
-
-    /**
-     * Get the [cv_url] column value.
-     *
-     * @return string
-     */
-    public function getCvUrl()
-    {
-
-        return $this->cv_url;
-    }
-
-    /**
-     * Set the value of [id] column.
+     * Set the value of [user_id] column.
      *
      * @param  int $v new value
-     * @return Issue The current object (for fluent API support)
+     * @return UserSerie The current object (for fluent API support)
      */
-    public function setId($v)
+    public function setUserId($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->id !== $v) {
-            $this->id = $v;
-            $this->modifiedColumns[] = IssuePeer::ID;
+        if ($this->user_id !== $v) {
+            $this->user_id = $v;
+            $this->modifiedColumns[] = UserSeriePeer::USER_ID;
+        }
+
+        if ($this->aUser !== null && $this->aUser->getId() !== $v) {
+            $this->aUser = null;
         }
 
 
         return $this;
-    } // setId()
-
-    /**
-     * Set the value of [title] column.
-     *
-     * @param  string $v new value
-     * @return Issue The current object (for fluent API support)
-     */
-    public function setTitle($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->title !== $v) {
-            $this->title = $v;
-            $this->modifiedColumns[] = IssuePeer::TITLE;
-        }
-
-
-        return $this;
-    } // setTitle()
-
-    /**
-     * Set the value of [issue_number] column.
-     *
-     * @param  string $v new value
-     * @return Issue The current object (for fluent API support)
-     */
-    public function setIssueNumber($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->issue_number !== $v) {
-            $this->issue_number = $v;
-            $this->modifiedColumns[] = IssuePeer::ISSUE_NUMBER;
-        }
-
-
-        return $this;
-    } // setIssueNumber()
+    } // setUserId()
 
     /**
      * Set the value of [serie_id] column.
      *
      * @param  int $v new value
-     * @return Issue The current object (for fluent API support)
+     * @return UserSerie The current object (for fluent API support)
      */
     public function setSerieId($v)
     {
@@ -279,7 +132,7 @@ abstract class BaseIssue extends BaseObject implements Persistent
 
         if ($this->serie_id !== $v) {
             $this->serie_id = $v;
-            $this->modifiedColumns[] = IssuePeer::SERIE_ID;
+            $this->modifiedColumns[] = UserSeriePeer::SERIE_ID;
         }
 
         if ($this->aSerie !== null && $this->aSerie->getId() !== $v) {
@@ -289,71 +142,6 @@ abstract class BaseIssue extends BaseObject implements Persistent
 
         return $this;
     } // setSerieId()
-
-    /**
-     * Sets the value of [pub_date] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return Issue The current object (for fluent API support)
-     */
-    public function setPubDate($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->pub_date !== null || $dt !== null) {
-            $currentDateAsString = ($this->pub_date !== null && $tmpDt = new DateTime($this->pub_date)) ? $tmpDt->format('Y-m-d') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->pub_date = $newDateAsString;
-                $this->modifiedColumns[] = IssuePeer::PUB_DATE;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setPubDate()
-
-    /**
-     * Set the value of [cv_id] column.
-     *
-     * @param  string $v new value
-     * @return Issue The current object (for fluent API support)
-     */
-    public function setCvId($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->cv_id !== $v) {
-            $this->cv_id = $v;
-            $this->modifiedColumns[] = IssuePeer::CV_ID;
-        }
-
-
-        return $this;
-    } // setCvId()
-
-    /**
-     * Set the value of [cv_url] column.
-     *
-     * @param  string $v new value
-     * @return Issue The current object (for fluent API support)
-     */
-    public function setCvUrl($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->cv_url !== $v) {
-            $this->cv_url = $v;
-            $this->modifiedColumns[] = IssuePeer::CV_URL;
-        }
-
-
-        return $this;
-    } // setCvUrl()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -387,13 +175,8 @@ abstract class BaseIssue extends BaseObject implements Persistent
     {
         try {
 
-            $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->title = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->issue_number = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->serie_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->pub_date = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->cv_id = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->cv_url = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->user_id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+            $this->serie_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -403,10 +186,10 @@ abstract class BaseIssue extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 7; // 7 = IssuePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 2; // 2 = UserSeriePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating Issue object", $e);
+            throw new PropelException("Error populating UserSerie object", $e);
         }
     }
 
@@ -426,6 +209,9 @@ abstract class BaseIssue extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aUser !== null && $this->user_id !== $this->aUser->getId()) {
+            $this->aUser = null;
+        }
         if ($this->aSerie !== null && $this->serie_id !== $this->aSerie->getId()) {
             $this->aSerie = null;
         }
@@ -452,13 +238,13 @@ abstract class BaseIssue extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(IssuePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(UserSeriePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = IssuePeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = UserSeriePeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -468,6 +254,7 @@ abstract class BaseIssue extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aUser = null;
             $this->aSerie = null;
         } // if (deep)
     }
@@ -489,12 +276,12 @@ abstract class BaseIssue extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(IssuePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(UserSeriePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = IssueQuery::create()
+            $deleteQuery = UserSerieQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -532,7 +319,7 @@ abstract class BaseIssue extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(IssuePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(UserSeriePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -552,7 +339,7 @@ abstract class BaseIssue extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                IssuePeer::addInstanceToPool($this);
+                UserSeriePeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -586,6 +373,13 @@ abstract class BaseIssue extends BaseObject implements Persistent
             // were passed to this object by their corresponding set
             // method.  This object relates to these object(s) by a
             // foreign key reference.
+
+            if ($this->aUser !== null) {
+                if ($this->aUser->isModified() || $this->aUser->isNew()) {
+                    $affectedRows += $this->aUser->save($con);
+                }
+                $this->setUser($this->aUser);
+            }
 
             if ($this->aSerie !== null) {
                 if ($this->aSerie->isModified() || $this->aSerie->isNew()) {
@@ -625,36 +419,17 @@ abstract class BaseIssue extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = IssuePeer::ID;
-        if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . IssuePeer::ID . ')');
-        }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(IssuePeer::ID)) {
-            $modifiedColumns[':p' . $index++]  = '`id`';
+        if ($this->isColumnModified(UserSeriePeer::USER_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`user_id`';
         }
-        if ($this->isColumnModified(IssuePeer::TITLE)) {
-            $modifiedColumns[':p' . $index++]  = '`title`';
-        }
-        if ($this->isColumnModified(IssuePeer::ISSUE_NUMBER)) {
-            $modifiedColumns[':p' . $index++]  = '`issue_number`';
-        }
-        if ($this->isColumnModified(IssuePeer::SERIE_ID)) {
+        if ($this->isColumnModified(UserSeriePeer::SERIE_ID)) {
             $modifiedColumns[':p' . $index++]  = '`serie_id`';
-        }
-        if ($this->isColumnModified(IssuePeer::PUB_DATE)) {
-            $modifiedColumns[':p' . $index++]  = '`pub_date`';
-        }
-        if ($this->isColumnModified(IssuePeer::CV_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`cv_id`';
-        }
-        if ($this->isColumnModified(IssuePeer::CV_URL)) {
-            $modifiedColumns[':p' . $index++]  = '`cv_url`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `comics_issue` (%s) VALUES (%s)',
+            'INSERT INTO `comics_user_serie` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -663,26 +438,11 @@ abstract class BaseIssue extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`id`':
-                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
-                        break;
-                    case '`title`':
-                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
-                        break;
-                    case '`issue_number`':
-                        $stmt->bindValue($identifier, $this->issue_number, PDO::PARAM_STR);
+                    case '`user_id`':
+                        $stmt->bindValue($identifier, $this->user_id, PDO::PARAM_INT);
                         break;
                     case '`serie_id`':
                         $stmt->bindValue($identifier, $this->serie_id, PDO::PARAM_INT);
-                        break;
-                    case '`pub_date`':
-                        $stmt->bindValue($identifier, $this->pub_date, PDO::PARAM_STR);
-                        break;
-                    case '`cv_id`':
-                        $stmt->bindValue($identifier, $this->cv_id, PDO::PARAM_STR);
-                        break;
-                    case '`cv_url`':
-                        $stmt->bindValue($identifier, $this->cv_url, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -691,13 +451,6 @@ abstract class BaseIssue extends BaseObject implements Persistent
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), $e);
         }
-
-        try {
-            $pk = $con->lastInsertId();
-        } catch (Exception $e) {
-            throw new PropelException('Unable to get autoincrement id.', $e);
-        }
-        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -783,6 +536,12 @@ abstract class BaseIssue extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aUser !== null) {
+                if (!$this->aUser->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aUser->getValidationFailures());
+                }
+            }
+
             if ($this->aSerie !== null) {
                 if (!$this->aSerie->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aSerie->getValidationFailures());
@@ -790,7 +549,7 @@ abstract class BaseIssue extends BaseObject implements Persistent
             }
 
 
-            if (($retval = IssuePeer::doValidate($this, $columns)) !== true) {
+            if (($retval = UserSeriePeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
@@ -814,7 +573,7 @@ abstract class BaseIssue extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = IssuePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = UserSeriePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -831,25 +590,10 @@ abstract class BaseIssue extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                return $this->getId();
+                return $this->getUserId();
                 break;
             case 1:
-                return $this->getTitle();
-                break;
-            case 2:
-                return $this->getIssueNumber();
-                break;
-            case 3:
                 return $this->getSerieId();
-                break;
-            case 4:
-                return $this->getPubDate();
-                break;
-            case 5:
-                return $this->getCvId();
-                break;
-            case 6:
-                return $this->getCvUrl();
                 break;
             default:
                 return null;
@@ -874,19 +618,14 @@ abstract class BaseIssue extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['Issue'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['UserSerie'][serialize($this->getPrimaryKey())])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Issue'][$this->getPrimaryKey()] = true;
-        $keys = IssuePeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['UserSerie'][serialize($this->getPrimaryKey())] = true;
+        $keys = UserSeriePeer::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getId(),
-            $keys[1] => $this->getTitle(),
-            $keys[2] => $this->getIssueNumber(),
-            $keys[3] => $this->getSerieId(),
-            $keys[4] => $this->getPubDate(),
-            $keys[5] => $this->getCvId(),
-            $keys[6] => $this->getCvUrl(),
+            $keys[0] => $this->getUserId(),
+            $keys[1] => $this->getSerieId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach($virtualColumns as $key => $virtualColumn)
@@ -895,6 +634,9 @@ abstract class BaseIssue extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->aUser) {
+                $result['User'] = $this->aUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->aSerie) {
                 $result['Serie'] = $this->aSerie->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
@@ -916,7 +658,7 @@ abstract class BaseIssue extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = IssuePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = UserSeriePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -933,25 +675,10 @@ abstract class BaseIssue extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                $this->setId($value);
+                $this->setUserId($value);
                 break;
             case 1:
-                $this->setTitle($value);
-                break;
-            case 2:
-                $this->setIssueNumber($value);
-                break;
-            case 3:
                 $this->setSerieId($value);
-                break;
-            case 4:
-                $this->setPubDate($value);
-                break;
-            case 5:
-                $this->setCvId($value);
-                break;
-            case 6:
-                $this->setCvUrl($value);
                 break;
         } // switch()
     }
@@ -975,15 +702,10 @@ abstract class BaseIssue extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = IssuePeer::getFieldNames($keyType);
+        $keys = UserSeriePeer::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setIssueNumber($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setSerieId($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setPubDate($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setCvId($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setCvUrl($arr[$keys[6]]);
+        if (array_key_exists($keys[0], $arr)) $this->setUserId($arr[$keys[0]]);
+        if (array_key_exists($keys[1], $arr)) $this->setSerieId($arr[$keys[1]]);
     }
 
     /**
@@ -993,15 +715,10 @@ abstract class BaseIssue extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(IssuePeer::DATABASE_NAME);
+        $criteria = new Criteria(UserSeriePeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(IssuePeer::ID)) $criteria->add(IssuePeer::ID, $this->id);
-        if ($this->isColumnModified(IssuePeer::TITLE)) $criteria->add(IssuePeer::TITLE, $this->title);
-        if ($this->isColumnModified(IssuePeer::ISSUE_NUMBER)) $criteria->add(IssuePeer::ISSUE_NUMBER, $this->issue_number);
-        if ($this->isColumnModified(IssuePeer::SERIE_ID)) $criteria->add(IssuePeer::SERIE_ID, $this->serie_id);
-        if ($this->isColumnModified(IssuePeer::PUB_DATE)) $criteria->add(IssuePeer::PUB_DATE, $this->pub_date);
-        if ($this->isColumnModified(IssuePeer::CV_ID)) $criteria->add(IssuePeer::CV_ID, $this->cv_id);
-        if ($this->isColumnModified(IssuePeer::CV_URL)) $criteria->add(IssuePeer::CV_URL, $this->cv_url);
+        if ($this->isColumnModified(UserSeriePeer::USER_ID)) $criteria->add(UserSeriePeer::USER_ID, $this->user_id);
+        if ($this->isColumnModified(UserSeriePeer::SERIE_ID)) $criteria->add(UserSeriePeer::SERIE_ID, $this->serie_id);
 
         return $criteria;
     }
@@ -1016,30 +733,37 @@ abstract class BaseIssue extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(IssuePeer::DATABASE_NAME);
-        $criteria->add(IssuePeer::ID, $this->id);
+        $criteria = new Criteria(UserSeriePeer::DATABASE_NAME);
+        $criteria->add(UserSeriePeer::USER_ID, $this->user_id);
+        $criteria->add(UserSeriePeer::SERIE_ID, $this->serie_id);
 
         return $criteria;
     }
 
     /**
-     * Returns the primary key for this object (row).
-     * @return int
+     * Returns the composite primary key for this object.
+     * The array elements will be in same order as specified in XML.
+     * @return array
      */
     public function getPrimaryKey()
     {
-        return $this->getId();
+        $pks = array();
+        $pks[0] = $this->getUserId();
+        $pks[1] = $this->getSerieId();
+
+        return $pks;
     }
 
     /**
-     * Generic method to set the primary key (id column).
+     * Set the [composite] primary key.
      *
-     * @param  int $key Primary key.
+     * @param array $keys The elements of the composite key (order must match the order in XML file).
      * @return void
      */
-    public function setPrimaryKey($key)
+    public function setPrimaryKey($keys)
     {
-        $this->setId($key);
+        $this->setUserId($keys[0]);
+        $this->setSerieId($keys[1]);
     }
 
     /**
@@ -1049,7 +773,7 @@ abstract class BaseIssue extends BaseObject implements Persistent
     public function isPrimaryKeyNull()
     {
 
-        return null === $this->getId();
+        return (null === $this->getUserId()) && (null === $this->getSerieId());
     }
 
     /**
@@ -1058,19 +782,15 @@ abstract class BaseIssue extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of Issue (or compatible) type.
+     * @param object $copyObj An object of UserSerie (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setTitle($this->getTitle());
-        $copyObj->setIssueNumber($this->getIssueNumber());
+        $copyObj->setUserId($this->getUserId());
         $copyObj->setSerieId($this->getSerieId());
-        $copyObj->setPubDate($this->getPubDate());
-        $copyObj->setCvId($this->getCvId());
-        $copyObj->setCvUrl($this->getCvUrl());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1085,7 +805,6 @@ abstract class BaseIssue extends BaseObject implements Persistent
 
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1098,7 +817,7 @@ abstract class BaseIssue extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return Issue Clone of current object.
+     * @return UserSerie Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1118,22 +837,74 @@ abstract class BaseIssue extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return IssuePeer
+     * @return UserSeriePeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new IssuePeer();
+            self::$peer = new UserSeriePeer();
         }
 
         return self::$peer;
     }
 
     /**
+     * Declares an association between this object and a User object.
+     *
+     * @param                  User $v
+     * @return UserSerie The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setUser(User $v = null)
+    {
+        if ($v === null) {
+            $this->setUserId(NULL);
+        } else {
+            $this->setUserId($v->getId());
+        }
+
+        $this->aUser = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the User object, it will not be re-added.
+        if ($v !== null) {
+            $v->addUserSerie($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated User object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return User The associated User object.
+     * @throws PropelException
+     */
+    public function getUser(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aUser === null && ($this->user_id !== null) && $doQuery) {
+            $this->aUser = UserQuery::create()->findPk($this->user_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aUser->addUserSeries($this);
+             */
+        }
+
+        return $this->aUser;
+    }
+
+    /**
      * Declares an association between this object and a Serie object.
      *
      * @param                  Serie $v
-     * @return Issue The current object (for fluent API support)
+     * @return UserSerie The current object (for fluent API support)
      * @throws PropelException
      */
     public function setSerie(Serie $v = null)
@@ -1149,7 +920,7 @@ abstract class BaseIssue extends BaseObject implements Persistent
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the Serie object, it will not be re-added.
         if ($v !== null) {
-            $v->addIssue($this);
+            $v->addUserSerie($this);
         }
 
 
@@ -1174,7 +945,7 @@ abstract class BaseIssue extends BaseObject implements Persistent
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aSerie->addIssues($this);
+                $this->aSerie->addUserSeries($this);
              */
         }
 
@@ -1186,13 +957,8 @@ abstract class BaseIssue extends BaseObject implements Persistent
      */
     public function clear()
     {
-        $this->id = null;
-        $this->title = null;
-        $this->issue_number = null;
+        $this->user_id = null;
         $this->serie_id = null;
-        $this->pub_date = null;
-        $this->cv_id = null;
-        $this->cv_url = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1215,6 +981,9 @@ abstract class BaseIssue extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aUser instanceof Persistent) {
+              $this->aUser->clearAllReferences($deep);
+            }
             if ($this->aSerie instanceof Persistent) {
               $this->aSerie->clearAllReferences($deep);
             }
@@ -1222,6 +991,7 @@ abstract class BaseIssue extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        $this->aUser = null;
         $this->aSerie = null;
     }
 
@@ -1232,7 +1002,7 @@ abstract class BaseIssue extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(IssuePeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(UserSeriePeer::DEFAULT_STRING_FORMAT);
     }
 
     /**
