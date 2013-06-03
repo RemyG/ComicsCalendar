@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>static/css/font-awesome.min.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>static/css/style.less" type="text/less" media="screen" />
 
+	<link href='http://fonts.googleapis.com/css?family=Bangers' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
 
 	<script type="text/javascript" src="<?php echo BASE_URL; ?>static/js/less-1.3.3.min.js"></script>
@@ -19,11 +20,9 @@
 <body>
 
 <header class="header-bar">
-	<h1><a href="<?php echo BASE_URL; ?>">ComicsCalendar</a></h1>
+	<h1><a href="<?php echo BASE_URL; ?>">Comics Calendar</a></h1>
 	<nav>
 		<a href="<?php echo BASE_URL; ?>">Home</a>
-		<a href="<?php echo BASE_URL; ?>series/showall">Show all series</a>
-		<a href="<?php echo BASE_URL; ?>about">About</a>
 		<?php
 			if (isset($_SESSION['user-login']))
 			{
@@ -32,10 +31,11 @@
 			}
 			else
 			{
+				echo '<a href="'.BASE_URL.'series/showall">Show all series</a>';
 				echo '<a href="'.BASE_URL.'users/login">Log in / Sign up</a>';
 			}
 		?>
-		
+		<a href="<?php echo BASE_URL; ?>about">About</a>
 	</nav>
 </header>
 

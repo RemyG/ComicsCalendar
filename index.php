@@ -14,6 +14,7 @@ define('APP_DIR', ROOT_DIR .'application/');
 require(APP_DIR .'config/config.php');
 require(APP_DIR .'config/comicvine.php');
 require(APP_DIR .'config/recaptcha.php');
+require(APP_DIR .'config/cookies.php');
 require(ROOT_DIR .'system/pdo2.php');
 require(ROOT_DIR .'system/model.php');
 require(ROOT_DIR .'system/view.php');

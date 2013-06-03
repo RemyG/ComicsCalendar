@@ -31,7 +31,7 @@
 		}
 		foreach ($calendar as $dayNb => $day)
 		{
-			if ($today == $year.'-'.$month.'-'.$dayNb)
+			if ($today == $year.'-'.str_pad($month, 2, "0", STR_PAD_LEFT).'-'.str_pad($dayNb, 2, "0", STR_PAD_LEFT))
 			{
 				echo '<td class="today">';
 			}

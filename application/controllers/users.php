@@ -19,25 +19,13 @@ class UsersController extends Controller {
 			{
 				$login = $post['login'];
 				$password = $post['password'];
-				$user = UserQuery::create()->findOneByLogin($login);
-				if ($user == null)
+				$remember = array_key_exists('rememberme', $post);
+				if ($this->hiddenLogin($login, $password, $remember))
 				{
-					$user = UserQuery::create()->findOneByEmail($login);
-				}
-				if ($user == null)
-				{
-					echo 'No user with this login/email';
-				}
-				else
-				{
-					$sessionHelper = $this->loadHelper('Session_helper');
-					$sessionHelper->destroy();
-					session_start();
-					$sessionHelper->set('user-login', $user->getLogin());
 					$this->redirect('');
 				}
 			}
-		}
+		}		
 		$template = $this->loadView('users_login_view');
 		$template->render();
 	}
@@ -120,8 +108,7 @@ class UsersController extends Controller {
 
 	function logout()
 	{
-		$sessionHelper = $this->loadHelper('Session_helper');
-		$sessionHelper->destroy();
+		$this->hiddenLogout();
 		$this->redirect('');
 	}
 

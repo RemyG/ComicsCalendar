@@ -9,8 +9,10 @@ class SeriesController extends Controller {
 
 	function show($id)
 	{
+		$this->hiddenInitiate();
+		$this->hiddenKeepAlive();
 		$serie = SerieQuery::create()->findPK($id);
-		$query = IssueQuery::create()->orderByPubDate('desc');
+		$query = IssueQuery::create()->orderByPubDate('desc')->orderByIssueNumber('desc');
 		$issues = $serie->getIssues($query);
 		$template = $this->loadView('series_show_view');
 		$template->set('serie', $serie);
@@ -20,6 +22,8 @@ class SeriesController extends Controller {
 
 	function showAll()
 	{
+		$this->hiddenInitiate();
+		$this->hiddenKeepAlive();
 		$series = SerieQuery::create()->orderByTitle()->find();
 		$template = $this->loadView('series_showall_view');
 		$template->set('series', $series);
@@ -28,6 +32,8 @@ class SeriesController extends Controller {
 
 	function manage()
 	{
+		$this->hiddenInitiate();
+		$this->hiddenKeepAlive();
 		$sessionHelper = $this->loadHelper('Session_helper');
 		$userLogin = $sessionHelper->get('user-login');
 		$user = UserQuery::create()->findOneByLogin($userLogin);
@@ -50,6 +56,8 @@ class SeriesController extends Controller {
 
 	function updateSerie($serieId, $add)
 	{
+		$this->hiddenInitiate();
+		$this->hiddenKeepAlive();
 		$sessionHelper = $this->loadHelper('Session_helper');
 		$userLogin = $sessionHelper->get('user-login');
 		$user = UserQuery::create()->findOneByLogin($userLogin);

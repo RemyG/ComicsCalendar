@@ -54,6 +54,12 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $email;
 
     /**
+     * The value for the auth_key field.
+     * @var        string
+     */
+    protected $auth_key;
+
+    /**
      * @var        PropelObjectCollection|UserSerie[] Collection to store aggregation of UserSerie objects.
      */
     protected $collUserSeries;
@@ -141,6 +147,17 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [auth_key] column value.
+     *
+     * @return string
+     */
+    public function getAuthKey()
+    {
+
+        return $this->auth_key;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
@@ -225,6 +242,27 @@ abstract class BaseUser extends BaseObject implements Persistent
     } // setEmail()
 
     /**
+     * Set the value of [auth_key] column.
+     *
+     * @param  string $v new value
+     * @return User The current object (for fluent API support)
+     */
+    public function setAuthKey($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->auth_key !== $v) {
+            $this->auth_key = $v;
+            $this->modifiedColumns[] = UserPeer::AUTH_KEY;
+        }
+
+
+        return $this;
+    } // setAuthKey()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -260,6 +298,7 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->login = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->password = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->email = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->auth_key = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -269,7 +308,7 @@ abstract class BaseUser extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 4; // 4 = UserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = UserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating User object", $e);
@@ -539,6 +578,9 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::EMAIL)) {
             $modifiedColumns[':p' . $index++]  = '`email`';
         }
+        if ($this->isColumnModified(UserPeer::AUTH_KEY)) {
+            $modifiedColumns[':p' . $index++]  = '`auth_key`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `comics_user` (%s) VALUES (%s)',
@@ -561,6 +603,9 @@ abstract class BaseUser extends BaseObject implements Persistent
                         break;
                     case '`email`':
                         $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
+                        break;
+                    case '`auth_key`':
+                        $stmt->bindValue($identifier, $this->auth_key, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -716,6 +761,9 @@ abstract class BaseUser extends BaseObject implements Persistent
             case 3:
                 return $this->getEmail();
                 break;
+            case 4:
+                return $this->getAuthKey();
+                break;
             default:
                 return null;
                 break;
@@ -749,6 +797,7 @@ abstract class BaseUser extends BaseObject implements Persistent
             $keys[1] => $this->getLogin(),
             $keys[2] => $this->getPassword(),
             $keys[3] => $this->getEmail(),
+            $keys[4] => $this->getAuthKey(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach($virtualColumns as $key => $virtualColumn)
@@ -806,6 +855,9 @@ abstract class BaseUser extends BaseObject implements Persistent
             case 3:
                 $this->setEmail($value);
                 break;
+            case 4:
+                $this->setAuthKey($value);
+                break;
         } // switch()
     }
 
@@ -834,6 +886,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         if (array_key_exists($keys[1], $arr)) $this->setLogin($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setPassword($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setEmail($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setAuthKey($arr[$keys[4]]);
     }
 
     /**
@@ -849,6 +902,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::LOGIN)) $criteria->add(UserPeer::LOGIN, $this->login);
         if ($this->isColumnModified(UserPeer::PASSWORD)) $criteria->add(UserPeer::PASSWORD, $this->password);
         if ($this->isColumnModified(UserPeer::EMAIL)) $criteria->add(UserPeer::EMAIL, $this->email);
+        if ($this->isColumnModified(UserPeer::AUTH_KEY)) $criteria->add(UserPeer::AUTH_KEY, $this->auth_key);
 
         return $criteria;
     }
@@ -915,6 +969,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $copyObj->setLogin($this->getLogin());
         $copyObj->setPassword($this->getPassword());
         $copyObj->setEmail($this->getEmail());
+        $copyObj->setAuthKey($this->getAuthKey());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1434,6 +1489,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $this->login = null;
         $this->password = null;
         $this->email = null;
+        $this->auth_key = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

@@ -7,45 +7,6 @@ class IssuesController extends Controller {
 		$this->month($year, $month);
 	}
 
-	function retrieveAll()
-	{
-		$xml = simplexml_load_file('http://www.comicvine.com/feeds/new-comics/');
-		foreach ($xml->xpath('//item') as $item)
-		{
-			$link = $item->link;
-			$issueCvId = "";
-			$subject = $link;
-			$pattern = '/\/4000-([0-9]+)\/$/';
-			preg_match($pattern, $subject, $matches);
-			$saved = false;
-			if (sizeof($matches) == 2)
-			{
-				$issueCvId = $matches[1];
-				$saved = $this->getComicVineIssue($issueCvId);
-			}
-			if ($saved === false)
-			{
-				$title = explode('#', $item->title);
-				$serie = SerieQuery::create()->findOneByTitle($title[0]);
-				if ($serie == null)
-				{
-					$serie = new Serie();
-					$serie->setTitle($title[0]);
-					$serie->save();
-				}
-				$issue = IssueQuery::create()->filterBySerie($serie)->findOneByTitle($title[1]);
-				if ($issue == null)
-				{
-					$issue = new Issue();
-					$issue->setTitle($title[1]);
-					$issue->setSerie($serie);
-					$issue->setPubDate($item->pubDate);
-					$issue->save();
-				}
-			}
-		}
-	}
-
 	private function getComicVineIssue($issueId)
 	{
 		$xml = simplexml_load_file('http://www.comicvine.com/api/issues/?api_key='.COMIC_VINE_API_KEY.'&filter=id:'.$issueId);
@@ -96,6 +57,8 @@ class IssuesController extends Controller {
 
 	function month($year = null, $month = null)
 	{
+		$this->hiddenInitiate();
+		$this->hiddenKeepAlive();
 		if ($year == null)
 		{
 			$year = date('Y');
@@ -187,11 +150,12 @@ class IssuesController extends Controller {
 	function importIssue($issueXml)
 	{
 		$serieXml = $issueXml->volume;
-		$serieTitle = $serieXml->name;
-		$serie = SerieQuery::create()->findOneByTitle($serieTitle);
+
+		$serieCvId = $serieXml->id;
+		$serie = SerieQuery::create()->findOneByCvId($serieCvId);
 		if ($serie == null)
 		{
-			$serieCvId = $serieXml->id;
+			$serieTitle = $serieXml->name;
 			$serieCvUrl = $serieXml->site_detail_url;
 			$serie = new Serie();
 			$serie->setTitle($serieTitle);
@@ -200,16 +164,15 @@ class IssuesController extends Controller {
 			$serie->save();
 		}
 
-		$issueNumber = $issueXml->issue_number;
-		$issueTitle = $issueXml->name;
-		$issuePubDate = $issueXml->cover_date;
+		
 		$issueCvId = $issueXml->id;
-		$issueCvUrl = $issueXml->site_detail_url;
-
-		$issue = IssueQuery::create()->filterBySerie($serie)->filterByCvId($issueCvId)->findOne();
-
+		$issue = IssueQuery::create()->filterByCvId($issueCvId)->findOne();
 		if ($issue == null)
 		{
+			$issueNumber = $issueXml->issue_number;
+			$issueTitle = $issueXml->name;
+			$issuePubDate = $issueXml->cover_date;
+			$issueCvUrl = $issueXml->site_detail_url;
 			$issue = new Issue();
 			$issue->setTitle($issueTitle);
 			$issue->setSerie($serie);

@@ -7,6 +7,9 @@
 		<column name="title" type="varchar" size="255" required="true" />
 		<column name="cv_id" type="varchar" size="10" phpName="CvId" />
 		<column name="cv_url" type="varchar" size="255" phpName="CvUrl" />
+		<unique>
+			<unique-column name="cv_id" />
+		</unique>
 		<vendor type="mysql">
 			<parameter name="Engine" value="InnoDB"/>
 			<parameter name="Charset" value="utf8"/>
@@ -35,6 +38,7 @@
 		<column name="login" type="varchar" size="255" required="true" />
 		<column name="password" type="varchar" size="255" required="true" />
 		<column name="email" type="varchar" size="255" required="true" />
+		<column name="auth_key" type="varchar" size="32" />
 		<vendor type="mysql">
 			<parameter name="Engine" value="InnoDB"/>
 			<parameter name="Charset" value="utf8"/>

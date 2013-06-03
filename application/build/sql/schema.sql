@@ -15,7 +15,8 @@ CREATE TABLE `comics_serie`
     `title` VARCHAR(255) NOT NULL,
     `cv_id` VARCHAR(10),
     `cv_url` VARCHAR(255),
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `comics_serie_U_1` (`cv_id`)
 ) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------
@@ -52,6 +53,7 @@ CREATE TABLE `comics_user`
     `login` VARCHAR(255) NOT NULL,
     `password` VARCHAR(255) NOT NULL,
     `email` VARCHAR(255) NOT NULL,
+    `auth_key` VARCHAR(32),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB CHARACTER SET='utf8';
 

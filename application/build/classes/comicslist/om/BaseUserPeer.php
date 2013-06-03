@@ -24,13 +24,13 @@ abstract class BaseUserPeer
     const TM_CLASS = 'UserTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /** the column name for the id field */
     const ID = 'comics_user.id';
@@ -43,6 +43,9 @@ abstract class BaseUserPeer
 
     /** the column name for the email field */
     const EMAIL = 'comics_user.email';
+
+    /** the column name for the auth_key field */
+    const AUTH_KEY = 'comics_user.auth_key';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -63,12 +66,12 @@ abstract class BaseUserPeer
      * e.g. UserPeer::$fieldNames[UserPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Login', 'Password', 'Email', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'login', 'password', 'email', ),
-        BasePeer::TYPE_COLNAME => array (UserPeer::ID, UserPeer::LOGIN, UserPeer::PASSWORD, UserPeer::EMAIL, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'LOGIN', 'PASSWORD', 'EMAIL', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'login', 'password', 'email', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Login', 'Password', 'Email', 'AuthKey', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'login', 'password', 'email', 'authKey', ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID, UserPeer::LOGIN, UserPeer::PASSWORD, UserPeer::EMAIL, UserPeer::AUTH_KEY, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'LOGIN', 'PASSWORD', 'EMAIL', 'AUTH_KEY', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'login', 'password', 'email', 'auth_key', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -78,12 +81,12 @@ abstract class BaseUserPeer
      * e.g. UserPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Login' => 1, 'Password' => 2, 'Email' => 3, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'login' => 1, 'password' => 2, 'email' => 3, ),
-        BasePeer::TYPE_COLNAME => array (UserPeer::ID => 0, UserPeer::LOGIN => 1, UserPeer::PASSWORD => 2, UserPeer::EMAIL => 3, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'LOGIN' => 1, 'PASSWORD' => 2, 'EMAIL' => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'login' => 1, 'password' => 2, 'email' => 3, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Login' => 1, 'Password' => 2, 'Email' => 3, 'AuthKey' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'login' => 1, 'password' => 2, 'email' => 3, 'authKey' => 4, ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID => 0, UserPeer::LOGIN => 1, UserPeer::PASSWORD => 2, UserPeer::EMAIL => 3, UserPeer::AUTH_KEY => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'LOGIN' => 1, 'PASSWORD' => 2, 'EMAIL' => 3, 'AUTH_KEY' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'login' => 1, 'password' => 2, 'email' => 3, 'auth_key' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -161,11 +164,13 @@ abstract class BaseUserPeer
             $criteria->addSelectColumn(UserPeer::LOGIN);
             $criteria->addSelectColumn(UserPeer::PASSWORD);
             $criteria->addSelectColumn(UserPeer::EMAIL);
+            $criteria->addSelectColumn(UserPeer::AUTH_KEY);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.login');
             $criteria->addSelectColumn($alias . '.password');
             $criteria->addSelectColumn($alias . '.email');
+            $criteria->addSelectColumn($alias . '.auth_key');
         }
     }
 
