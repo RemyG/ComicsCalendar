@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>ComicsCalendar - Documentation</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="/ComicsCalendar/css/syntax.css">
+        <link rel="stylesheet" href="/ComicsCalendar/css/main.css">
+        <link rel="stylesheet" type="text/css" href="/ComicsCalendar/css/font-awesome.min.css">
+        <link href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css">
+        <link href="http://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Bangers' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+
+      <nav class="top-bar">
+        <div class="grid-container">
+          <div class="grid-80 prefix-10 suffix-10">
+            <ul class="title-area">
+              <li class="name">
+                <a href="/ComicsCalendar/index.html">ComicsCalendar</a>
+              </li>
+            </ul>
+            <section class="top-bar-list">
+              <ul class="right">
+                <li class="divider"></li>
+                <li><a href="/ComicsCalendar/blog.html">Blog</a></li>
+                <li class="divider"></li>
+                <li><a href="/ComicsCalendar/documentation.html">Documentation</a></li>
+                <li class="divider"></li>
+                <li><a href="/ComicsCalendar/download.html">Download</a></li>
+                <li class="divider"></li>
+                <li><a href="/ComicsCalendar/changelog.html">Changelog</a></li>
+                <li class="divider"></li>
+                <li><a href="/ComicsCalendar/about.html">About</a></li>
+                <li class="divider"></li>
+              </ul>
+            </section>
+            <section class="top-bar-menu">
+              <ul class="right">
+                <li class="sub-menu-link"><i class="icon-reorder"> </i>
+                  <ul class="sub-menu">
+                    <li class="divider"></li>
+                    <li><a href="/ComicsCalendar/blog.html">Blog</a></li>
+                    <li class="divider"></li>
+                    <li><a href="/ComicsCalendar/documentation.html">Documentation</a></li>
+                    <li class="divider"></li>
+                    <li><a href="/ComicsCalendar/download.html">Download</a></li>
+                    <li class="divider"></li>
+                    <li><a href="/ComicsCalendar/changelog.html">Changelog</a></li>
+                    <li class="divider"></li>
+                    <li><a href="/ComicsCalendar/about.html">About</a></li>
+                    <li class="divider"></li>
+                  </ul>
+                </li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </nav>
+
+      <a href="https://github.com/RemyG/ComicsCalendar" id="github-banner">
+        <img src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub">
+      </a>
+
+      <section class="content">
+        <div class="grid-container">
+          <div class="grid-80 prefix-10 suffix-10">
+            <div id="page">
+<h1 id='documentation'>Documentation</h1>
+
+<p>This application is a self-hosted comic books calendar, which allows you to follow the new issues of your favorite series.</p>
+
+<h2 id='requirements'>Requirements</h2>
+
+<p>To run this application, you need:</p>
+
+<ul>
+<li>PHP 5.1 or greater with support of PDO</li>
+
+<li>MySql drivers for PDO</li>
+
+<li>the Mod_Rewrite module for Apache</li>
+</ul>
+
+<h2 id='installation'>Installation</h2>
+
+<h3 id='download_the_project'>Download the project</h3>
+
+<p>See <a href='/ComicsCalendar/download.html'>the download page</a>.</p>
+
+<h3 id='configuration'>Configuration</h3>
+
+<ol>
+<li>
+<p>Create a file <code>application/config/comicvine.php</code> with 1 constant (you&#8217;ll need to ask for an API key <a href='http://www.comicvine.com/api/'>from ComicVine</a>):</p>
+
+<pre><code>&lt;?php
+define(&#39;COMIC_VINE_API_KEY&#39;, &#39;you_comicvine_api_key&#39;);</code></pre>
+</li>
+
+<li>
+<p>Create a file <code>application/config/recaptcha.php</code> with 2 constants (you&#8217;ll need to ask for a key <a href='https://www.google.com/recaptcha'>from ReCaptcha</a>):</p>
+
+<pre><code>&lt;?php
+define(&#39;RECAPTCHA_PUBLIC_KEY&#39;, &#39;your_recaptcha_public_key&#39;);
+define(&#39;RECAPTCHA_PRIVATE_KEY&#39;, &#39;your_recaptcha_private_key&#39;);</code></pre>
+</li>
+
+<li>
+<p>Create a file <code>application/config/cookies.php</code> with 1 constant (any random string that&#8217;ll allow you to salt the cookies information):</p>
+
+<pre><code>&lt;?php
+define(&#39;SESSION_SALT&#39;, &#39;your_session_salt&#39;);</code></pre>
+</li>
+
+<li>
+<p>Edit the file <code>application/build/conf/comicslist-conf.php</code> and set the correct DSN, username and password for the DB connection.</p>
+</li>
+
+<li>
+<p>Edit <code>application/config/config.php</code> and set the constants <code>BASE_URL</code> and <code>DOMAIN</code> according to your settings.</p>
+</li>
+
+<li>
+<p>Create a Cron task calling <code>cron-updater.php</code> every day.</p>
+</li>
+
+<li>
+<p>Go to your <code>BASE_URL</code> and enjoy!</p>
+</li>
+</ol>
+</div>
+          </div>
+        </div>
+      </section>      
+
+      <footer class="copyright">
+        <div class="grid-container">
+          <div class="grid-30 prefix-10">
+            <p>Site content &copy; 2013 <a href="http://remyg.fr">Rémy Gardette</a></p>
+          </div>
+          <div class="grid-50 suffix-10">
+            <ul class="inline-list right">
+              <li><a href="/ComicsCalendar/./">Home</a></li>
+              <li><a href="/ComicsCalendar/blog.html">Blog</a></li>
+              <li><a href="/ComicsCalendar/documentation.html">Documentation</a></li>
+              <li><a href="/ComicsCalendar/download.html">Download</a></li>
+              <li><a href="/ComicsCalendar/changelog.html">Changelog</a></li>
+              <li><a href="/ComicsCalendar/about.html">About</a></li>
+            </ul>
+          </div>
+        </div>
+      </footer>
+
+    </body>
+</html>
