@@ -7,6 +7,7 @@
 		<column name="title" type="varchar" size="255" required="true" />
 		<column name="cv_id" type="varchar" size="10" phpName="CvId" />
 		<column name="cv_url" type="varchar" size="255" phpName="CvUrl" />
+		<column name="added_on" type="timestamp" phpName="AddedOn" defaultValue="0000-00-00 00:00:00" />
 		<unique>
 			<unique-column name="cv_id" />
 		</unique>
@@ -39,6 +40,7 @@
 		<column name="password" type="varchar" size="255" required="true" />
 		<column name="email" type="varchar" size="255" required="true" />
 		<column name="auth_key" type="varchar" size="32" />
+		<column name="last_seen_on" type="timestamp" phpName="LastSeenOn" defaultValue="0000-00-00 00:00:00" />
 		<vendor type="mysql">
 			<parameter name="Engine" value="InnoDB"/>
 			<parameter name="Charset" value="utf8"/>
@@ -52,6 +54,20 @@
 		</foreign-key>
 		<foreign-key foreignTable="serie">
 			<reference local="serie_id" foreign="id" />
+		</foreign-key>
+		<vendor type="mysql">
+			<parameter name="Engine" value="InnoDB"/>
+			<parameter name="Charset" value="utf8"/>
+		</vendor>
+	</table>
+	<table name="user_issue" isCrossRef="true">
+		<column name="user_id" type="integer" primaryKey="true" />
+		<column name="issue_id" type="integer" primaryKey="true" />
+		<foreign-key foreignTable="user">
+			<reference local="user_id" foreign="id" />
+		</foreign-key>
+		<foreign-key foreignTable="issue">
+			<reference local="issue_id" foreign="id" />
 		</foreign-key>
 		<vendor type="mysql">
 			<parameter name="Engine" value="InnoDB"/>

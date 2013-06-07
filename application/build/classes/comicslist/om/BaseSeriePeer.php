@@ -24,13 +24,13 @@ abstract class BaseSeriePeer
     const TM_CLASS = 'SerieTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /** the column name for the id field */
     const ID = 'comics_serie.id';
@@ -43,6 +43,9 @@ abstract class BaseSeriePeer
 
     /** the column name for the cv_url field */
     const CV_URL = 'comics_serie.cv_url';
+
+    /** the column name for the added_on field */
+    const ADDED_ON = 'comics_serie.added_on';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -63,12 +66,12 @@ abstract class BaseSeriePeer
      * e.g. SeriePeer::$fieldNames[SeriePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'CvId', 'CvUrl', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'cvId', 'cvUrl', ),
-        BasePeer::TYPE_COLNAME => array (SeriePeer::ID, SeriePeer::TITLE, SeriePeer::CV_ID, SeriePeer::CV_URL, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'CV_ID', 'CV_URL', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'cv_id', 'cv_url', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'CvId', 'CvUrl', 'AddedOn', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'cvId', 'cvUrl', 'addedOn', ),
+        BasePeer::TYPE_COLNAME => array (SeriePeer::ID, SeriePeer::TITLE, SeriePeer::CV_ID, SeriePeer::CV_URL, SeriePeer::ADDED_ON, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'CV_ID', 'CV_URL', 'ADDED_ON', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'cv_id', 'cv_url', 'added_on', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -78,12 +81,12 @@ abstract class BaseSeriePeer
      * e.g. SeriePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'CvId' => 2, 'CvUrl' => 3, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'cvId' => 2, 'cvUrl' => 3, ),
-        BasePeer::TYPE_COLNAME => array (SeriePeer::ID => 0, SeriePeer::TITLE => 1, SeriePeer::CV_ID => 2, SeriePeer::CV_URL => 3, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'CV_ID' => 2, 'CV_URL' => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'cv_id' => 2, 'cv_url' => 3, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'CvId' => 2, 'CvUrl' => 3, 'AddedOn' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'cvId' => 2, 'cvUrl' => 3, 'addedOn' => 4, ),
+        BasePeer::TYPE_COLNAME => array (SeriePeer::ID => 0, SeriePeer::TITLE => 1, SeriePeer::CV_ID => 2, SeriePeer::CV_URL => 3, SeriePeer::ADDED_ON => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'CV_ID' => 2, 'CV_URL' => 3, 'ADDED_ON' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'cv_id' => 2, 'cv_url' => 3, 'added_on' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -161,11 +164,13 @@ abstract class BaseSeriePeer
             $criteria->addSelectColumn(SeriePeer::TITLE);
             $criteria->addSelectColumn(SeriePeer::CV_ID);
             $criteria->addSelectColumn(SeriePeer::CV_URL);
+            $criteria->addSelectColumn(SeriePeer::ADDED_ON);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.cv_id');
             $criteria->addSelectColumn($alias . '.cv_url');
+            $criteria->addSelectColumn($alias . '.added_on');
         }
     }
 

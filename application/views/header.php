@@ -20,7 +20,7 @@
 <body>
 
 <header class="header-bar">
-	<h1><a href="<?php echo BASE_URL; ?>">Comics Calendar</a></h1>
+	<h1><a href="<?php echo BASE_URL; ?>"><span>C</span>omics<span>C</span>alendar</a></h1>
 	<nav>
 		<a href="<?php echo BASE_URL; ?>">Home</a>
 		<?php

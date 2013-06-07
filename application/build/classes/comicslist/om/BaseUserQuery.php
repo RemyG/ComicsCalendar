@@ -11,12 +11,14 @@
  * @method UserQuery orderByPassword($order = Criteria::ASC) Order by the password column
  * @method UserQuery orderByEmail($order = Criteria::ASC) Order by the email column
  * @method UserQuery orderByAuthKey($order = Criteria::ASC) Order by the auth_key column
+ * @method UserQuery orderByLastSeenOn($order = Criteria::ASC) Order by the last_seen_on column
  *
  * @method UserQuery groupById() Group by the id column
  * @method UserQuery groupByLogin() Group by the login column
  * @method UserQuery groupByPassword() Group by the password column
  * @method UserQuery groupByEmail() Group by the email column
  * @method UserQuery groupByAuthKey() Group by the auth_key column
+ * @method UserQuery groupByLastSeenOn() Group by the last_seen_on column
  *
  * @method UserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method UserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -26,6 +28,10 @@
  * @method UserQuery rightJoinUserSerie($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserSerie relation
  * @method UserQuery innerJoinUserSerie($relationAlias = null) Adds a INNER JOIN clause to the query using the UserSerie relation
  *
+ * @method UserQuery leftJoinUserIssue($relationAlias = null) Adds a LEFT JOIN clause to the query using the UserIssue relation
+ * @method UserQuery rightJoinUserIssue($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserIssue relation
+ * @method UserQuery innerJoinUserIssue($relationAlias = null) Adds a INNER JOIN clause to the query using the UserIssue relation
+ *
  * @method User findOne(PropelPDO $con = null) Return the first User matching the query
  * @method User findOneOrCreate(PropelPDO $con = null) Return the first User matching the query, or a new User object populated from the query conditions when no match is found
  *
@@ -33,12 +39,14 @@
  * @method User findOneByPassword(string $password) Return the first User filtered by the password column
  * @method User findOneByEmail(string $email) Return the first User filtered by the email column
  * @method User findOneByAuthKey(string $auth_key) Return the first User filtered by the auth_key column
+ * @method User findOneByLastSeenOn(string $last_seen_on) Return the first User filtered by the last_seen_on column
  *
  * @method array findById(int $id) Return User objects filtered by the id column
  * @method array findByLogin(string $login) Return User objects filtered by the login column
  * @method array findByPassword(string $password) Return User objects filtered by the password column
  * @method array findByEmail(string $email) Return User objects filtered by the email column
  * @method array findByAuthKey(string $auth_key) Return User objects filtered by the auth_key column
+ * @method array findByLastSeenOn(string $last_seen_on) Return User objects filtered by the last_seen_on column
  *
  * @package    propel.generator.comicslist.om
  */
@@ -146,7 +154,7 @@ abstract class BaseUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `login`, `password`, `email`, `auth_key` FROM `comics_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `login`, `password`, `email`, `auth_key`, `last_seen_on` FROM `comics_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -394,6 +402,49 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the last_seen_on column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByLastSeenOn('2011-03-14'); // WHERE last_seen_on = '2011-03-14'
+     * $query->filterByLastSeenOn('now'); // WHERE last_seen_on = '2011-03-14'
+     * $query->filterByLastSeenOn(array('max' => 'yesterday')); // WHERE last_seen_on > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $lastSeenOn The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function filterByLastSeenOn($lastSeenOn = null, $comparison = null)
+    {
+        if (is_array($lastSeenOn)) {
+            $useMinMax = false;
+            if (isset($lastSeenOn['min'])) {
+                $this->addUsingAlias(UserPeer::LAST_SEEN_ON, $lastSeenOn['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($lastSeenOn['max'])) {
+                $this->addUsingAlias(UserPeer::LAST_SEEN_ON, $lastSeenOn['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(UserPeer::LAST_SEEN_ON, $lastSeenOn, $comparison);
+    }
+
+    /**
      * Filter the query by a related UserSerie object
      *
      * @param   UserSerie|PropelObjectCollection $userSerie  the related object to use as filter
@@ -468,6 +519,80 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related UserIssue object
+     *
+     * @param   UserIssue|PropelObjectCollection $userIssue  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 UserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByUserIssue($userIssue, $comparison = null)
+    {
+        if ($userIssue instanceof UserIssue) {
+            return $this
+                ->addUsingAlias(UserPeer::ID, $userIssue->getUserId(), $comparison);
+        } elseif ($userIssue instanceof PropelObjectCollection) {
+            return $this
+                ->useUserIssueQuery()
+                ->filterByPrimaryKeys($userIssue->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByUserIssue() only accepts arguments of type UserIssue or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the UserIssue relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function joinUserIssue($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('UserIssue');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'UserIssue');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the UserIssue relation UserIssue object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   UserIssueQuery A secondary query class using the current class as primary query
+     */
+    public function useUserIssueQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinUserIssue($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'UserIssue', 'UserIssueQuery');
+    }
+
+    /**
      * Filter the query by a related Serie object
      * using the comics_user_serie table as cross reference
      *
@@ -481,6 +606,23 @@ abstract class BaseUserQuery extends ModelCriteria
         return $this
             ->useUserSerieQuery()
             ->filterBySerie($serie, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related Issue object
+     * using the comics_user_issue table as cross reference
+     *
+     * @param   Issue $issue the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   UserQuery The current query, for fluid interface
+     */
+    public function filterByIssue($issue, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->useUserIssueQuery()
+            ->filterByIssue($issue, $comparison)
             ->endUse();
     }
 

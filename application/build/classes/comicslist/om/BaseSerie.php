@@ -54,6 +54,13 @@ abstract class BaseSerie extends BaseObject implements Persistent
     protected $cv_url;
 
     /**
+     * The value for the added_on field.
+     * Note: this column has a database default value of: NULL
+     * @var        string
+     */
+    protected $added_on;
+
+    /**
      * @var        PropelObjectCollection|Issue[] Collection to store aggregation of Issue objects.
      */
     protected $collIssues;
@@ -109,6 +116,27 @@ abstract class BaseSerie extends BaseObject implements Persistent
     protected $userSeriesScheduledForDeletion = null;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->added_on = NULL;
+    }
+
+    /**
+     * Initializes internal state of BaseSerie object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
+
+    /**
      * Get the [id] column value.
      *
      * @return int
@@ -150,6 +178,46 @@ abstract class BaseSerie extends BaseObject implements Persistent
     {
 
         return $this->cv_url;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [added_on] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getAddedOn($format = 'Y-m-d H:i:s')
+    {
+        if ($this->added_on === null) {
+            return null;
+        }
+
+        if ($this->added_on === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->added_on);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->added_on, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
@@ -237,6 +305,31 @@ abstract class BaseSerie extends BaseObject implements Persistent
     } // setCvUrl()
 
     /**
+     * Sets the value of [added_on] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Serie The current object (for fluent API support)
+     */
+    public function setAddedOn($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->added_on !== null || $dt !== null) {
+            $currentDateAsString = ($this->added_on !== null && $tmpDt = new DateTime($this->added_on)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ( ($currentDateAsString !== $newDateAsString) // normalized values don't match
+                || ($dt->format('Y-m-d H:i:s') === NULL) // or the entered value matches the default
+                 ) {
+                $this->added_on = $newDateAsString;
+                $this->modifiedColumns[] = SeriePeer::ADDED_ON;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setAddedOn()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -246,6 +339,10 @@ abstract class BaseSerie extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->added_on !== NULL) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -272,6 +369,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
             $this->title = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->cv_id = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->cv_url = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->added_on = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -281,7 +379,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 4; // 4 = SeriePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = SeriePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Serie object", $e);
@@ -570,6 +668,9 @@ abstract class BaseSerie extends BaseObject implements Persistent
         if ($this->isColumnModified(SeriePeer::CV_URL)) {
             $modifiedColumns[':p' . $index++]  = '`cv_url`';
         }
+        if ($this->isColumnModified(SeriePeer::ADDED_ON)) {
+            $modifiedColumns[':p' . $index++]  = '`added_on`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `comics_serie` (%s) VALUES (%s)',
@@ -592,6 +693,9 @@ abstract class BaseSerie extends BaseObject implements Persistent
                         break;
                     case '`cv_url`':
                         $stmt->bindValue($identifier, $this->cv_url, PDO::PARAM_STR);
+                        break;
+                    case '`added_on`':
+                        $stmt->bindValue($identifier, $this->added_on, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -755,6 +859,9 @@ abstract class BaseSerie extends BaseObject implements Persistent
             case 3:
                 return $this->getCvUrl();
                 break;
+            case 4:
+                return $this->getAddedOn();
+                break;
             default:
                 return null;
                 break;
@@ -788,6 +895,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
             $keys[1] => $this->getTitle(),
             $keys[2] => $this->getCvId(),
             $keys[3] => $this->getCvUrl(),
+            $keys[4] => $this->getAddedOn(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach($virtualColumns as $key => $virtualColumn)
@@ -848,6 +956,9 @@ abstract class BaseSerie extends BaseObject implements Persistent
             case 3:
                 $this->setCvUrl($value);
                 break;
+            case 4:
+                $this->setAddedOn($value);
+                break;
         } // switch()
     }
 
@@ -876,6 +987,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
         if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setCvId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setCvUrl($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setAddedOn($arr[$keys[4]]);
     }
 
     /**
@@ -891,6 +1003,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
         if ($this->isColumnModified(SeriePeer::TITLE)) $criteria->add(SeriePeer::TITLE, $this->title);
         if ($this->isColumnModified(SeriePeer::CV_ID)) $criteria->add(SeriePeer::CV_ID, $this->cv_id);
         if ($this->isColumnModified(SeriePeer::CV_URL)) $criteria->add(SeriePeer::CV_URL, $this->cv_url);
+        if ($this->isColumnModified(SeriePeer::ADDED_ON)) $criteria->add(SeriePeer::ADDED_ON, $this->added_on);
 
         return $criteria;
     }
@@ -957,6 +1070,7 @@ abstract class BaseSerie extends BaseObject implements Persistent
         $copyObj->setTitle($this->getTitle());
         $copyObj->setCvId($this->getCvId());
         $copyObj->setCvUrl($this->getCvUrl());
+        $copyObj->setAddedOn($this->getAddedOn());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1705,10 +1819,12 @@ abstract class BaseSerie extends BaseObject implements Persistent
         $this->title = null;
         $this->cv_id = null;
         $this->cv_url = null;
+        $this->added_on = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

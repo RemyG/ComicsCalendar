@@ -8,6 +8,6 @@ define('ERROR_CONTROLLER', 'error'); // Controller used for errors (e.g. 404, 50
 
 define('DEFAULT_AUTHOR', 'Rémy Gardette'); // Default author name, displayed as meta author
 define('DEFAULT_TITLE', 'Comics Calendar'); // Default page title, displayed in head > title
-define('DEFAULT_DESCRIPTION', 'Default page description'); // Default page description, displayed as meta description
+define('DEFAULT_DESCRIPTION', 'Comics Calendar - The online calendar to follow the new issues from your favorite comic books.'); // Default page description, displayed as meta description
 
 ?>

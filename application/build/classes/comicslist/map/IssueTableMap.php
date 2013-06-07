@@ -54,6 +54,8 @@ class IssueTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Serie', 'Serie', RelationMap::MANY_TO_ONE, array('serie_id' => 'id', ), null, null);
+        $this->addRelation('UserIssue', 'UserIssue', RelationMap::ONE_TO_MANY, array('id' => 'issue_id', ), null, null, 'UserIssues');
+        $this->addRelation('User', 'User', RelationMap::MANY_TO_MANY, array(), null, null, 'Users');
     } // buildRelations()
 
 } // IssueTableMap

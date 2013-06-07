@@ -15,6 +15,16 @@ class SeriesController extends Controller {
 		$query = IssueQuery::create()->orderByPubDate('desc')->orderByIssueNumber('desc');
 		$issues = $serie->getIssues($query);
 		$template = $this->loadView('series_show_view');
+		$sessionHelper = $this->loadHelper('Session_helper');
+		$userLogin = $sessionHelper->getCurrentUserLogin();
+		if ($userLogin != null)
+		{
+			$user = UserQuery::create()->findOneByLogin($userLogin);
+			if ($user != null)
+			{
+				$template->set('user', $user);
+			}
+		}
 		$template->set('serie', $serie);
 		$template->set('issues', $issues);
 		$template->render();
@@ -34,21 +44,27 @@ class SeriesController extends Controller {
 	{
 		$this->hiddenInitiate();
 		$this->hiddenKeepAlive();
+
+		$template = $this->loadView('series_manage_view');
+
 		$sessionHelper = $this->loadHelper('Session_helper');
 		$userLogin = $sessionHelper->get('user-login');
 		$user = UserQuery::create()->findOneByLogin($userLogin);
-		if (isset($_POST['updateseries']))
+
+		if ($user->getLastSeenOn() != null)
 		{
-			$sanitizer = $this->loadHelper('Sanitize_helper');
-			$post = $sanitizer->sanitize($_POST);
-			foreach($post['serie'] as $serieId)
-			{
-				echo $serieId;
-			}
-		}		
-		$user = UserQuery::create()->findOneByLogin($userLogin);
+			$c = new Criteria();
+			$crit0 = $c->getNewCriterion(SeriePeer::ADDED_ON, $user->getLastSeenOn(), CRITERIA::GREATER_THAN);
+			$c->add($crit0);
+			$newSeries = SeriePeer::doSelect($c);
+			$template->set('newSeries', $newSeries);
+		}
+
+		$user->setLastSeenOn(time());
+		$user->save();
+
 		$series = SerieQuery::create()->orderByTitle()->find();
-		$template = $this->loadView('series_manage_view');
+		
 		$template->set('user', $user);
 		$template->set('series', $series);
 		$template->render();

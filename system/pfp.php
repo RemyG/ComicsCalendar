@@ -33,16 +33,18 @@ function pfp()
 	if(file_exists($path)){
         require_once($path);
 	} else {
-        $controller = ERROR_CONTROLLER.'Controller';
+        $controller = ERROR_CONTROLLER;
         require_once(APP_DIR . 'controllers/' . $controller . '.php');
+        $controller = ERROR_CONTROLLER.'Controller';
 	}
     
     $controller = $controller.'Controller';
 
     // Check the action exists
     if(!method_exists($controller, $action)){
-        $controller = ERROR_CONTROLLER.'Controller';
+        $controller = ERROR_CONTROLLER;
         require_once(APP_DIR . 'controllers/' . $controller . '.php');
+        $controller = ERROR_CONTROLLER.'Controller';
         $action = 'index';
     }
 	

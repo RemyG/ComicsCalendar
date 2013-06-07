@@ -30,6 +30,10 @@
  * @method IssueQuery rightJoinSerie($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Serie relation
  * @method IssueQuery innerJoinSerie($relationAlias = null) Adds a INNER JOIN clause to the query using the Serie relation
  *
+ * @method IssueQuery leftJoinUserIssue($relationAlias = null) Adds a LEFT JOIN clause to the query using the UserIssue relation
+ * @method IssueQuery rightJoinUserIssue($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserIssue relation
+ * @method IssueQuery innerJoinUserIssue($relationAlias = null) Adds a INNER JOIN clause to the query using the UserIssue relation
+ *
  * @method Issue findOne(PropelPDO $con = null) Return the first Issue matching the query
  * @method Issue findOneOrCreate(PropelPDO $con = null) Return the first Issue matching the query, or a new Issue object populated from the query conditions when no match is found
  *
@@ -562,6 +566,97 @@ abstract class BaseIssueQuery extends ModelCriteria
         return $this
             ->joinSerie($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Serie', 'SerieQuery');
+    }
+
+    /**
+     * Filter the query by a related UserIssue object
+     *
+     * @param   UserIssue|PropelObjectCollection $userIssue  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 IssueQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByUserIssue($userIssue, $comparison = null)
+    {
+        if ($userIssue instanceof UserIssue) {
+            return $this
+                ->addUsingAlias(IssuePeer::ID, $userIssue->getIssueId(), $comparison);
+        } elseif ($userIssue instanceof PropelObjectCollection) {
+            return $this
+                ->useUserIssueQuery()
+                ->filterByPrimaryKeys($userIssue->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByUserIssue() only accepts arguments of type UserIssue or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the UserIssue relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return IssueQuery The current query, for fluid interface
+     */
+    public function joinUserIssue($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('UserIssue');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'UserIssue');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the UserIssue relation UserIssue object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   UserIssueQuery A secondary query class using the current class as primary query
+     */
+    public function useUserIssueQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinUserIssue($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'UserIssue', 'UserIssueQuery');
+    }
+
+    /**
+     * Filter the query by a related User object
+     * using the comics_user_issue table as cross reference
+     *
+     * @param   User $user the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   IssueQuery The current query, for fluid interface
+     */
+    public function filterByUser($user, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->useUserIssueQuery()
+            ->filterByUser($user, $comparison)
+            ->endUse();
     }
 
     /**

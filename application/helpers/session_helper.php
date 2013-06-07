@@ -17,6 +17,18 @@ class Session_helper {
 		session_destroy();
 	}
 
+	function getCurrentUserLogin()
+	{
+		if (array_key_exists('user-login', $_SESSION))
+		{			
+			return $_SESSION['user-login'];
+		}
+		else
+		{
+			return null;
+		}
+	}
+
 }
 
 ?>

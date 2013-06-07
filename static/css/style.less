@@ -1,5 +1,8 @@
 @title-font: Bangers, cursive;
 
+@red-color: #F0141D;
+@red-color-hover: #e74c3c;
+
 * {
 	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
 	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
@@ -10,13 +13,20 @@
 
 html {
 	/*background-color: #2c3e50;*/
+	background-image: url(/static/images/cream_pixels.png);
+	background-repeat: repeat;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
 }
 
 a {
 	text-decoration: none;
-	color: #2980b9;
+	color: @red-color;
 	&:hover {
-		color: #3498db;
+		color: @red-color-hover;
 	}
 }
 
@@ -42,12 +52,10 @@ form {
 			line-height: 30px;
 			width: 250px;
 			text-align: left;
-			/*width: 30%;*/
 		}
 		input {
 			display: inline-block;			
 			width: 250px;
-			/*width: 69%;*/
 			height: 30px;
 		}
 		input[type=submit] {
@@ -60,27 +68,32 @@ form {
 		    cursor: pointer;		 
 		    text-align: center;
 		    border: none;
-		    background-color: #3498db; 
+		    background-color: @red-color; 
 		    color: #fff;
 		    &:hover, &:active {
-		    	background-color: #2980b9; 		    	
+		    	background-color: @red-color-hover; 		    	
 		    }
 		}
 	}
 }
 
 header.header-bar {
+	background-color: #fff;
 	overflow: hidden;
 	padding: 20px;
 	line-height: 30px;
 	h1 {
 		a {
 			text-decoration: none;
-			color: inherit;
+			color: @red-color;
 			font-family: @title-font;
-			font-size: 40px;
+			font-size: 36px;
 			letter-spacing: 0.1em;
 			font-weight: lighter;
+			span {
+				font-size: 44px;
+				font-family: inherit;
+			}
 		}
 		float: left;
 		padding: 0px;
@@ -92,25 +105,35 @@ header.header-bar {
 		padding: 0px;
 		margin: 0px;
 		a {
+			font-family: @title-font;
+			letter-spacing: 1px;
 			display: block;
 			line-height: 30px;
-			border: 1px solid #ccc;
 			padding: 0 15px;
 			margin-left: 15px;
 			float: left;
 			text-decoration: none;
-			color: inherit;
+			color: #fff;
+			background-color: @red-color;
 			&:hover {
-				background-color: #ddd;
+				background-color: @red-color-hover;
 			}
 		}
+	}
+}
+
+footer {
+	margin: 20px 0;
+	p {
+		font-size: 10px;
+		margin: 10px;
+		text-align: center;
 	}
 }
 
 table.month-calendar {
 	width: 100%;
 	table-layout: fixed;
-	/*border-collapse: collapse;*/
 	tr {
 		td {
 			width: 100%;
@@ -138,6 +161,21 @@ table.month-calendar {
 				}
 			}
 			div.issue {
+				input[type=checkbox] {
+					-ms-transform: scale(0.7); /* IE */
+					-moz-transform: scale(0.7); /* FF */
+					-webkit-transform: scale(0.7); /* Safari and Chrome */
+					-o-transform: scale(0.7); /* Opera */
+					margin: 0;
+					margin-top: -3px;
+					padding: 0;
+					/*display: inline-block;*/
+					vertical-align: middle;
+				}
+				a {
+					/*display: inline-block;*/
+				}
+				padding: 2px;
 				font-size: 10px;
 				min-height: 30px;
 				&:nth-child(odd) {
@@ -146,12 +184,19 @@ table.month-calendar {
 				&:nth-child(even) {
 					background-color: #eee;
 				}
+				&.read {
+					color: #777;
+					a {
+						color: inherit;
+					}
+				}
 			}
 		}
 	}
 }
 
 div.calendar-navigation {
+	margin: 0 2px;
 	border: 1px solid #bbb;
 	background-color: #eee;
 	overflow: hidden;
@@ -180,7 +225,12 @@ div.calendar-navigation {
 	}
 }
 
+section.calendar {
+	padding: 10px;
+}
+
 section.manage-series,
+section.new-series,
 section.show-series,
 section.show-serie,
 section.about {
@@ -188,7 +238,8 @@ section.about {
 }
 
 section.manage-series,
-section.show-series {	
+section.show-series,
+section.new-series {	
 	div.section-header {
 		border: 1px solid #ccc;
 		text-align: center;
@@ -206,8 +257,11 @@ section.show-series {
 			width: 25%;
 			float: left;
 			div.serie {
+				font-weight: normal;
+				background-color: #fff;
 				&.selected {
-					background-color: #2980b9;
+					font-weight: bold;
+					background-color: @red-color;
 					a {
 						color: #fff;
 					}
@@ -231,26 +285,32 @@ section.show-series {
 				padding: 0 5px;
 			}
 		}
-		
 	}
-	
 }
 
 section.show-serie {
 	> header {
 		h1.title {
-
+			margin-top: 0;
+			font-size: 36px;
+			font-family: @title-font;
+			letter-spacing: 1px;
+			font-weight: normal;
 		}
 	}
 	div.cv-url {
-
+		margin: 20px 0;
+	}
+	section.follow-serie {
+		margin: 15px 0;
 	}
 	section.issues {
 		> header {
 			font-weight: bold;
+			margin-bottom: 10px;
 		}
 		div.issue {
-
+			margin-left: 10px;
 		}
 	}
 }

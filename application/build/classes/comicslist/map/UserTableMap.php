@@ -43,6 +43,7 @@ class UserTableMap extends TableMap
         $this->addColumn('password', 'Password', 'VARCHAR', true, 255, null);
         $this->addColumn('email', 'Email', 'VARCHAR', true, 255, null);
         $this->addColumn('auth_key', 'AuthKey', 'VARCHAR', false, 32, null);
+        $this->addColumn('last_seen_on', 'LastSeenOn', 'TIMESTAMP', false, null, '0000-00-00 00:00:00');
         // validators
     } // initialize()
 
@@ -52,7 +53,9 @@ class UserTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('UserSerie', 'UserSerie', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null, 'UserSeries');
+        $this->addRelation('UserIssue', 'UserIssue', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null, 'UserIssues');
         $this->addRelation('Serie', 'Serie', RelationMap::MANY_TO_MANY, array(), null, null, 'Series');
+        $this->addRelation('Issue', 'Issue', RelationMap::MANY_TO_MANY, array(), null, null, 'Issues');
     } // buildRelations()
 
 } // UserTableMap

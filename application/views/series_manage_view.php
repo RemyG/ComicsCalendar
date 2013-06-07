@@ -1,3 +1,32 @@
+<?php if (isset($newSeries) && $newSeries != null && sizeof($newSeries) > 0) { ?>
+
+<section class="new-series">
+
+	<div class="section-header">New series added since your last visit</div>
+
+	<div class="section">
+
+<?php
+
+	foreach ($newSeries as $serie)
+	{
+		
+		echo '<div class="serie-container">';
+		echo '<div class="serie">';
+		echo '<input type="checkbox" class="updateserie" value="'.$serie->getId().'">';
+		echo '<a href="'.BASE_URL.'series/show/'.$serie->getId().'">'.$serie->getTitle().'</a>';
+		echo '</div>';
+		echo '</div>';
+	}
+
+?>
+
+	</div>
+
+</section>
+
+<?php } ?>
+
 <section class="manage-series">
 
 <?php

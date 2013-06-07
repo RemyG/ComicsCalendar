@@ -7,54 +7,6 @@ class IssuesController extends Controller {
 		$this->month($year, $month);
 	}
 
-	private function getComicVineIssue($issueId)
-	{
-		$xml = simplexml_load_file('http://www.comicvine.com/api/issues/?api_key='.COMIC_VINE_API_KEY.'&filter=id:'.$issueId);
-		if ($xml->error == 'OK' && $xml->number_of_total_results == '1')
-		{
-			$issueXml = $xml->results->issue;
-			$serieXml = $issueXml->volume;
-			$serieTitle = $serieXml->name;
-			$serie = SerieQuery::create()->findOneByTitle($serieTitle);
-			if ($serie == null)
-			{
-				$serieCvId = $serieXml->id;
-				$serieCvUrl = $serieXml->site_detail_url;				
-				$serie = new Serie();
-				$serie->setTitle($serieTitle);
-				$serie->setCvId($serieCvId);
-				$serie->setCvUrl($serieCvUrl);
-				$serie->save();
-			}
-
-			$issueNumber = $issueXml->issue_number;
-			$issueTitle = $issueXml->name;
-			$issuePubDate = $issueXml->cover_date;
-			$issueCvId = $issueXml->id;
-			$issueCvUrl = $issueXml->site_detail_url;
-
-			$issue = IssueQuery::create()->filterBySerie($serie)->filterByTitle($issueTitle)->filterByIssueNumber($issueNumber)->findOne();
-
-			if ($issue == null)
-			{
-				$issue = new Issue();
-				$issue->setTitle($issueTitle);
-				$issue->setSerie($serie);
-				$issue->setPubDate($issuePubDate);
-				$issue->setIssueNumber($issueNumber);
-				$issue->setCvId($issueCvId);
-				$issue->setCvUrl($issueCvUrl);
-				$issue->save();
-			}
-			return true;
-
-		}
-		else
-		{
-			return false;
-		}
-	}
-
 	function month($year = null, $month = null)
 	{
 		$this->hiddenInitiate();
@@ -100,6 +52,7 @@ class IssuesController extends Controller {
 		}
 
 		$template = $this->loadView('issues_month_view');
+		$template->set('user', $user);
 		$template->set('calendar', $calendar);
 		$template->set('firstWday', $first['wday']);
 		$template->set('month', $month);
@@ -107,6 +60,14 @@ class IssuesController extends Controller {
 		$template->set('nextMonth', $this->getNextMonth($year, $month));
 		$template->set('prevMonth', $this->getPrevMonth($year, $month));
 		$template->render();
+	}
+
+	function importTwoWeeksStoreIssues()
+	{
+		$date = date('Ymd');
+		$this->importIssuesForDate($date);
+		$this->importLastWeekIssues(true);
+		$this->importNextWeekIssues(true);
 	}
 
 	function importTwoWeeksIssues()
@@ -117,32 +78,43 @@ class IssuesController extends Controller {
 		$this->importNextWeekIssues();
 	}
 
-	function importLastWeekIssues()
+	function importLastWeekIssues($store = false)
 	{
 		for ($i = 1 ; $i <= 7 ; $i++)
 		{
 			$date = date('Ymd', strtotime('-'.$i.' days'));
-			$this->importIssuesForDate($date);
+			$this->importIssuesForDate($date, 0, $store);
 		}
 	}
 
-	function importNextWeekIssues()
+	function importNextWeekIssues($store = false)
 	{
 		for ($i = 1 ; $i <= 7 ; $i++)
 		{
 			$date = date('Ymd', strtotime('+'.$i.' days'));
-			$this->importIssuesForDate($date);
+			$this->importIssuesForDate($date, 0, $store);
 		}
 	}
 
-	function importIssuesForDate($date)
+	function importIssuesForDate($date, $offset = 0, $store = false)
 	{
-		$xml = simplexml_load_file('http://www.comicvine.com/api/issues/?api_key='.COMIC_VINE_API_KEY.'&filter=cover_date:'.$date);
-		if ($xml->error == 'OK' && (int) $xml->number_of_total_results > 0)
+		if ($store)
+		{
+			$xml = simplexml_load_file('http://www.comicvine.com/api/issues/?api_key='.COMIC_VINE_API_KEY.'&filter=store_date:'.$date.'&offset='.$offset);
+		}
+		else
+		{
+			$xml = simplexml_load_file('http://www.comicvine.com/api/issues/?api_key='.COMIC_VINE_API_KEY.'&filter=cover_date:'.$date.'&offset='.$offset);
+		}
+		if ($xml->error == 'OK' && (int) $xml->number_of_page_results > 0)
 		{
 			foreach($xml->results->issue as $issue)
 			{
 				$this->importIssue($issue);
+			}
+			if ((int) $xml->number_of_page_results == 100)
+			{
+				$this->importIssuesForDate($date, $offset + 100, $store);
 			}
 		}
 	}
@@ -153,34 +125,59 @@ class IssuesController extends Controller {
 
 		$serieCvId = $serieXml->id;
 		$serie = SerieQuery::create()->findOneByCvId($serieCvId);
+
 		if ($serie == null)
 		{
-			$serieTitle = $serieXml->name;
-			$serieCvUrl = $serieXml->site_detail_url;
 			$serie = new Serie();
-			$serie->setTitle($serieTitle);
-			$serie->setCvId($serieCvId);
-			$serie->setCvUrl($serieCvUrl);
-			$serie->save();
+			$serie->setAddedOn(time());
 		}
 
+		$serieTitle = $serieXml->name;
+		$serieCvUrl = $serieXml->site_detail_url;
+
+		$serie->setTitle($serieTitle);
+		$serie->setCvUrl($serieCvUrl);			
+		$serie->save();
 		
 		$issueCvId = $issueXml->id;
 		$issue = IssueQuery::create()->filterByCvId($issueCvId)->findOne();
+
 		if ($issue == null)
 		{
-			$issueNumber = $issueXml->issue_number;
-			$issueTitle = $issueXml->name;
-			$issuePubDate = $issueXml->cover_date;
-			$issueCvUrl = $issueXml->site_detail_url;
 			$issue = new Issue();
-			$issue->setTitle($issueTitle);
-			$issue->setSerie($serie);
-			$issue->setPubDate($issuePubDate);
-			$issue->setIssueNumber($issueNumber);
 			$issue->setCvId($issueCvId);
-			$issue->setCvUrl($issueCvUrl);
-			$issue->save();
+		}
+
+		$issueNumber = $issueXml->issue_number;
+		$issueTitle = $issueXml->name;
+		$issuePubDate = $issueXml->store_date;
+		$issueCvUrl = $issueXml->site_detail_url;
+		
+		$issue->setTitle($issueTitle);
+		$issue->setSerie($serie);
+		$issue->setPubDate($issuePubDate);
+		$issue->setIssueNumber($issueNumber);		
+		$issue->setCvUrl($issueCvUrl);
+		$issue->save();
+	}
+
+	function toggleIssue($issueId, $add)
+	{
+		$this->hiddenInitiate();
+		$this->hiddenKeepAlive();
+		$sessionHelper = $this->loadHelper('Session_helper');
+		$userLogin = $sessionHelper->get('user-login');
+		$user = UserQuery::create()->findOneByLogin($userLogin);
+		$issue = IssueQuery::create()->findPK($issueId);
+		if ($add == "true")
+		{
+			$user->addIssue($issue);
+			$user->save();
+		}
+		else
+		{
+			$user->removeIssue($issue);
+			$user->save();
 		}
 	}
 

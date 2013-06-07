@@ -42,6 +42,7 @@ class SerieTableMap extends TableMap
         $this->addColumn('title', 'Title', 'VARCHAR', true, 255, null);
         $this->addColumn('cv_id', 'CvId', 'VARCHAR', false, 10, null);
         $this->addColumn('cv_url', 'CvUrl', 'VARCHAR', false, 255, null);
+        $this->addColumn('added_on', 'AddedOn', 'TIMESTAMP', false, null, '0000-00-00 00:00:00');
         // validators
     } // initialize()
 
