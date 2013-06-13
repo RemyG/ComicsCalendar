@@ -42,7 +42,17 @@
 		}
 		foreach($issues as $issue)
 		{
-			echo '<div class="issue">';
+			$found = false;
+			foreach ($userIssues as $issueTmp)
+			{
+				if ($issueTmp->getId() == $issue->getId())
+				{
+					$found = true;
+					break;
+				}
+			}
+			echo '<div class="issue'.($found ? ' selected' : '').'">';
+			echo '<input type="checkbox" value="'.$issue->getId().'" class="toggleIssue" '.($found ? 'checked' : '').' >';
 			if ($issue->getIssueNumber() != null && $issue->getIssueNumber() != '')
 			{
 				echo '#'.$issue->getIssueNumber();
@@ -73,5 +83,26 @@ $('#followthis').click(function() {
 		type: "GET",
 		dataType: "json"
 	});
+})
+</script>
+
+<script type="text/javascript">
+$('input.toggleIssue').click(function() {
+	var id = this.value;
+	var checked = this.checked;
+	$(this).parents('div.issue').toggleClass("selected");
+	var request = $.ajax({
+		url: '<?php echo BASE_URL; ?>issues/toggleIssue/' + id + '/' + checked,
+		type: "GET",
+		dataType: "json"
+	});
+	/*request.done(function(data) {
+		displayFeed(feedId, data.html, data.count, data.categorycount, data.valid);
+		$('#overlay').hide();
+	});
+	request.fail(function(jqXHR, textStatus) {
+		$('#overlay').hide();
+		alert("Request failed: " + textStatus);
+	});*/
 })
 </script>

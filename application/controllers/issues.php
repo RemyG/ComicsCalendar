@@ -62,15 +62,46 @@ class IssuesController extends Controller {
 		$template->render();
 	}
 
-	function importTwoWeeksStoreIssues()
+	function updateAllIssues()
 	{
-		$date = date('Ymd');
-		$this->importIssuesForDate($date);
-		$this->importLastWeekIssues(true);
-		$this->importNextWeekIssues(true);
+		/*$issues = IssueQuery::create()->find());*/
+		$issues = IssueQuery::create()->findByPubDate('2013-06-13');
+		/*$issues = IssueQuery::create()->findBySerieId(638);*/
+		foreach ($issues as $issue)
+		{
+			set_time_limit(30);
+			$xml = simplexml_load_file('http://www.comicvine.com/api/issue/4000-'.$issue->getCvId().'/?api_key='.COMIC_VINE_API_KEY);
+			if ($xml->error == 'OK' && (int) $xml->number_of_page_results == 1)
+			{
+				$this->importIssue($xml->results);
+			}
+		}
 	}
 
-	function importTwoWeeksIssues()
+	function updateAllSeries()
+	{
+		/*$serie1 = SerieQuery::create()->findPK(411);
+		$serie2 = SerieQuery::create()->findPK(388);
+		$series = array($serie1, $serie2);*/
+		$series = SerieQuery::create()->find();
+		foreach ($series as $serie)
+		{
+			$offset = 0;
+			do
+			{
+				set_time_limit(30);
+				$xml = simplexml_load_file('http://www.comicvine.com/api/issues/?api_key='.COMIC_VINE_API_KEY.'&filter=volume:'.$serie->getCvId().'&offset='.$offset);
+				$offset += 100;
+				foreach($xml->results->issue as $issue)
+				{
+					$this->importIssue($issue);
+				}
+			}
+			while ($xml->error == 'OK' && $xml->number_of_page_results >= 100);
+		}
+	}
+
+	function importTwoWeeksStoreIssues()
 	{
 		$date = date('Ymd');
 		$this->importIssuesForDate($date);
@@ -78,7 +109,15 @@ class IssuesController extends Controller {
 		$this->importNextWeekIssues();
 	}
 
-	function importLastWeekIssues($store = false)
+	/*function importTwoWeeksIssues()
+	{
+		$date = date('Ymd');
+		$this->importIssuesForDate($date);
+		$this->importLastWeekIssues();
+		$this->importNextWeekIssues();
+	}*/
+
+	private function importLastWeekIssues($store = true)
 	{
 		for ($i = 1 ; $i <= 7 ; $i++)
 		{
@@ -87,7 +126,7 @@ class IssuesController extends Controller {
 		}
 	}
 
-	function importNextWeekIssues($store = false)
+	private function importNextWeekIssues($store = true)
 	{
 		for ($i = 1 ; $i <= 7 ; $i++)
 		{
@@ -96,7 +135,7 @@ class IssuesController extends Controller {
 		}
 	}
 
-	function importIssuesForDate($date, $offset = 0, $store = false)
+	private function importIssuesForDate($date, $offset = 0, $store = true)
 	{
 		if ($store)
 		{
@@ -119,10 +158,15 @@ class IssuesController extends Controller {
 		}
 	}
 
-	function importIssue($issueXml)
+	private function importIssue($issueXml)
 	{
 		$serieXml = $issueXml->volume;
+		$serie = $this->getSerie($serieXml);
+		$issue = $this->getIssue($issueXml, $serie);
+	}
 
+	private function getSerie($serieXml)
+	{
 		$serieCvId = $serieXml->id;
 		$serie = SerieQuery::create()->findOneByCvId($serieCvId);
 
@@ -130,15 +174,21 @@ class IssuesController extends Controller {
 		{
 			$serie = new Serie();
 			$serie->setAddedOn(time());
+			$serie->setCvId($serieCvId);
 		}
 
 		$serieTitle = $serieXml->name;
 		$serieCvUrl = $serieXml->site_detail_url;
 
 		$serie->setTitle($serieTitle);
-		$serie->setCvUrl($serieCvUrl);			
+		$serie->setCvUrl($serieCvUrl);
 		$serie->save();
-		
+
+		return $serie;
+	}
+
+	private function getIssue($issueXml, $serie)
+	{
 		$issueCvId = $issueXml->id;
 		$issue = IssueQuery::create()->filterByCvId($issueCvId)->findOne();
 
@@ -150,7 +200,19 @@ class IssuesController extends Controller {
 
 		$issueNumber = $issueXml->issue_number;
 		$issueTitle = $issueXml->name;
-		$issuePubDate = $issueXml->store_date;
+		if ($issueXml->store_date != null && $issueXml->store_date != '')
+		{
+			$issuePubDate = $issueXml->store_date;
+		}
+		else if ($issueXml->cover_date != null && $issueXml->cover_date != '')
+		{
+			$issuePubDate = $issueXml->cover_date;
+		}
+		else
+		{
+			$issuePubDate = '0000-00-00';
+		}
+		
 		$issueCvUrl = $issueXml->site_detail_url;
 		
 		$issue->setTitle($issueTitle);
@@ -159,6 +221,8 @@ class IssuesController extends Controller {
 		$issue->setIssueNumber($issueNumber);		
 		$issue->setCvUrl($issueCvUrl);
 		$issue->save();
+
+		return $issue;
 	}
 
 	function toggleIssue($issueId, $add)

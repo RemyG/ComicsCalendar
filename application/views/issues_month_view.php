@@ -20,40 +20,35 @@
 ?>
 </div>
 
-<table class="month-calendar">
+<div class="month-calendar">
 
 	<?php
 
 		$today = date('Y-m-d');
 
 		if ($firstWday > 1)
-		{
-			echo '<tr>';
+		{			
 			for ($i = 1 ; $i < $firstWday ; $i++)
 			{
-				echo '<td class="empty"></td>';
+				echo '<div class="day empty"></div>';
 			}
 		}
 		foreach ($calendar as $dayNb => $day)
 		{
-			if ($day['day']['wday'] == 1)
-			{
-				echo '</tr><tr>';
-			}
-
 			if ($today == $year.'-'.str_pad($month, 2, "0", STR_PAD_LEFT).'-'.str_pad($dayNb, 2, "0", STR_PAD_LEFT))
 			{
-				echo '<td class="today">';
+				echo '<div class="day today">';
 			}
 			else
 			{
-				echo '<td>';
+				echo '<div class="day">';
 			}
 			echo '
 				<div class="date">
 					<span class="day-number">'.$dayNb.'</span>
 					<span class="weekday">'.$day['day']['weekday'].'</span>
-				</div>';
+				</div>
+				<div class="issues">';
 			foreach ($day['issues'] as $issue)
 			{
 				
@@ -82,13 +77,13 @@
 				}
 				echo '</div>';
 			}
-			echo '</td>';
+
+			echo '</div></div>';
 		}
-		echo '</tr>';
 
 	?>
 
-</table>
+</div>
 
 </section>
 

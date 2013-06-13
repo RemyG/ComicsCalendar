@@ -12,7 +12,7 @@ class SeriesController extends Controller {
 		$this->hiddenInitiate();
 		$this->hiddenKeepAlive();
 		$serie = SerieQuery::create()->findPK($id);
-		$query = IssueQuery::create()->orderByPubDate('desc')->orderByIssueNumber('desc');
+		$query = IssueQuery::create()->orderByIssueNumber('desc');
 		$issues = $serie->getIssues($query);
 		$template = $this->loadView('series_show_view');
 		$sessionHelper = $this->loadHelper('Session_helper');
@@ -23,6 +23,12 @@ class SeriesController extends Controller {
 			if ($user != null)
 			{
 				$template->set('user', $user);
+				$userIssues = IssueQuery::create()
+							->filterBySerie($serie)
+							->filterByUser($user)
+							->orderByIssueNumber('desc')
+							->find();
+				$template->set('userIssues', $userIssues);
 			}
 		}
 		$template->set('serie', $serie);
@@ -56,6 +62,7 @@ class SeriesController extends Controller {
 			$c = new Criteria();
 			$crit0 = $c->getNewCriterion(SeriePeer::ADDED_ON, $user->getLastSeenOn(), CRITERIA::GREATER_THAN);
 			$c->add($crit0);
+			$c->addAscendingOrderByColumn(SeriePeer::TITLE); 
 			$newSeries = SeriePeer::doSelect($c);
 			$template->set('newSeries', $newSeries);
 		}
