@@ -85,6 +85,26 @@
 
 </div>
 
+<div class="calendar-navigation">
+<?php
+	$prev = explode("-", $prevMonth);	
+	echo '
+		<div class="prev">
+			<a href="'.BASE_URL.'issues/month/'.$prev[0].'/'.$prev[1].'">
+				<i class="icon-chevron-sign-left"> </i> '.$prev[1].'/'.$prev[0].'
+			</a>
+		</div>';
+	echo '<div class="current">'.$month.'/'.$year.'</div>';
+	$next = explode("-", $nextMonth);
+	echo '
+		<div class="next">
+			<a href="'.BASE_URL.'issues/month/'.$next[0].'/'.$next[1].'">
+				'.$next[1].'/'.$next[0].' <i class="icon-chevron-sign-right"> </i>
+			</a>
+		</div>';
+?>
+</div>
+
 </section>
 
 <script type="text/javascript">
