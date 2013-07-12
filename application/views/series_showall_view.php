@@ -7,7 +7,7 @@
 	foreach ($series as $serie)
 	{
 		$firstChar = $serie->getTitle();
-		$firstChar = $firstChar[0];
+		$firstChar = strtoupper($firstChar[0]);
 		if ($firstChar != $current)
 		{
 			if ($current != "")

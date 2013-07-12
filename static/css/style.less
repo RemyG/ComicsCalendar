@@ -53,7 +53,7 @@ form {
 			width: 250px;
 			text-align: left;
 		}
-		input {
+		input[type=text], input[type=password], input[type=email] {
 			display: inline-block;			
 			width: 250px;
 			height: 30px;
@@ -135,6 +135,7 @@ div.month-calendar {
 	overflow: hidden;
 	div.day {
 		border: 1px solid #ccc;
+		background-color: #fff;
 		&.today {
 			border: 2px solid black;
 		}
@@ -180,7 +181,12 @@ div.month-calendar {
 				}
 			}
 		}
-		@media screen and (max-width: 768px) {
+	}
+}
+
+@media (max-width: 960px) {
+	div.month-calendar {
+		div.day {
 			width: 100%;
 			&.empty {
 				display: none;
@@ -191,7 +197,12 @@ div.month-calendar {
 				overflow: auto;
 			}
 		}
-		@media screen and (min-width: 769px) {
+	}
+}
+
+@media (min-width: 961px) {
+	div.month-calendar {
+		div.day {
 			min-height: 100px;
 			width: 14.11%;
 			float: left;
@@ -209,7 +220,6 @@ div.month-calendar {
 			}
 		}
 	}
-
 }
 
 div.calendar-navigation {
@@ -333,4 +343,13 @@ section.show-serie {
 			}
 		}
 	}
+}
+
+form.legend {
+	text-align: center;
+}
+
+input[type=checkbox] {
+	height: auto;
+	width: auto;
 }

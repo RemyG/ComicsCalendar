@@ -42,6 +42,21 @@
 		}
 		foreach($issues as $issue)
 		{
+			$description = '';
+			if ($issue->getIssueNumber() != null && $issue->getIssueNumber() != '')
+			{
+				$description .= '#'.$issue->getIssueNumber();
+				if ($issue->getTitle() != null && $issue->getTitle() != '')
+				{
+					$description .= ' - '.$issue->getTitle();
+				}
+			}
+			else if ($issue->getTitle() != null && $issue->getTitle() != '')
+			{
+				$description .= $issue->getTitle();
+			}
+			$description .= ', published on '.$issue->getPubDate('Y/m/d');
+			
 			$found = false;
 			foreach ($userIssues as $issueTmp)
 			{
@@ -51,22 +66,20 @@
 					break;
 				}
 			}
-			echo '<div class="issue'.($found ? ' selected' : '').'">';
-			echo '<input type="checkbox" value="'.$issue->getId().'" class="toggleIssue" '.($found ? 'checked' : '').' >';
-			if ($issue->getIssueNumber() != null && $issue->getIssueNumber() != '')
+			if (isset($user))
 			{
-				echo '#'.$issue->getIssueNumber();
-				if ($issue->getTitle() != null && $issue->getTitle() != '')
-				{
-					echo ' - '.$issue->getTitle();
-				}
+				echo '<div class="issue'.($found ? ' selected' : '').'">';
+				echo '<input type="checkbox" id="chkbox_'.$issue->getId().'" value="'.$issue->getId().'" class="toggleIssue" '.($found ? 'checked' : '').' >';
+				echo '<label for="chkbox_'.$issue->getId().'">'.$description.'</label>';
+				echo '</div>';
 			}
-			else if ($issue->getTitle() != null && $issue->getTitle() != '')
+			else
 			{
-				echo $issue->getTitle();
+				echo '<div class="issue">';
+				echo $description;
+				echo '</div>';
 			}
-			echo ', published on '.$issue->getPubDate('Y/m/d');
-			echo '</div>';
+			
 		}
 		echo '</section>';
 
@@ -79,7 +92,7 @@ $('#followthis').click(function() {
 	var id = this.value;
 	var checked = this.checked;
 	var request = $.ajax({
-		url: '<?php echo BASE_URL; ?>series/updateSerie/' + id + '/' + checked,
+		url: '<?php echo BASE_URL; ?>series/toggleSerie/' + id + '/' + checked,
 		type: "GET",
 		dataType: "json"
 	});
@@ -96,13 +109,5 @@ $('input.toggleIssue').click(function() {
 		type: "GET",
 		dataType: "json"
 	});
-	/*request.done(function(data) {
-		displayFeed(feedId, data.html, data.count, data.categorycount, data.valid);
-		$('#overlay').hide();
-	});
-	request.fail(function(jqXHR, textStatus) {
-		$('#overlay').hide();
-		alert("Request failed: " + textStatus);
-	});*/
 })
 </script>

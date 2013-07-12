@@ -1,29 +1,29 @@
 <?php if (isset($newSeries) && $newSeries != null && sizeof($newSeries) > 0) { ?>
 
-<section class="new-series">
-
-	<div class="section-header">New series added since your last visit</div>
-
-	<div class="section">
-
-<?php
-
-	foreach ($newSeries as $serie)
-	{
-		
-		echo '<div class="serie-container">';
-		echo '<div class="serie">';
-		echo '<input type="checkbox" class="updateserie" value="'.$serie->getId().'">';
-		echo '<a href="'.BASE_URL.'series/show/'.$serie->getId().'">'.$serie->getTitle().'</a>';
-		echo '</div>';
-		echo '</div>';
-	}
-
-?>
-
-	</div>
-
-</section>
+	<section class="new-series">
+	
+		<div class="section-header">New series added since your last visit</div>
+	
+		<div class="section">
+	
+	<?php
+	
+		foreach ($newSeries as $serie)
+		{
+			
+			echo '<div class="serie-container">';
+			echo '<div class="serie">';
+			echo '<input type="checkbox" class="toggleserie" value="'.$serie->getId().'">';
+			echo '<a href="'.BASE_URL.'series/show/'.$serie->getId().'">'.$serie->getTitle().'</a>';
+			echo '</div>';
+			echo '</div>';
+		}
+	
+	?>
+	
+		</div>
+	
+	</section>
 
 <?php } ?>
 
@@ -36,7 +36,7 @@
 	foreach ($series as $serie)
 	{
 		$firstChar = $serie->getTitle();
-		$firstChar = $firstChar[0];
+		$firstChar = strtoupper($firstChar[0]);
 		if ($firstChar != $current)
 		{
 			if ($current != "")
@@ -60,11 +60,11 @@
 		echo '<div class="serie'.($found ? ' selected' : '').'">';
 		if ($found)
 		{
-			echo '<input type="checkbox" class="updateserie" value="'.$serie->getId().'" checked>';
+			echo '<input type="checkbox" class="toggleserie" value="'.$serie->getId().'" checked>';
 		}
 		else
 		{
-			echo '<input type="checkbox" class="updateserie" value="'.$serie->getId().'">';
+			echo '<input type="checkbox" class="toggleserie" value="'.$serie->getId().'">';
 		}
 		echo '<a href="'.BASE_URL.'series/show/'.$serie->getId().'">'.$serie->getTitle().'</a>';
 		echo '</div>';
@@ -81,22 +81,14 @@
 </section>
 
 <script type="text/javascript">
-$('input.updateserie').click(function() {
+$('input.toggleserie').click(function() {
 	var id = this.value;
 	var checked = this.checked;
 	$(this).parents('div.serie').toggleClass("selected");
 	var request = $.ajax({
-		url: '<?php echo BASE_URL; ?>series/updateSerie/' + id + '/' + checked,
+		url: '<?php echo BASE_URL; ?>series/toggleSerie/' + id + '/' + checked,
 		type: "GET",
 		dataType: "json"
 	});
-	/*request.done(function(data) {
-		displayFeed(feedId, data.html, data.count, data.categorycount, data.valid);
-		$('#overlay').hide();
-	});
-	request.fail(function(jqXHR, textStatus) {
-		$('#overlay').hide();
-		alert("Request failed: " + textStatus);
-	});*/
 })
 </script>
