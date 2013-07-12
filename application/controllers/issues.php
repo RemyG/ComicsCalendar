@@ -1,16 +1,32 @@
 <?php
 
+/**
+ * 
+ * @author remyg
+ *
+ */
 class IssuesController extends Controller {
 	
+	/**
+	 * 
+	 * @param string $year
+	 * @param string $month
+	 */
 	function index($year = null, $month = null)
 	{
 		$this->month($year, $month);
 	}
 
+	/**
+	 * 
+	 * @param string $year
+	 * @param string $month
+	 */
 	function month($year = null, $month = null)
 	{
 		$this->hiddenInitiate();
 		$this->hiddenKeepAlive();
+		
 		if ($year == null)
 		{
 			$year = date('Y');
@@ -20,19 +36,22 @@ class IssuesController extends Controller {
 			$month = date('m');
 		}
 
-		$first = $this->firstOfMonth($year, $month);
-		$last = $this->lastOfMonth($year, $month);
+		$dateHelper = $this->loadHelper("Date_helper");
+		
+		$first = $dateHelper->firstOfMonth($year, $month);
+		$last = $dateHelper->lastOfMonth($year, $month);
 
 		$calendar = array();
 
 		$sessionHelper = $this->loadHelper('Session_helper');
 		$userLogin = $sessionHelper->get('user-login');
+		
 		$user = UserQuery::create()->findOneByLogin($userLogin);
 
 		for ($i = $first['mday'] ; $i <= $last['mday'] ; $i++)
 		{
 			$dayNb = str_pad($i, 2, '0', STR_PAD_LEFT);
-			$day = $this->getDay($year, $month, $dayNb);
+			$day = $dateHelper->getDay($year, $month, $dayNb);
 			$calendar[$i]['day'] = $day;
 			$calendar[$i]['issues'] = array();
 			if ($user != null)
@@ -57,32 +76,35 @@ class IssuesController extends Controller {
 		$template->set('firstWday', $first['wday']);
 		$template->set('month', $month);
 		$template->set('year', $year);
-		$template->set('nextMonth', $this->getNextMonth($year, $month));
-		$template->set('prevMonth', $this->getPrevMonth($year, $month));
+		$template->set('nextMonth', $dateHelper->getNextMonth($year, $month));
+		$template->set('prevMonth', $dateHelper->getPrevMonth($year, $month));
 		$template->render();
 	}
 
+	/**
+	 * Update all existing issues
+	 */
 	function updateAllIssues()
 	{
-		/*$issues = IssueQuery::create()->find());*/
-		$issues = IssueQuery::create()->findByPubDate('2013-06-13');
-		/*$issues = IssueQuery::create()->findBySerieId(638);*/
+		$issues = IssueQuery::create()->find();
+// 		$issues = IssueQuery::create()->findByPubDate('2013-06-13');
+// 		$issues = IssueQuery::create()->findBySerieId(638);
 		foreach ($issues as $issue)
 		{
 			set_time_limit(30);
 			$xml = simplexml_load_file('http://www.comicvine.com/api/issue/4000-'.$issue->getCvId().'/?api_key='.COMIC_VINE_API_KEY);
 			if ($xml->error == 'OK' && (int) $xml->number_of_page_results == 1)
 			{
-				$this->importIssue($xml->results);
+				$this->importIssueFromXml($xml->results);
 			}
 		}
 	}
 
+	/**
+	 * Retrieve all issues for all the existing series
+	 */
 	function updateAllSeries()
 	{
-		/*$serie1 = SerieQuery::create()->findPK(411);
-		$serie2 = SerieQuery::create()->findPK(388);
-		$series = array($serie1, $serie2);*/
 		$series = SerieQuery::create()->find();
 		foreach ($series as $serie)
 		{
@@ -92,31 +114,38 @@ class IssuesController extends Controller {
 				set_time_limit(30);
 				$xml = simplexml_load_file('http://www.comicvine.com/api/issues/?api_key='.COMIC_VINE_API_KEY.'&filter=volume:'.$serie->getCvId().'&offset='.$offset);
 				$offset += 100;
-				foreach($xml->results->issue as $issue)
+				foreach($xml->results->issue as $issueXml)
 				{
-					$this->importIssue($issue);
+					$this->saveIssueFromXml($issueXml, $serie);
 				}
 			}
 			while ($xml->error == 'OK' && $xml->number_of_page_results >= 100);
 		}
 	}
 
+	/**
+	 * 
+	 */
 	function importTwoWeeksStoreIssues()
 	{
 		$date = date('Ymd');
 		$this->importIssuesForDate($date);
 		$this->importLastWeekIssues();
-		$this->importNextWeekIssues();
+// 		$this->importNextWeekIssues();
 	}
 
-	/*function importTwoWeeksIssues()
-	{
-		$date = date('Ymd');
-		$this->importIssuesForDate($date);
-		$this->importLastWeekIssues();
-		$this->importNextWeekIssues();
-	}*/
+// 	function importTwoWeeksIssues()
+// 	{
+// 		$date = date('Ymd');
+// 		$this->importIssuesForDate($date);
+// 		$this->importLastWeekIssues();
+// 		$this->importNextWeekIssues();
+// 	}
 
+	/**
+	 * 
+	 * @param bool $store should the search be based on the store date instead of the cover date
+	 */
 	private function importLastWeekIssues($store = true)
 	{
 		for ($i = 1 ; $i <= 7 ; $i++)
@@ -126,6 +155,10 @@ class IssuesController extends Controller {
 		}
 	}
 
+	/**
+	 * 
+	 * @param bool $store should the search be based on the store date instead of the cover date
+	 */
 	private function importNextWeekIssues($store = true)
 	{
 		for ($i = 1 ; $i <= 7 ; $i++)
@@ -135,6 +168,13 @@ class IssuesController extends Controller {
 		}
 	}
 
+	/**
+	 * Import all issues for the specified date
+	 * 
+	 * @param unknown $date
+	 * @param number $offset the offset of the search (each API result page can only contain 100 results)
+	 * @param bool $store should the search be based on the store date instead of the cover date
+	 */
 	private function importIssuesForDate($date, $offset = 0, $store = true)
 	{
 		if ($store)
@@ -149,7 +189,7 @@ class IssuesController extends Controller {
 		{
 			foreach($xml->results->issue as $issue)
 			{
-				$this->importIssue($issue);
+				$this->importIssueFromXml($issue);
 			}
 			if ((int) $xml->number_of_page_results == 100)
 			{
@@ -158,23 +198,37 @@ class IssuesController extends Controller {
 		}
 	}
 
-	private function importIssue($issueXml)
+	/**
+	 * 
+	 * 
+	 * @param unknown $issueXml
+	 */
+	private function importIssueFromXml($issueXml)
 	{
 		$serieXml = $issueXml->volume;
-		$serie = $this->getSerie($serieXml);
-		$issue = $this->getIssue($issueXml, $serie);
+		$serie = $this->saveSerieFromXml($serieXml);
+		$issue = $this->saveIssueFromXml($issueXml, $serie);
 	}
 
-	private function getSerie($serieXml)
+	/**
+	 * Update or create a serie, based on the input XML, then retrieve the issues for this serie
+	 * 
+	 * @param SimpleXMLElement $serieXml
+	 * @return Serie the updated/created serie
+	 */
+	private function saveSerieFromXml($serieXml)
 	{
 		$serieCvId = $serieXml->id;
 		$serie = SerieQuery::create()->findOneByCvId($serieCvId);
+
+		$importSerie = false;
 
 		if ($serie == null)
 		{
 			$serie = new Serie();
 			$serie->setAddedOn(time());
 			$serie->setCvId($serieCvId);
+			$importSerie = true;
 		}
 
 		$serieTitle = $serieXml->name;
@@ -184,10 +238,22 @@ class IssuesController extends Controller {
 		$serie->setCvUrl($serieCvUrl);
 		$serie->save();
 
+		if ($importSerie)
+		{
+			$this->retrieveIssuesForSerie($serie);
+		}
+
 		return $serie;
 	}
 
-	private function getIssue($issueXml, $serie)
+	/**
+	 * Update or create an issue, based on the input XML
+	 * 
+	 * @param SimpleXMLElement $issueXml
+	 * @param Serie $serie
+	 * @return Issue the updated/created issue
+	 */
+	private function saveIssueFromXml($issueXml, $serie)
 	{
 		$issueCvId = $issueXml->id;
 		$issue = IssueQuery::create()->filterByCvId($issueCvId)->findOne();
@@ -225,47 +291,79 @@ class IssuesController extends Controller {
 		return $issue;
 	}
 
+	/**
+	 * Create the serie based on the ComicVine volumet ID if it doesn't exist, then retrieve all issues for this serie 
+	 * 
+	 * @param int $serieCvId the ComicVine volume ID for this serie
+	 */
+	function importSerie($serieCvId)
+	{
+		$serie = SerieQuery::create()->findOneByCvId($serieCvId);
+		if ($serie == null)
+		{
+			set_time_limit(30);
+			$xml = simplexml_load_file('http://www.comicvine.com/api/volume/4050-'.$serieCvId.'/?api_key='.COMIC_VINE_API_KEY);
+			if ($xml->error == 'OK' && (int) $xml->number_of_page_results == 1)
+			{
+				$serie = $this->saveSerieFromXml($xml->results);
+			}
+		}
+
+		$this->retrieveIssuesForSerie($serie);
+	}
+	
+	/**
+	 * Retrieve all issues for the specified serie
+	 * 
+	 * @param Serie $serie
+	 */
+	function retrieveIssuesForSerie($serie)
+	{
+		$offset = 0;
+		do
+		{
+			set_time_limit(30);
+			$xml = simplexml_load_file('http://www.comicvine.com/api/issues/?api_key='.COMIC_VINE_API_KEY.'&filter=volume:'.$serie->getCvId().'&offset='.$offset);
+			$offset += 100;
+			foreach($xml->results->issue as $issueXml)
+			{
+				$this->saveIssueFromXml($issueXml, $serie);
+			}
+		}
+		while ($xml->error == 'OK' && $xml->number_of_page_results >= 100);
+	}
+
+	/**
+	 * Add or remove an issue for the current user
+	 * 
+	 * @param int $issueId
+	 * @param string $add "true" or "false"
+	 */
 	function toggleIssue($issueId, $add)
 	{
 		$this->hiddenInitiate();
 		$this->hiddenKeepAlive();
+		
 		$sessionHelper = $this->loadHelper('Session_helper');
+		
 		$userLogin = $sessionHelper->get('user-login');
+		
 		$user = UserQuery::create()->findOneByLogin($userLogin);
 		$issue = IssueQuery::create()->findPK($issueId);
-		if ($add == "true")
+		
+		if ($user != null && $issue != null)
 		{
-			$user->addIssue($issue);
-			$user->save();
+			if ($add == "true")
+			{
+				$user->addIssue($issue);
+				$user->save();
+			}
+			else
+			{
+				$user->removeIssue($issue);
+				$user->save();
+			}
 		}
-		else
-		{
-			$user->removeIssue($issue);
-			$user->save();
-		}
-	}
-
-	private function firstOfMonth($year, $month) {
-		return getdate(mktime(0, 0, 0, $month, 1, $year));
-	}
-
-	private function lastOfMonth($year, $month) {
-		return getdate(mktime(0, 0, 0, $month+1, 0, $year));
-	}
-
-	private function getDay($year, $month, $day)
-	{
-		return getdate(mktime(0, 0, 0, $month, $day, $year));
-	}
-
-	private function getNextMonth($year, $month)
-	{
-		return date('Y-m', mktime(0, 0, 0, $month + 1, 1, $year));
-	}
-
-	private function getPrevMonth($year, $month)
-	{
-		return date('Y-m', mktime(0, 0, 0, $month - 1, 1, $year));
 	}
 
 }
