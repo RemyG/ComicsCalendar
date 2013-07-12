@@ -7,6 +7,8 @@
 	<meta name="author" content="<?php echo isset($pageAuthor) ? $pageAuthor : DEFAULT_AUTHOR; ?>">
 
 	<title><?php echo isset($pageTitle) ? $pageTitle : DEFAULT_TITLE; ?></title>    
+	
+	<link rel="icon" type="image/png" href="favicon.png">
 
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>static/css/font-awesome.min.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>static/css/style.less" type="text/less" media="screen" />
