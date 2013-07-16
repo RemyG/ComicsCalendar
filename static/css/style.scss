@@ -1,0 +1,438 @@
+$title-font: Bangers, cursive;
+
+$red-color: #F0141D;
+$red-color-hover: #e74c3c;
+
+* {
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;         /* Opera/IE 8+ */
+
+	font-family: 'Roboto', sans-serif;
+}
+
+html {
+	background-image: url(/static/images/cream_pixels.png);
+	background-repeat: repeat;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	text-decoration: none;
+	color: $red-color;
+	&:hover {
+		color: $red-color-hover;
+	}
+}
+
+
+
+header.header-bar {
+	background-color: #fff;
+	overflow: hidden;
+	padding: 20px;
+	line-height: 30px;
+	h1 {
+		a {
+			text-decoration: none;
+			color: $red-color;
+			font-family: $title-font;
+			font-size: 36px;
+			letter-spacing: 0.1em;
+			font-weight: lighter;
+			span {
+				font-size: 44px;
+				font-family: inherit;
+			}
+		}
+		float: left;
+		padding: 0px;
+		margin: 0px;		
+	}
+	nav {
+		float: right;
+		vertical-align: baseline;
+		padding: 0px;
+		margin: 0px;
+		a {
+			font-family: $title-font;
+			letter-spacing: 1px;
+			display: block;
+			line-height: 30px;
+			padding: 0 15px;
+			margin-right: 15px;
+			float: left;
+			text-decoration: none;
+			color: #fff;
+			background-color: $red-color;
+			&:hover {
+				background-color: $red-color-hover;
+			}
+		}
+	}
+}
+
+footer {
+	margin: 20px 0;
+	p {
+		font-size: 10px;
+		margin: 10px;
+		text-align: center;
+	}
+}
+
+div.month-calendar {
+	overflow: hidden;
+	div.day {
+		border: 1px solid #ccc;
+		background-color: #fff;
+		&.today {
+			border: 2px solid black;
+		}
+		div.date {
+			background-color: #ccc;
+			padding-left: 5px;
+			span.day-number {
+				font-size: 20px;
+				font-weight: bold;
+			}
+			span.weekday {
+				font-size: 12px;
+			}
+		}
+		div.issue {
+			input[type=checkbox] {
+				-ms-transform: scale(0.7); /* IE */
+				-moz-transform: scale(0.7); /* FF */
+				-webkit-transform: scale(0.7); /* Safari and Chrome */
+				-o-transform: scale(0.7); /* Opera */
+				margin: 0;
+				margin-top: -3px;
+				padding: 0;
+				/*display: inline-block;*/
+				vertical-align: middle;
+			}
+			a {
+				/*display: inline-block;*/
+			}
+			padding: 2px;
+			font-size: 10px;
+			min-height: 30px;
+			&:nth-child(odd) {
+				background-color: #ddd;
+			}
+			&:nth-child(even) {
+				background-color: #eee;
+			}
+			&.read {
+				color: #777;
+				a {
+					color: inherit;
+				}
+			}
+		}
+	}
+}
+
+form {
+	div.input-group {
+		overflow: hidden;
+		margin-bottom: 5px;
+		label {
+			line-height: 30px;
+		}
+		input[type=text], input[type=password], input[type=email] {
+			height: 30px;
+		}
+		input[type=submit] {
+			height: auto;
+			margin-top: 15px;
+		    font-weight: bold;
+		    padding: 6px 15px;
+		    cursor: pointer;		 
+		    text-align: center;
+		    border: none;
+		    background-color: $red-color; 
+		    color: #fff;
+		    &:hover, &:active {
+		    	background-color: $red-color-hover; 		    	
+		    }
+		}
+	}
+}
+
+section.manage-series,
+section.show-series,
+section.new-series {
+	div.section-header {
+		border: 1px solid #ccc;
+		text-align: center;
+		height: 40px;
+		line-height: 40px;
+		margin: 2px;
+		margin-top: 15px;
+		margin-bottom: 5px;
+		font-weight: bold;
+		background-color: #ddd;
+	}
+	div.section {
+		overflow: hidden;
+		div.serie-container {			
+			width: 25%;
+			float: left;
+			div.serie {
+				font-weight: normal;
+				background-color: #fff;
+				&.selected {
+					font-weight: bold;
+					background-color: $red-color;
+					a {
+						color: #fff;
+					}
+				}
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: clip ellipsis;
+				input[type=checkbox] {
+					margin: 0;
+					display: inline-block;
+					position: relative;
+					top: 2px;
+					margin: 0 3px;
+				}
+				vertical-align: middle;
+				font-size: 12px;
+				margin: 2px;
+				border: 1px solid #ccc;
+				height: 40px;
+				line-height: 40px;
+				padding: 0 5px;
+			}
+		}
+	}
+}
+
+section.manage-series,
+section.show-series,
+section.new-series {
+	div.section {
+		div.serie-container {
+			@media screen and (max-width: 480px) {
+				width: 100%;
+			}
+			@media screen and (min-width: 480px) and (max-width: 768px) {
+				width: 50%;
+			}
+			@media screen and (min-width: 769px) and (max-width: 980px){
+				width: 33%;
+			}
+			@media screen and (min-width: 981px){
+				width: 25%;
+			}
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	div.month-calendar {
+		div.day {
+			width: 100%;
+			&.empty {
+				display: none;
+			}
+			div.issues {
+				min-height: 10px;
+				max-height: 75px;
+				overflow: auto;
+			}
+		}
+	}
+	header.header-bar {
+		padding-bottom: 0;
+		h1 {
+			margin-bottom: 15px;
+			float: none;
+		}
+		nav {
+			display: block;
+			float: none;
+			a {
+				margin-bottom: 10px;
+			}
+		}
+	}
+	form.user-form {
+		width: 100%;
+		float: none;
+		padding: 10px;
+		margin-bottom: 20px;
+		legend {
+			font-size: 20px;
+		}
+		input[type=text], input[type=password], input[type=email] {
+			display: block;
+			min-width: 240px;
+			width: 75%;
+		}
+		input[type=submit] {
+			min-width: 240px;
+			width: 75%;
+		}
+		
+	}
+}
+
+@media (min-width: 769px) {
+	div.month-calendar {
+		div.day {
+			min-height: 100px;
+			width: 14.11%;
+			float: left;
+			margin: 0.1%;
+			&:nth-child(7n) {
+				margin-right: 0;
+			}
+			&:nth-child(7n+1) {
+				clear: both;
+				margin-left: 0;
+			}
+			&.empty {
+				border: none;
+				background-color: transparent;
+			}
+		}
+	}
+	form.user-form {
+		width: 50%;
+		float: left;
+	}
+	
+	#recaptcha_area {
+		margin: 0 auto;
+	}
+	
+	form {
+		legend {
+			text-align: center;
+		}
+		div.input-group {
+			text-align: center;
+			overflow: hidden;
+			margin-bottom: 5px;
+			label {
+				display: inline-block;
+				line-height: 30px;
+				width: 250px;
+				text-align: left;
+			}
+			input[type=text], input[type=password], input[type=email] {
+				display: inline-block;			
+				width: 250px;
+				height: 30px;
+			}
+			input[type=submit] {
+				height: auto;
+				margin-left: 254px;
+				width: 246px;
+				margin-top: 15px;
+			    font-weight: bold;
+			    padding: 4px 5px;
+			    cursor: pointer;		 
+			    text-align: center;
+			    border: none;
+			    background-color: $red-color; 
+			    color: #fff;
+			    &:hover, &:active {
+			    	background-color: $red-color-hover; 		    	
+			    }
+			}
+		}
+	}
+}
+
+div.calendar-navigation {
+	margin: 20px 0px;
+	border: 1px solid #bbb;
+	background-color: #eee;
+	overflow: hidden;
+	div {
+		line-height: 30px;
+	}
+	div.prev, div.next {
+		float: left;
+		width: 25%;
+		text-align: center;
+		a {
+			text-decoration: none;
+			display: block;
+			color: inherit;
+			&:hover {
+				background-color: #ccc;
+			}
+		}
+	}
+	div.current {
+		float: left;
+		width: 50%;
+		text-align: center;
+		border-left: 1px solid #bbb;
+		border-right: 1px solid #bbb;
+	}
+}
+
+section.calendar {
+	padding: 10px;
+}
+
+section.manage-series,
+section.new-series,
+section.show-series,
+section.show-serie,
+section.about {
+	padding: 20px;
+}
+
+
+
+section.show-serie {
+	> header {
+		h1.title {
+			margin-top: 0;
+			font-size: 36px;
+			font-family: $title-font;
+			letter-spacing: 1px;
+			font-weight: normal;
+		}
+	}
+	div.cv-url {
+		margin: 20px 0;
+	}
+	section.follow-serie {
+		margin: 15px 0;
+	}
+	section.issues {
+		> header {
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+		div.issue {
+			margin-left: 10px;
+			&.selected {
+				color: #ccc;
+			}
+		}
+	}
+}
+
+form.legend {
+	text-align: center;
+}
+
+input[type=checkbox] {
+	height: auto;
+	width: auto;
+}
