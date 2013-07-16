@@ -2,12 +2,12 @@
 	<fieldset>
 		<legend>Log in</legend>
 		<div class="input-group">
-		<label>Login</label>
-		<input type="text" name="login" autofocus required>
+		<label for="login-login">Login</label>
+		<input type="text" name="login" id="login-login" autofocus required>
 		</div>
 		<div class="input-group">
-		<label>Password</label>
-		<input type="password" name="password" required>
+		<label for="login-password">Password</label>
+		<input type="password" name="password" id="login-password" required>
 		</div>
 		<div class="input-group">			
 			<input type="checkbox" id="rememberme" name="rememberme">
@@ -23,24 +23,24 @@
 	<fieldset>
 		<legend>Sign up</legend>
 		<div class="input-group">
-			<label>Login</label>
-			<input type="text" name="login" required>
+			<label for="signup-login">Login</label>
+			<input type="text" name="login" id="signup-login" required>
 		</div>
 		<div class="input-group">
-			<label>Email</label>
+			<label for="email">Email</label>
 			<input type="email" id="email" name="email" required>
 		</div>
 		<div class="input-group">
-			<label>Confirm your email</label>
-			<input type="email" name="confirmEmail" required oninput="checkEmail(this)">
+			<label for="signup-email2">Confirm your email</label>
+			<input type="email" name="confirmEmail" id="signup-email2" required oninput="checkEmail(this)">
 		</div>
 		<div class="input-group">
-			<label>Password</label>
+			<label for="password">Password</label>
 			<input type="password" id ="password" name="password" required>
 		</div>
 		<div class="input-group">
-			<label>Confirm your password</label>
-			<input type="password" name="confirmPassword" required oninput="checkPassword(this)">
+			<label for="signup-password2">Confirm your password</label>
+			<input type="password" name="confirmPassword" id="signup-password2" required oninput="checkPassword(this)">
 		</div>
 		<div class="input-group">
 			<?php echo recaptcha_get_html(RECAPTCHA_PUBLIC_KEY); ?>
