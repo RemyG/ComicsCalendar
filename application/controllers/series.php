@@ -70,6 +70,10 @@ class SeriesController extends Controller {
 
 		$sessionHelper = $this->loadHelper('Session_helper');
 		$userLogin = $sessionHelper->get('user-login');
+		if ($userLogin == null)
+		{
+			$this->redirect("users/login");
+		}
 		$user = UserQuery::create()->findOneByLogin($userLogin);
 
 		if ($user->getLastSeenOn() != null)
