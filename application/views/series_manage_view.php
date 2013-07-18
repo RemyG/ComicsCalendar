@@ -79,16 +79,3 @@
 ?>
 
 </section>
-
-<script type="text/javascript">
-$('input.toggleserie').click(function() {
-	var id = this.value;
-	var checked = this.checked;
-	$(this).parents('div.serie').toggleClass("selected");
-	var request = $.ajax({
-		url: '<?php echo BASE_URL; ?>series/toggleSerie/' + id + '/' + checked,
-		type: "GET",
-		dataType: "json"
-	});
-})
-</script>

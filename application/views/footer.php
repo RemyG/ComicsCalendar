@@ -5,9 +5,8 @@
 </footer>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-<script>
-  $(document).ready(function() {});
-</script>
+
+<?php include_once ROOT_DIR.'static/js/comicscalendar.js.php';?>
 
 </body>
 </html>

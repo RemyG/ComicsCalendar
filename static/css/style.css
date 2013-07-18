@@ -97,17 +97,14 @@ div.month-calendar {
         margin: 0;
         margin-top: -3px;
         padding: 0;
-        /*display: inline-block;*/
         vertical-align: middle; }
-      div.month-calendar div.day div.issue a {
-        /*display: inline-block;*/ }
       div.month-calendar div.day div.issue:nth-child(odd) {
         background-color: #ddd; }
       div.month-calendar div.day div.issue:nth-child(even) {
         background-color: #eee; }
-      div.month-calendar div.day div.issue.read {
+      div.month-calendar div.day div.issue.selected {
         color: #777; }
-        div.month-calendar div.day div.issue.read a {
+        div.month-calendar div.day div.issue.selected a {
           color: inherit; }
 
 form div.input-group {
@@ -115,7 +112,9 @@ form div.input-group {
   margin-bottom: 5px; }
   form div.input-group label {
     line-height: 30px; }
-  form div.input-group input[type=text], form div.input-group input[type=password], form div.input-group input[type=email] {
+  form div.input-group input[type=text],
+  form div.input-group input[type=password],
+  form div.input-group input[type=email] {
     height: 30px; }
   form div.input-group input[type=submit] {
     height: auto;

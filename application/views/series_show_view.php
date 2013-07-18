@@ -69,7 +69,7 @@
 			if (isset($user))
 			{
 				echo '<div class="issue'.($found ? ' selected' : '').'">';
-				echo '<input type="checkbox" id="chkbox_'.$issue->getId().'" value="'.$issue->getId().'" class="toggleIssue" '.($found ? 'checked' : '').' >';
+				echo '<input type="checkbox" id="chkbox_'.$issue->getId().'" value="'.$issue->getId().'" class="toggleissue" '.($found ? 'checked' : '').' >';
 				echo '<label for="chkbox_'.$issue->getId().'">'.$description.'</label>';
 				echo '</div>';
 			}
@@ -86,28 +86,3 @@
 	?>
 
 </section>
-
-<script type="text/javascript">
-$('#followthis').click(function() {
-	var id = this.value;
-	var checked = this.checked;
-	var request = $.ajax({
-		url: '<?php echo BASE_URL; ?>series/toggleSerie/' + id + '/' + checked,
-		type: "GET",
-		dataType: "json"
-	});
-})
-</script>
-
-<script type="text/javascript">
-$('input.toggleIssue').click(function() {
-	var id = this.value;
-	var checked = this.checked;
-	$(this).parents('div.issue').toggleClass("selected");
-	var request = $.ajax({
-		url: '<?php echo BASE_URL; ?>issues/toggleIssue/' + id + '/' + checked,
-		type: "GET",
-		dataType: "json"
-	});
-})
-</script>

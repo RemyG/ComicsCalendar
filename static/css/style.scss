@@ -7,7 +7,6 @@ $red-color-hover: #e74c3c;
 	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
 	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
 	box-sizing: border-box;         /* Opera/IE 8+ */
-
 	font-family: 'Roboto', sans-serif;
 }
 
@@ -28,8 +27,6 @@ a {
 		color: $red-color-hover;
 	}
 }
-
-
 
 header.header-bar {
 	background-color: #fff;
@@ -113,11 +110,7 @@ div.month-calendar {
 				margin: 0;
 				margin-top: -3px;
 				padding: 0;
-				/*display: inline-block;*/
 				vertical-align: middle;
-			}
-			a {
-				/*display: inline-block;*/
 			}
 			padding: 2px;
 			font-size: 10px;
@@ -128,7 +121,7 @@ div.month-calendar {
 			&:nth-child(even) {
 				background-color: #eee;
 			}
-			&.read {
+			&.selected {
 				color: #777;
 				a {
 					color: inherit;
@@ -145,7 +138,9 @@ form {
 		label {
 			line-height: 30px;
 		}
-		input[type=text], input[type=password], input[type=email] {
+		input[type=text], 
+		input[type=password], 
+		input[type=email] {
 			height: 30px;
 		}
 		input[type=submit] {
@@ -395,8 +390,6 @@ section.show-serie,
 section.about {
 	padding: 20px;
 }
-
-
 
 section.show-serie {
 	> header {
