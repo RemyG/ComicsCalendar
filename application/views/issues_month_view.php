@@ -2,7 +2,7 @@
 
 	<div class="calendar-navigation">
 	<?php
-		$prev = explode("-", $prevMonth);	
+		$prev = explode("-", $prevMonth);
 		echo '
 			<div class="prev">
 				<a href="'.BASE_URL.'issues/month/'.$prev[0].'/'.$prev[1].'">
@@ -26,8 +26,13 @@
 	
 			$today = date('Y-m-d');
 	
+			if ($firstWday == 0)
+			{
+				$firstWday = 7;
+			}
+			
 			if ($firstWday > 1)
-			{			
+			{
 				for ($i = 1 ; $i < $firstWday ; $i++)
 				{
 					echo '<div class="day empty"></div>';
