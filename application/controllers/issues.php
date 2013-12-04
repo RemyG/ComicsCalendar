@@ -1,9 +1,9 @@
 <?php
 
 /**
+ * Controller for the Issue class.
  * 
- * @author remyg
- *
+ * @author RemyG
  */
 class IssuesController extends Controller {
 	
@@ -87,8 +87,6 @@ class IssuesController extends Controller {
 	function updateAllIssues()
 	{
 		$issues = IssueQuery::create()->find();
-// 		$issues = IssueQuery::create()->findByPubDate('2013-06-13');
-// 		$issues = IssueQuery::create()->findBySerieId(638);
 		foreach ($issues as $issue)
 		{
 			set_time_limit(30);
@@ -365,7 +363,6 @@ class IssuesController extends Controller {
 			}
 		}
 	}
-
 }
 
 ?>

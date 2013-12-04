@@ -92,7 +92,7 @@
 	
 	<div class="calendar-navigation">
 	<?php
-		$prev = explode("-", $prevMonth);	
+		$prev = explode("-", $prevMonth);
 		echo '
 			<div class="prev">
 				<a href="'.BASE_URL.'issues/month/'.$prev[0].'/'.$prev[1].'">

@@ -1,9 +1,24 @@
 <?php
 
+/**
+ * String sanitizer helper.
+ * 
+ * @author RemyG
+ */
 class Sanitize_helper {
 
+	/**
+	 * Clean an input string by stripping out the Javascript, the HTML tags, the style tags and the multi-line comments.
+	 * 
+	 * @param string $input the string to sanitize
+	 * @return string the sanitized string
+	 */
 	function cleanInput($input)
 	{
+		if (get_magic_quotes_gpc())
+		{
+			$input = stripslashes($input);
+		}
 		$search = array(
 			'@<script[^>]*?>.*?</script>@si',   // Strip out javascript
 			'@<[\/\!]*?[^<>]*?>@si',            // Strip out HTML tags
@@ -14,6 +29,12 @@ class Sanitize_helper {
 		return $output;
 	}
 
+	/**
+	 * Clean an input array or string by stripping out the Javascript, the HTML tags, the style tags and the multi-line comments.
+	 * 
+	 * @param string|array $input the string or array of strings to sanitize
+	 * @return string|array the string or array of sanitized elements
+	 */
 	function sanitize($input)
 	{
 		if (is_array($input))
@@ -25,12 +46,7 @@ class Sanitize_helper {
 		}
 		else
 		{
-			if (get_magic_quotes_gpc())
-			{
-				$input = stripslashes($input);
-			}
-			$input  = $this->cleanInput($input);
-			$output = $input;
+			$output  = $this->cleanInput($input);
 		}
 		return $output;
 	}
