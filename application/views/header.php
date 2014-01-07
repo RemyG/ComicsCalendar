@@ -28,6 +28,7 @@
 			if (isset($_SESSION['user-login']))
 			{
 				echo '<a href="'.BASE_URL.'series/manage">Manage my series</a>';
+				echo '<a href="'.BASE_URL.'advanced">Advanced</a>';
 				echo '<a href="'.BASE_URL.'users/logout">Logout</a>';
 			}
 			else

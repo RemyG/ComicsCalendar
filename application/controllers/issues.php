@@ -306,8 +306,20 @@ class IssuesController extends Controller {
 				$serie = $this->saveSerieFromXml($xml->results);
 			}
 		}
+		
+		$result = array();
+		
+		if ($serie != null)
+		{
+			$result['serieid'] = $serie->getId();
+			$result['serietitle'] = $serie->getTitle();
+			$this->retrieveIssuesForSerie($serie);
+			$serie = SerieQuery::create()->findOneByCvId($serieCvId);
+			$result['issuesnb'] = count($serie->getIssues());
+		}
+		
+		echo json_encode($result);
 
-		$this->retrieveIssuesForSerie($serie);
 	}
 	
 	/**

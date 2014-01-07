@@ -387,8 +387,19 @@ section.manage-series,
 section.new-series,
 section.show-series,
 section.show-serie,
-section.about {
+section.about,
+section.advanced {
 	padding: 20px;
+}
+
+#loading {
+	cursor: wait;
+    background:#ffffff url('../images/ajax-loader.gif') no-repeat center center;
+    filter: alpha(opacity=80);
+    opacity: 0.80;
+    position: absolute;
+    z-index: 10000;
+    display: none;
 }
 
 section.show-serie {

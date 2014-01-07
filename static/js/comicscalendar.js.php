@@ -29,4 +29,31 @@
 			dataType: "json"
 		});
 	})
+	
+	$('#serie-import').click(function(e) {
+		e.preventDefault();
+		$('#loading').css({
+		    height: $('#loading').parent().height(), 
+		    width: $('#loading').parent().width()
+		});
+		$('#loading').show();
+		var id = $('#serie-id').val();
+		var request = $.ajax({
+			url: '<?php echo BASE_URL; ?>issues/importSerie/' + id,
+			type: "GET",
+			dataType: "json"
+		}).done(function(data) {
+			$('#serie-title').html(data.serietitle);
+			$('#issues-nb').html(data.issuesnb);
+			$('#loading').hide();
+			$( "#dialog-message" ).dialog({
+				modal: true,
+				buttons: {
+					Ok: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		});
+	})
 </script>
