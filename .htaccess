@@ -1,7 +1,11 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
+
+RewriteCond %{HTTPS} off
+RewriteRule ^user/login https://%{HTTP_HOST}/user/login [L,R=301]
+
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d 
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . index.php [L]
 </IfModule>
 

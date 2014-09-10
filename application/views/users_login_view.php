@@ -43,7 +43,7 @@
 			<input type="password" name="confirmPassword" id="signup-password2" required oninput="checkPassword(this)">
 		</div>
 		<div class="input-group">
-			<?php echo recaptcha_get_html(RECAPTCHA_PUBLIC_KEY); ?>
+			<?php echo recaptcha_get_html(RECAPTCHA_PUBLIC_KEY, null, true); ?>
 		</div>
 		<div class="input-group">
 			<input type="submit" name="formsignup" value="Sign up">
