@@ -1,4 +1,4 @@
-<form method="post" action="<?php echo BASE_URL; ?>users/login" class="user-form">
+<form method="post" action="/users/login" class="user-form">
 	<fieldset>
 		<legend>Log in</legend>
 		<div class="input-group">
@@ -9,7 +9,7 @@
 		<label for="login-password">Password</label>
 		<input type="password" name="password" id="login-password" required>
 		</div>
-		<div class="input-group">			
+		<div class="input-group">
 			<input type="checkbox" id="rememberme" name="rememberme">
 			<label for="rememberme">Remember me</label>
 		</div>
@@ -19,7 +19,7 @@
 	</fieldset>
 </form>
 
-<form method="post" action="<?php echo BASE_URL; ?>users/signup" class="user-form">
+<form method="post" action="/users/signup" class="user-form">
 	<fieldset>
 		<legend>Sign up</legend>
 		<div class="input-group">
@@ -54,18 +54,18 @@
 <script>
 function checkEmail(input) {
   if (input.value != document.getElementById('email').value) {
-    input.setCustomValidity('The two email addresses must match.');
+	input.setCustomValidity('The two email addresses must match.');
   } else {
-    // input is valid -- reset the error message
-    input.setCustomValidity('');
+	// input is valid -- reset the error message
+	input.setCustomValidity('');
   }
 }
 function checkPassword(input) {
   if (input.value != document.getElementById('password').value) {
-    input.setCustomValidity('The two passwords must match.');
+	input.setCustomValidity('The two passwords must match.');
   } else {
-    // input is valid -- reset the error message
-    input.setCustomValidity('');
+	// input is valid -- reset the error message
+	input.setCustomValidity('');
   }
 }
 </script>
