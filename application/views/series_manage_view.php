@@ -44,8 +44,14 @@
 					.attr({ href: "<?php echo BASE_URL; ?>series/show/" + item.id});
 				var serieInput = $('<input/>')
 					.attr({ type: 'checkbox', class: 'toggleserie', value: item.id });
+				if (item.user_id != null) {
+					serieInput.attr({ checked: 'checked' });
+				}
 				var serieDiv = $('<div></div>')
 					.attr({ class: 'serie' });
+				if (item.user_id != null) {
+					serieDiv.addClass('selected');
+				}
 				serieDiv.append(serieInput);
 				serieDiv.append(serieLink);
 				var serieContainer = $('<div></div>')
