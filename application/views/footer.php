@@ -4,7 +4,7 @@
 		<p>All data are retrieved from <a href="http://www.comicvine.com">ComicVine</a></p>
 	</footer>
 
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 

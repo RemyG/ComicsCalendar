@@ -88,12 +88,45 @@ class SeriesController extends Controller {
 
 		$user->setLastSeenOn(time());
 		$user->save();
-
-		$series = SerieQuery::create()->orderByTitle()->find();
-		
+				
 		$template->set('user', $user);
-		$template->set('series', $series);
 		$template->render();
+	}
+        
+	function managebyletter($letter)
+	{
+		$this->hiddenInitiate();
+		$this->hiddenKeepAlive();
+				
+		$sessionHelper = $this->loadHelper('Session_helper');
+		$userLogin = $sessionHelper->get('user-login');
+		if ($userLogin == null)
+		{
+			$error = array("error" => "User is not connected");
+			return json_encode($error);
+		}
+		$user = UserQuery::create()->findOneByLogin($userLogin);
+		
+		$con = Propel::getConnection();
+		$sql = "SELECT * FROM comics_serie LEFT JOIN comics_user_serie "
+			. "ON comics_serie.id = comics_user_serie.serie_id and comics_user_serie.user_id = ? "
+			. "WHERE lower(comics_serie.title) REGEXP ?"
+			. "ORDER BY comics_serie.title ASC";
+		
+		$stmt = $con->prepare($sql);
+		$stmt->bindParam(1, $user->getId());
+		if (preg_match('/^[0-9a-zA-Z]$/', $letter) === 1) {
+			$stmt->bindValue(2, '^'.strtolower($letter).'.*', PDO::PARAM_STR);
+		}
+		else {
+			$stmt->bindValue(2, '^[^0-9a-z].*', PDO::PARAM_STR);
+		}
+		
+		if ($stmt->execute()) {
+			$series = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		}
+
+		return json_encode($series);
 	}
 
 	/**

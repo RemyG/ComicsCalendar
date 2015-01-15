@@ -10,6 +10,8 @@
 
 	<link rel="icon" type="image/png" href="favicon.png">
 
+	<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+	
 	<link rel="stylesheet" href="/static/css/font-awesome.min.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="/static/css/style.css" type="text/css" media="screen" />
 

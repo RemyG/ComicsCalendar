@@ -402,6 +402,23 @@ section.advanced {
     display: none;
 }
 
+section.pagination {
+    text-align: center;
+    margin-top: 30px;
+    span.pagination-alpha {
+        a {
+            line-height: 30px;
+            display: inline-block;
+             width: 2%;
+             text-align: center;
+             &:hover, &.selected {
+                 background-color: $red-color;
+                 color: white;
+             }
+        }
+    }
+}
+
 section.show-serie {
 	> header {
 		h1.title {
