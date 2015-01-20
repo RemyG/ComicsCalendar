@@ -1,5 +1,8 @@
 <?php
 
+use Propel\Runtime\Propel;
+use Propel\Runtime\ActiveQuery\Criteria;
+
 /**
  * 
  * @author remyg
@@ -78,11 +81,10 @@ class SeriesController extends Controller {
 
 		if ($user->getLastSeenOn() != null)
 		{
-			$c = new Criteria();
-			$crit0 = $c->getNewCriterion(SeriePeer::ADDED_ON, $user->getLastSeenOn(), CRITERIA::GREATER_THAN);
-			$c->add($crit0);
-			$c->addAscendingOrderByColumn(SeriePeer::TITLE); 
-			$newSeries = SeriePeer::doSelect($c);
+			$newSeries = SerieQuery::create()
+				->filterByAddedOn($user->getLastSeenOn(), CRITERIA::GREATER_THAN)
+				->orderByTitle()
+				->find();
 			$template->set('newSeries', $newSeries);
 		}
 
@@ -107,10 +109,10 @@ class SeriesController extends Controller {
 		}
 		$user = UserQuery::create()->findOneByLogin($userLogin);
 		
-		$con = Propel::getConnection();
+		$con = Propel::getWriteConnection(\Map\SerieTableMap::DATABASE_NAME);
 		$sql = "SELECT * FROM comics_serie LEFT JOIN comics_user_serie "
 			. "ON comics_serie.id = comics_user_serie.serie_id and comics_user_serie.user_id = ? "
-			. "WHERE lower(comics_serie.title) REGEXP ?"
+			. "WHERE lower(comics_serie.title) REGEXP ? "
 			. "ORDER BY comics_serie.title ASC";
 		
 		$stmt = $con->prepare($sql);

@@ -23,11 +23,13 @@ require(ROOT_DIR .'system/view.php');
 require(ROOT_DIR .'system/controller.php');
 require(ROOT_DIR .'system/pfp.php');
 
+require_once APP_DIR.'/generated-conf/config.php';
+
 // Initialize Propel with the runtime configuration
-Propel::init(APP_DIR."build/conf/comicslist-conf.php");
+//Propel::init(APP_DIR."build/conf/comicslist-conf.php");
 
 // Add the generated 'classes' directory to the include path
-set_include_path(APP_DIR."build/classes" . PATH_SEPARATOR . get_include_path());
+//set_include_path(APP_DIR."build/classes" . PATH_SEPARATOR . get_include_path());
 
 pfp();
 
