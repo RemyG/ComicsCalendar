@@ -10,6 +10,8 @@ session_start();
 define('ROOT_DIR', realpath(dirname(__FILE__)) .'/');
 define('APP_DIR', ROOT_DIR .'application/');
 
+require_once(ROOT_DIR.'vendor/autoload.php');
+
 // Includes
 require(APP_DIR .'config/config.php');
 require(APP_DIR .'config/comicvine.php');
@@ -20,9 +22,6 @@ require(ROOT_DIR .'system/model.php');
 require(ROOT_DIR .'system/view.php');
 require(ROOT_DIR .'system/controller.php');
 require(ROOT_DIR .'system/pfp.php');
-
-// Include the main Propel script
-require_once(APP_DIR.'plugins/propel/runtime/lib/Propel.php');
 
 // Initialize Propel with the runtime configuration
 Propel::init(APP_DIR."build/conf/comicslist-conf.php");
