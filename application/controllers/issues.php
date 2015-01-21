@@ -1,5 +1,7 @@
 <?php
 
+use Propel\Runtime\Propel;
+
 /**
  * Controller for the Issue class.
  * 
@@ -374,6 +376,106 @@ class IssuesController extends Controller {
 				$user->save();
 			}
 		}
+	}
+	
+	function unread()
+	{
+		$this->hiddenInitiate();
+		$this->hiddenKeepAlive();
+		
+		$sessionHelper = $this->loadHelper('Session_helper');
+		$userLogin = $sessionHelper->get('user-login');
+		if ($userLogin == null)
+		{
+			$this->redirect("users/login");
+		}
+		$user = UserQuery::create()->findOneByLogin($userLogin);
+		
+		
+		$con = Propel::getWriteConnection(\Map\SerieTableMap::DATABASE_NAME);
+		$sql = "SELECT"
+				. " ".\Map\IssueTableMap::COL_ID. " as issue_id"
+				. ", ".\Map\IssueTableMap::COL_ISSUE_NUMBER. " as issue_number"
+				. ", ".\Map\IssueTableMap::COL_TITLE. " as issue_title"
+				. ", ".\Map\IssueTableMap::COL_CV_URL. " as issue_cv_url"
+				. ", ".\Map\IssueTableMap::COL_PUB_DATE. " as issue_date"
+				. ", ".\Map\SerieTableMap::COL_ID. " as serie_id"
+				. ", ".\Map\SerieTableMap::COL_TITLE. " as serie_title"
+				. ", ".\Map\SerieTableMap::COL_CV_URL. " as serie_cv_url"
+			. " FROM ".\Map\IssueTableMap::TABLE_NAME
+			. " JOIN ".\Map\SerieTableMap::TABLE_NAME
+				. " ON ".\Map\IssueTableMap::COL_SERIE_ID. " = ".\Map\SerieTableMap::COL_ID
+			. " JOIN ".\Map\UserSerieTableMap::TABLE_NAME
+				. " ON ".\Map\SerieTableMap::COL_ID. " = ".\Map\UserSerieTableMap::COL_SERIE_ID
+				. " AND ".\Map\UserSerieTableMap::COL_USER_ID." = ?"
+			. " WHERE ".\Map\IssueTableMap::COL_ID." NOT IN "
+			." (SELECT ".\Map\UserIssueTableMap::COL_ISSUE_ID." FROM ".\Map\UserIssueTableMap::TABLE_NAME
+			." WHERE ".\Map\UserIssueTableMap::COL_USER_ID." = ?)"
+			. " ORDER BY ".\Map\IssueTableMap::COL_PUB_DATE." DESC"
+			. ", ".\Map\SerieTableMap::COL_TITLE. " ASC"
+			. ", ".\Map\IssueTableMap::COL_ISSUE_NUMBER. " ASC";
+		$stmt = $con->prepare($sql);
+		
+		$stmt->bindParam(1, $user->getId());
+		$stmt->bindParam(2, $user->getId());
+		
+		if ($stmt->execute()) {
+			$issues = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		}
+		
+		$template = $this->loadView('issues_unread_view');
+		$template->set('issues', $issues);
+		$template->render();
+	}
+	
+	function unreadBySerie()
+	{
+		$this->hiddenInitiate();
+		$this->hiddenKeepAlive();
+		
+		$sessionHelper = $this->loadHelper('Session_helper');
+		$userLogin = $sessionHelper->get('user-login');
+		if ($userLogin == null)
+		{
+			$this->redirect("users/login");
+		}
+		$user = UserQuery::create()->findOneByLogin($userLogin);
+		
+		
+		$con = Propel::getWriteConnection(\Map\SerieTableMap::DATABASE_NAME);
+		$sql = "SELECT"
+				. " ".\Map\IssueTableMap::COL_ID. " as issue_id"
+				. ", ".\Map\IssueTableMap::COL_ISSUE_NUMBER. " as issue_number"
+				. ", ".\Map\IssueTableMap::COL_TITLE. " as issue_title"
+				. ", ".\Map\IssueTableMap::COL_CV_URL. " as issue_cv_url"
+				. ", ".\Map\IssueTableMap::COL_PUB_DATE. " as issue_date"
+				. ", ".\Map\SerieTableMap::COL_ID. " as serie_id"
+				. ", ".\Map\SerieTableMap::COL_TITLE. " as serie_title"
+				. ", ".\Map\SerieTableMap::COL_CV_URL. " as serie_cv_url"
+			. " FROM ".\Map\IssueTableMap::TABLE_NAME
+			. " JOIN ".\Map\SerieTableMap::TABLE_NAME
+				. " ON ".\Map\IssueTableMap::COL_SERIE_ID. " = ".\Map\SerieTableMap::COL_ID
+			. " JOIN ".\Map\UserSerieTableMap::TABLE_NAME
+				. " ON ".\Map\SerieTableMap::COL_ID. " = ".\Map\UserSerieTableMap::COL_SERIE_ID
+				. " AND ".\Map\UserSerieTableMap::COL_USER_ID." = ?"
+			. " WHERE ".\Map\IssueTableMap::COL_ID." NOT IN "
+			." (SELECT ".\Map\UserIssueTableMap::COL_ISSUE_ID." FROM ".\Map\UserIssueTableMap::TABLE_NAME
+			." WHERE ".\Map\UserIssueTableMap::COL_USER_ID." = ?)"
+			. " ORDER BY ".\Map\SerieTableMap::COL_TITLE. " ASC"
+			. ", ".\Map\SerieTableMap::COL_ID." ASC"
+			. ", ".\Map\IssueTableMap::COL_PUB_DATE." ASC"
+			. ", ".\Map\IssueTableMap::COL_ISSUE_NUMBER. " ASC";
+		$stmt = $con->prepare($sql);
+		
+		$stmt->bindParam(1, $user->getId());
+		$stmt->bindParam(2, $user->getId());
+		
+		if ($stmt->execute()) {
+			$issues = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		}
+		
+		return json_encode($issues);
+		
 	}
 }
 

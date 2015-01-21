@@ -162,7 +162,8 @@ form {
 
 section.manage-series,
 section.show-series,
-section.new-series {
+section.new-series,
+section.unread-issues {
 	div.section-header {
 		border: 1px solid #ccc;
 		text-align: center;
@@ -387,6 +388,7 @@ section.manage-series,
 section.new-series,
 section.show-series,
 section.show-serie,
+section.unread-issues,
 section.about,
 section.advanced {
 	padding: 20px;
@@ -419,7 +421,8 @@ section.pagination {
     }
 }
 
-section.show-serie {
+section.show-serie,
+section.unread-issues {
 	> header {
 		h1.title {
 			margin-top: 0;

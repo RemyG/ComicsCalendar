@@ -28,6 +28,7 @@
 			if (isset($_SESSION['user-login']))
 			{
 				echo '<a href="/series/manage">Manage my series</a>';
+				echo '<a href="/issues/unread">Unread issues</a>';
 				echo '<a href="/advanced">Advanced</a>';
 				echo '<a href="/users/logout">Logout</a>';
 			}

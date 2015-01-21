@@ -131,7 +131,8 @@ form div.input-group {
 
 section.manage-series div.section-header,
 section.show-series div.section-header,
-section.new-series div.section-header {
+section.new-series div.section-header,
+section.unread-issues div.section-header {
   border: 1px solid #ccc;
   text-align: center;
   height: 40px;
@@ -143,16 +144,19 @@ section.new-series div.section-header {
   background-color: #ddd; }
 section.manage-series div.section,
 section.show-series div.section,
-section.new-series div.section {
+section.new-series div.section,
+section.unread-issues div.section {
   overflow: hidden; }
   section.manage-series div.section div.serie-container,
   section.show-series div.section div.serie-container,
-  section.new-series div.section div.serie-container {
+  section.new-series div.section div.serie-container,
+  section.unread-issues div.section div.serie-container {
     width: 25%;
     float: left; }
     section.manage-series div.section div.serie-container div.serie,
     section.show-series div.section div.serie-container div.serie,
-    section.new-series div.section div.serie-container div.serie {
+    section.new-series div.section div.serie-container div.serie,
+    section.unread-issues div.section div.serie-container div.serie {
       font-weight: normal;
       background-color: #fff;
       overflow: hidden;
@@ -167,16 +171,19 @@ section.new-series div.section {
       padding: 0 5px; }
       section.manage-series div.section div.serie-container div.serie.selected,
       section.show-series div.section div.serie-container div.serie.selected,
-      section.new-series div.section div.serie-container div.serie.selected {
+      section.new-series div.section div.serie-container div.serie.selected,
+      section.unread-issues div.section div.serie-container div.serie.selected {
         font-weight: bold;
         background-color: #F0141D; }
         section.manage-series div.section div.serie-container div.serie.selected a,
         section.show-series div.section div.serie-container div.serie.selected a,
-        section.new-series div.section div.serie-container div.serie.selected a {
+        section.new-series div.section div.serie-container div.serie.selected a,
+        section.unread-issues div.section div.serie-container div.serie.selected a {
           color: #fff; }
       section.manage-series div.section div.serie-container div.serie input[type=checkbox],
       section.show-series div.section div.serie-container div.serie input[type=checkbox],
-      section.new-series div.section div.serie-container div.serie input[type=checkbox] {
+      section.new-series div.section div.serie-container div.serie input[type=checkbox],
+      section.unread-issues div.section div.serie-container div.serie input[type=checkbox] {
         margin: 0;
         display: inline-block;
         position: relative;
@@ -321,6 +328,7 @@ section.manage-series,
 section.new-series,
 section.show-series,
 section.show-serie,
+section.unread-issues,
 section.about,
 section.advanced {
   padding: 20px; }
@@ -346,22 +354,28 @@ section.pagination {
       background-color: #F0141D;
       color: white; }
 
-section.show-serie > header h1.title {
+section.show-serie > header h1.title,
+section.unread-issues > header h1.title {
   margin-top: 0;
   font-size: 36px;
   font-family: Bangers, cursive;
   letter-spacing: 1px;
   font-weight: normal; }
-section.show-serie div.cv-url {
+section.show-serie div.cv-url,
+section.unread-issues div.cv-url {
   margin: 20px 0; }
-section.show-serie section.follow-serie {
+section.show-serie section.follow-serie,
+section.unread-issues section.follow-serie {
   margin: 15px 0; }
-section.show-serie section.issues > header {
+section.show-serie section.issues > header,
+section.unread-issues section.issues > header {
   font-weight: bold;
   margin-bottom: 10px; }
-section.show-serie section.issues div.issue {
+section.show-serie section.issues div.issue,
+section.unread-issues section.issues div.issue {
   margin-left: 10px; }
-  section.show-serie section.issues div.issue.selected {
+  section.show-serie section.issues div.issue.selected,
+  section.unread-issues section.issues div.issue.selected {
     color: #ccc; }
 
 form.legend {
