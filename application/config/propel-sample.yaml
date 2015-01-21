@@ -1,0 +1,19 @@
+propel:
+  database:
+      connections:
+          comicslist:
+              adapter: mysql
+              classname: Propel\Runtime\Connection\ConnectionWrapper
+              dsn: "mysql:host=your_db_host;dbname=your_db_name"
+              user: your_db_user
+              password: your_db_password
+              attributes:
+  runtime:
+      defaultConnection: comicslist
+      connections:
+          - comicslist
+  generator:
+      defaultConnection: comicslist
+      connections:
+          - comicslist
+
