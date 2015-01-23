@@ -8,7 +8,7 @@
 			type: "GET",
 			dataType: "json"
 		});
-	})
+	});
 	$('input.toggleissue').click(function() {
 		var id = this.value;
 		var checked = this.checked;
@@ -18,7 +18,7 @@
 			type: "GET",
 			dataType: "json"
 		});
-	})
+	});
 	
 	$('#followthis').click(function() {
 		var id = this.value;
@@ -28,7 +28,7 @@
 			type: "GET",
 			dataType: "json"
 		});
-	})
+	});
 	
 	$('#serie-import').click(function(e) {
 		e.preventDefault();
@@ -55,5 +55,5 @@
 				}
 			});
 		});
-	})
+	});
 </script>
