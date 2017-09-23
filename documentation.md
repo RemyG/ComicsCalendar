@@ -3,8 +3,6 @@ layout: page
 title: Documentation
 ---
 
-# {{ page.title }}
-
 This application is a self-hosted comic books calendar, which allows you to follow the new issues of your favorite series.
 
 ## Requirements

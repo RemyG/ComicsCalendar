@@ -3,8 +3,6 @@ layout: page
 title: ComicsCalendar
 ---
 
-# {{ page.title }}
-
 <div class="grid-container">
 	<div class="grid-100 main-description">
 		<p>ComicsCalendar is a calendar interface for new comic books issues retrieved from <a href="http://www.comicvine.com">ComicVine</a>.</p>
